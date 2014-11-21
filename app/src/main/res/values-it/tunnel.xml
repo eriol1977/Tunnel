@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- labels -->
+    <item name="l_title" type="string">Tunnel</item>
+    <item name="l_prompt" type="string">Comando?</item>
+
+    <!-- messages -->
+    <item name="m_unavailable" type="string">azione invalida</item>
+    <item name="m_inventory" type="string">possiedi i seguenti oggetti:</item>
+    <item name="m_empty_inventory" type="string">non possiedi oggetti</item>
+    <item name="m_section_items" type="string">ci sono i seguenti oggetti:</item>
+    <item name="m_empty_section_items" type="string">non c\'è alcun oggetto</item>
+    <item name="m_no_object" type="string">quest\'oggetto non c\'è!</item>
+    <item name="m_no_get" type="string">non si può prendere</item>
+    <item name="m_no_use" type="string">non si può usare qui</item>
+    <item name="m_no_examine" type="string">non noti nulla di speciale</item>
+
+    <!-- commands -->
+    <item name="c_go_back" type="string">torno indietro</item>
+    <item name="c_right" type="string">destra</item>
+    <item name="c_corridor" type="string">corridoio</item>
+    <item name="c_open_door" type="string">apro porta</item>
+    <item name="c_across" type="string">fondo</item>
+    <item name="c_go_on" type="string">proseguo avanzo dritto</item>
+    <item name="c_get" type="string">prendo</item>
+    <item name="c_use" type="string">uso</item>
+
+    <!-- items -->
+    <item name="i_torch" type="string">torcia-La torcia è piuttosto consumata, non durerà molto</item>
+    <item name="i_key" type="string">chiave-La chiave, pur consumata dal tempo, presenta ancora qualche traccia di tinta dorata.</item>
+
+    <!-- sections -->
+    <item name="s_home_1" type="string">Benvenuto nell\'audiogioco Il Tunnel, sarò la tua guida lungo il percorso.</item>
+    <item name="s_home_2" type="string">Per interagire, premi una qualsiasi parte dello schermo e attendi il bip sonoro, quindi pronuncia il tuo comando in base al contesto.</item>
+    <item name="s_home_3" type="string">Puoi interrompermi in qualsiasi momento premendo lo schermo per impartire un comando.</item>
+    <item name="s_home_4" type="string">Vuoi iniziare una nuova partita o ascoltare le istruzioni complete?</item>
+
+    <item name="s_help_1" type="string">Oltre alle azioni dipendenti dal contesto della sezione narrativa (ad esempio, Apro Porta, o Vado a Destra, o anche solo Destra), puoi sempre usare i seguenti comandi:</item>
+    <item name="s_help_2" type="string">Aiuto, o istruzioni, per tornare qui.</item>
+    <item name="s_help_4" type="string">Indietro, per tornare alla precedente sezione narrativa, quando consentito.</item>
+    <item name="s_help_5" type="string">Esci dal gioco: beh, questa è facile da capire.</item>
+    <item name="s_help_6" type="string">Gioco, per tornare alla narrazione a partire da una sezione alternativa come questa.</item>
+    <item name="s_help_7" type="string">Inventario, per sapare quali oggetti di porti appresso.</item>
+    <item name="s_help_8" type="string">Oggetti, per evidenziare quali oggetti sono disponibili nella sezione narrativa.</item>
+    <item name="s_help_9" type="string">Prendo, seguito dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
+    <item name="s_help_10" type="string">Uso, seguito dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
+    <item name="s_help_11" type="string">Esamino, seguito dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminare più a fondo l\'oggetto.</item>
+
+    <item name="s_end_1" type="string">La partita è giunta al termine.</item>
+    <item name="s_end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>
+
+    <item name="s_quit_1" type="string">Grazie per aver giocato Il Tunnel.</item>
+    <item name="s_quit_2" type="string">Premi lo schermo per abbandonare il gioco.</item>
+
+    <item name="s_1_1" type="string">Ti trovi in una sala circolare.</item>
+    <item name="s_1_2" type="string">Alla tua destra, la sala dà su un corridoio.</item>
+    <item name="s_1_3" type="string">Davanti a te c\'è una porta chiusa.</item>
+    <!-- sezioni collegate e relativi comandi; per accedere alla 5, deve usare la chiave -->
+    <item name="s_1_link_1" type="string">2:c_right,c_corridor</item>
+    <item name="s_1_link_2" type="string">3:c_open_door</item>
+    <item name="s_1_link_3" type="string">5:use:i_key</item>
+
+    <item name="s_2_1" type="string">Il corridoio termina in un vicolo cieco.</item>
+    <item name="s_2_2" type="string">Noti il luccichio di una chiave al suolo.</item>
+    <!-- sezioni collegate e relativi comandi; per accedere alla 4, deve prendere la chiave -->
+    <item name="s_2_link_1" type="string">1:c_go_back;</item>
+    <item name="s_2_link_2" type="string">4:get:i_key</item>
+
+    <item name="s_3_1" type="string">La porta è chiusa: per quanto la strattoni, non riesci ad aprirla.</item>
+    <!-- sezione collegata direttamente, senza bisogno di impartire comandi -->
+    <item name="s_3_link_1" type="string">1</item>
+
+    <item name="s_4_1" type="string">Ti chini a terra e raccogli la chiave.</item>
+    <!-- aggiunge la chiave all'inventario, rimuove il paragrafo 2:2 -->
+    <item name="s_4_get" type="string">i_key</item>
+    <item name="s_4_switch_1" type="string">par:2:2:""</item>
+    <item name="s_4_link_1" type="string">2</item>
+
+    <item name="s_5_1" type="string">Giri la chiave nella serratura, che si apre con uno scatto.</item>
+    <!-- rimuove la chiave dall'inventario, cambia il testo del paragrafo 1:3 -->
+    <!-- sostituisce il secondo link del paragrafo 1 con 6:c_go_on -->
+    <item name="s_5_switch_1" type="string">link:1:2:6:c_go_on</item>
+    <item name="s_5_switch_2" type="string">par:1:3:"Davanti a te c\'è una porta aperta."</item>
+    <item name="s_5_link_1" type="string">6</item>
+
+    <item name="s_6_1" type="string">Attraversi la soglia e ti ritrovi in una sala più ampia della precedente.</item>
+    <item name="s_6_2" type="string">C\'è una torcia appesa a un gancio nella parete.</item>
+    <item name="s_6_3" type="string">In fondo alla sala si apre un corridoio buio.</item>
+    <!-- sezioni collegate e relativi comandi; accede alla 8 se non possiede la torcia, altrimenti alla 9 -->
+    <item name="s_6_link_1" type="string">7:get:i_torch</item>
+    <item name="s_6_link_2" type="string">8:c_across,c_corridor</item>
+    <item name="s_6_link_3" type="string">9:c_across,c_corridor:i_torch</item>
+    <item name="s_6_link_4" type="string">1:go_back</item>
+
+    <item name="s_7_1" type="string">Afferri la torcia e la reggi dinanzi a te.</item>
+    <item name="s_7_get" type="string">i_torch:5:2:""</item>
+    <item name="s_7_link_1" type="string">6</item>
+
+    <item name="s_8_1" type="string">Dopo alcuni passi il buio si fa così fitto da costringerti a procedere a tentoni, cercando la parete con le dita.</item>
+    <item name="s_8_2" type="string">Il corridoio sembra proseguire dritto.</item>
+    <item name="s_8_link_1" type="string">6:go_back</item>
+    <item name="s_8_link_2" type="string">9:go_on</item>
+
+    <item name="s_9_1" type="string">Avanzi nel buio più assoluto, finché all\'improvviso la terra ti manca sotto i piedi.</item>
+    <item name="s_9_2" type="string">Urlando di terrore, precipiti incontro alla tua morte.</item>
+    <item name="s_9_link_1" type="string">end</item>
+
+    <item name="s_10_1" type="string">Grazie alla torcia che ti illumina il cammino, riesci a percorrere il corridoio senza problemi.</item>
+    <item name="s_10_2" type="string">Più di una volta sei costretto a schivare le fauci spalancate di pozzi senza fondo, ringraziando in silenzio la tua torcia.</item>
+    <item name="s_10_3" type="string">Dopo un lungo tratto, intravedi una luminosità soffusa che indica la fine del corridoio.</item>
+    <item name="s_10_4" type="string">Quasi a farlo apposta, la torcia si spegne mentre ti appresti a raggiungere l\'uscita. Butti l\'oggetto ormai inutile e varchi la soglia del nuovo ambiente.</item>
+    <item name="s_10_drop" type="string">i_torch</item>
+
+    <item name="s_11_1" type="string">L\'avventura continua!</item>
+    <item name="s_11_link_1" type="string">end</item>
+
+</resources>
