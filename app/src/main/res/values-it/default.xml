@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- labels -->
+    <item name="l_prompt" type="string">Comando?</item>
+
+    <!-- messages -->
+    <item name="m_unavailable" type="string">azione invalida</item>
+    <item name="m_inventory" type="string">possiedi i seguenti oggetti:</item>
+    <item name="m_empty_inventory" type="string">non possiedi oggetti</item>
+    <item name="m_no_object" type="string">quest\'oggetto non c\'è!</item>
+    <item name="m_cant_get" type="string">non si può prendere</item>
+    <item name="m_cant_use" type="string">non si può usare qui</item>
+    <item name="m_cant_examine" type="string">non noti nulla di speciale</item>
+
+    <!-- commands -->
+    <item name="c_get" type="string">prendo</item>
+    <item name="c_use" type="string">uso</item>
+    <item name="c_repeat" type="string">ripeti</item>
+    <item name="c_instructions" type="string">istruzioni</item>
+    <item name="c_help" type="string">aiuto</item>
+    <item name="c_start" type="string">iniziare</item>
+    <item name="c_new_game" type="string">nuova partita</item>
+    <item name="c_save_game" type="string">salva partita</item>
+    <item name="c_load_game" type="string">carica partita</item>
+    <item name="c_quit" type="string">esci gioco</item>
+    <item name="c_inventory" type="string">inventario</item>
+    <item name="c_examine" type="string">esamino</item>
+    <item name="c_go_back" type="string">indietro</item>
+
+    <!-- sections -->
+    <item name="home_1" type="string">Benvenuto, sarò la tua guida lungo il percorso.</item>
+    <item name="home_2" type="string">Per interagire, premi una qualsiasi parte dello schermo e attendi il bip sonoro, quindi pronuncia il tuo comando in base al contesto.</item>
+    <item name="home_3" type="string">Puoi interrompermi in qualsiasi momento premendo lo schermo per impartire un comando.</item>
+    <item name="home_4" type="string">Vuoi iniziare una nuova partita o ascoltare le istruzioni complete?</item>
+
+    <item name="help_1" type="string">Oltre alle azioni dipendenti dal contesto della sezione narrativa (ad esempio, Apro Porta, o Vado a Destra, o anche solo Destra), puoi sempre usare i seguenti comandi:</item>
+    <item name="help_2" type="string">Aiuto, o istruzioni, per tornare qui.</item>
+    <item name="help_3" type="string">Ripeti, per farti ripetere l\'ultima parte della narrazione.</item>
+    <item name="help_4" type="string">Salva partita, per salvare la tua posizione nel gioco.</item>
+    <item name="help_5" type="string">Carica partita, per riprendere il gioco dalla posizione salvata.</item>
+    <item name="help_6" type="string">Indietro, per tornare alla precedente sezione narrativa, quando consentito.</item>
+    <item name="help_7" type="string">Esci dal gioco: beh, questa è facile da capire.</item>
+    <item name="help_8" type="string">Inventario, per sapare quali oggetti ti porti appresso.</item>
+    <item name="help_9" type="string">Prendo, seguito dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
+    <item name="help_10" type="string">Uso, seguito dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
+    <item name="help_11" type="string">Esamino, seguito dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminare più a fondo l\'oggetto.</item>
+
+    <item name="end_1" type="string">La partita è giunta al termine.</item>
+    <item name="end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>
+
+    <item name="quit_1" type="string">Grazie per aver giocato insieme a me!</item>
+    <item name="quit_2" type="string">Premi lo schermo per abbandonare il gioco.</item>
+</resources>

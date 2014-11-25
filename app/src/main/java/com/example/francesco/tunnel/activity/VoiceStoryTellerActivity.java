@@ -7,7 +7,6 @@ import android.speech.tts.TextToSpeech;
 import android.view.View;
 
 import com.example.francesco.tunnel.R;
-import com.example.francesco.tunnel.story.StoryException;
 
 import java.util.List;
 import java.util.Locale;
@@ -80,8 +79,8 @@ public abstract class VoiceStoryTellerActivity extends StoryTellerActivity {
                                 //    }
                                 //});
 
-                                displayText(teller.getCurrentText());
-                            }else{
+                                displayText(story.getCurrentText()); // testo home
+                            } else {
                                 finish();
                             }
                         }
@@ -96,12 +95,8 @@ public abstract class VoiceStoryTellerActivity extends StoryTellerActivity {
             }
         } else if (requestCode == GET_SPEECH && resultCode == RESULT_OK) {
             String speech = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0);
-            try {
-                teller.proceed(speech);
-                displayText(teller.getCurrentText());
-            } catch (StoryException e) {
-                speak(sl.UNAVAILABLE);
-            }
+            story.proceed(speech);
+            displayText(story.getCurrentText());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

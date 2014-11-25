@@ -1,4 +1,4 @@
-package com.example.francesco.tunnel.character;
+package com.example.francesco.tunnel.story;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,19 +7,33 @@ public class Command {
 
     private final String id;
 
-    private final String[] words;
+    private final String[] commandWords;
 
-    public Command(String id, String[] words) {
+    Command(final String id, final String[] commandWords) {
         this.id = id;
-        this.words = words;
+        this.commandWords = commandWords;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public boolean check(final String words) {
-        // TODO
-        return false;
+    /**
+     * @param words
+     * @return True se ognuno dei termini registrati nel comando (ex: "torna gioco") compare
+     * nella String di parole informata come parametro (ex: "torna al gioco")
+     */
+    boolean check(final String words) {
+        int found = 0;
+        final String[] everyWord = words.split("\\s+");
+        for (String word : everyWord) {
+            for (String commandWord : this.commandWords) {
+                if(word.equalsIgnoreCase(commandWord)) {
+                    found++;
+                    break;
+                }
+            }
+        }
+        return found == this.commandWords.length;
     }
 }

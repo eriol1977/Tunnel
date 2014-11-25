@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.francesco.tunnel.activity.VoiceStoryTellerActivity;
-import com.example.francesco.tunnel.story.Story;
 
 
 public class TunnelActivity extends VoiceStoryTellerActivity {
@@ -20,12 +19,5 @@ public class TunnelActivity extends VoiceStoryTellerActivity {
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(this);
-    }
-
-    protected Story buildStory() {
-
-        // TODO
-
-        return maker.getStory();
     }
 }

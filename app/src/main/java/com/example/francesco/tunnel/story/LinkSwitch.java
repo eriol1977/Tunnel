@@ -7,7 +7,7 @@ public class LinkSwitch {
 
     private final String sectionId;
 
-    private final String linkId;
+    private final int linkIndex;
 
     private final String nextSection;
 
@@ -15,9 +15,9 @@ public class LinkSwitch {
 
     private final String[] itemIds;
 
-    public LinkSwitch(String sectionId, String linkId, String nextSection, String[] commandIds, String[] itemIds) {
+    public LinkSwitch(String sectionId, int linkIndex, String nextSection, String[] commandIds, String[] itemIds) {
         this.sectionId = sectionId;
-        this.linkId = linkId;
+        this.linkIndex = linkIndex;
         this.nextSection = nextSection;
         this.commandIds = commandIds;
         this.itemIds = itemIds;
@@ -27,8 +27,8 @@ public class LinkSwitch {
         return sectionId;
     }
 
-    public String getLinkId() {
-        return linkId;
+    public int getLinkIndex() {
+        return linkIndex;
     }
 
     public String getNextSection() {

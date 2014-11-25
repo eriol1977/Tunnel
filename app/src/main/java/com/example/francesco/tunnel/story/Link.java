@@ -8,9 +8,9 @@ import java.util.List;
 public class Link {
 
     /**
-     * Identifica univocamente il link dentro la sezione
+     * Sezione narrativa alla quale il link appartiene
      */
-    private final String id;
+    private final Section section;
 
     /**
      * Id della sezione linkata
@@ -23,69 +23,113 @@ public class Link {
     private String[] commandIds;
 
     /**
-     * Ids di uno o più oggetti necessario per percorrere il link (opzionale)
+     * Ids di uno o più oggetti necessari per percorrere il link (opzionale)
      */
     private String[] itemIds;
 
-    public Link(final String id, final String nextSection) {
-        this.id = id;
+    /**
+     * Ids di uno o più oggetti la cui assenza dall'inventario è una condizione per percorrere il link (opzionale)
+     */
+    private String[] noItemIds;
+
+    Link(final Section section, final String nextSection) {
+        this.section = section;
         this.nextSection = nextSection;
     }
 
     /**
-     * TODO
-     *
      * Confronta il contenuto del comando con le proprie restrizioni di comando/oggetto,
      * verificando se il link può essere percorso o meno.
      *
      * @param words
-     * @return Id della sezione linkata, oppure null
+     * @return True False
      */
-    public String check(final String words)
-    {
-        // verificare nel parametro informato la presenza di almeno una parola tra i comandi e gli oggetti del link
-        // foreach commandId: Commands.get(commandId).check(words)
-        // foreach itemId: character.getInventory().get(itemId).check(words)
+    boolean check(final String words) {
+        StoryLoader sl = StoryLoader.getInstance();
 
-        // se non ci sono né comandi né oggetti, il link è diretto e questo metodo non viene neppure chiamato
+        /**
+         * se il link dipende da uno o più possibili comandi, almeno uno di essi deve comparire
+         * nella String informata
+         */
+        boolean commandFound = false;
+        if (this.commandIds.length == 0) {
+            commandFound = true;
+        } else {
+            for (final String commandId : this.commandIds) {
+                commandFound = sl.command(commandId).check(words);
+                if (commandFound)
+                    break;
+            }
+        }
 
-        return null;
+        boolean itemFound = false;
+        if (this.itemIds.length == 0) {
+            itemFound = true;
+        }
+        /**
+         * se il comando è "prendo", il nome dell'oggetto deve comparire nella String informata
+         * (si suppone che l'oggetto da prendere sia uno solo, nella struttura del link)
+         */
+        else if (this.commandIds.length == 1 && this.commandIds[0].equals(Commands.GET)) {
+            Item item = sl.item(this.itemIds[0]);
+            itemFound = item.check(words);
+        }
+        /**
+         * se il comando è "uso", l'oggetto deve far parte dell'inventario del giocatore, o essere
+         * presente nella sezione narrativa attuale, e il suo nome deve comparire nella String informata
+         * (si suppone che l'oggetto da usare sia uno solo, nella struttura del link)
+         */
+        else if (this.commandIds.length == 1 && this.commandIds[0].equals(Commands.USE)) {
+            final Inventory inventory = sl.getCharacter().getInventory();
+            Item item = sl.item(this.itemIds[0]);
+            itemFound = (inventory.checkItem(item) || section.checkUsableItem(item)) && item.check(words);
+        }
+        /**
+         * se il comando è un altro, si suppone che il giocatore debba possedere gli oggetti
+         * elencati nel proprio inventario, o al contrario, che non li debba possedere.
+         */
+        else {
+            final Inventory inventory = sl.getCharacter().getInventory();
+            Item item;
+            // verifica che l'inventario contenga tutti gli oggetti da possedere
+            boolean toHave = true;
+            for (final String itemId : this.itemIds) {
+                item = sl.item(itemId);
+                toHave = inventory.checkItem(item);
+                if (!toHave)
+                    break;
+            }
+            // verifica che l'inventario non contenga nessuno degli oggetti da non possedere
+            boolean notToHave = true;
+            for (final String itemId : this.noItemIds) {
+                item = sl.item(itemId);
+                notToHave = !inventory.checkItem(item);
+                if (!notToHave)
+                    break;
+            }
+            itemFound = toHave && notToHave;
+        }
+
+        return commandFound && itemFound;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getNextSection() {
+    String getNextSection() {
         return nextSection;
     }
 
-    public void setNextSection(String nextSection) {
+    void setNextSection(String nextSection) {
         this.nextSection = nextSection;
     }
 
-    public void setCommandIds(String... commandIds) {
+    void setCommandIds(String... commandIds) {
         this.commandIds = commandIds;
     }
 
-    public void setItemIds(String... itemIds) {
+    void setItemIds(String... itemIds) {
         this.itemIds = itemIds;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Link link = (Link) o;
-
-        if (!id.equals(link.id)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
+    void setNoItemIds(String... noItemIds) {
+        this.noItemIds = noItemIds;
     }
 }

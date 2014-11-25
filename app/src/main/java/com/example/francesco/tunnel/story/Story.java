@@ -1,6 +1,5 @@
 package com.example.francesco.tunnel.story;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,140 +9,212 @@ import java.util.Map;
  */
 public class Story {
 
-    private final StoryItems items;
+    private StoryPhase phase;
 
     private Section starting;
 
     private Section current;
 
+    private Section stashed;
+
     private final Map<String, Section> sections = new HashMap<String, Section>();
-
-    private final Map<String, List<Link>> outcomes = new HashMap<String, List<Link>>();
-
-    private boolean started = false;
-
-    private boolean ended = false;
-
-    private boolean suspended = false; // per esempio, nel menu di aiuto o nell'inventario
-
-    public static final String HOME = "home";
-    public static final String HELP = "help";
-    public static final String END = "end";
-    public static final String QUIT = "quit";
-
-    public Story(final StoryItems items) {
-        this.items = items;
-    }
 
     void addSection(final Section section) {
         this.sections.put(section.getId(), section);
-        this.outcomes.put(section.getId(), new ArrayList<Link>());
+        if (section.isStarting())
+            this.starting = section;
     }
 
-    void addOutcome(final String from, final String to, final String outcome) {
-        final List<Link> sectionOutcomes = this.outcomes.get(from);
-        sectionOutcomes.add(new Link(outcome, this.sections.get(to)));
+    public boolean hasDirectOutcome() {
+        return this.current.hasDirectOutcome();
     }
 
-    void addDirectOutcome(final String from, final String to) {
-        this.sections.get(from).setOneOutcome(true);
-        final List<Link> sectionOutcomes = this.outcomes.get(from);
-        sectionOutcomes.clear();
-        sectionOutcomes.add(new Link(null, this.sections.get(to)));
+    public void home() {
+        setPhase(StoryPhase.HOME);
+        proceedToHome();
     }
 
-    void introduce() {
-        setCurrent(this.sections.get(HOME));
-    }
-
-    void start() throws StoryException {
-        if(starting == null)
-            throw new StoryException();
+    void start() {
         setCurrent(starting);
-        started = true;
-        ended = false;
+        setPhase(StoryPhase.STARTED);
     }
 
-    void proceed() {
-        Link outcome = this.outcomes.get(this.current.getId()).get(0);
-        setCurrent(outcome.getNextSection());
+    void setCurrent(final Section section) {
+        this.current = section;
+        this.current.activate();
+        if (this.current.isEnding()) {
+            setPhase(StoryPhase.ENDED);
+        }
     }
 
-    void proceed(final String outcome) throws StoryException {
-        final List<Link> sectionOutcomes = this.outcomes.get(this.current.getId());
-        boolean found = false;
-        for (final Link o : sectionOutcomes) {
-            if (o.getOutcome().equals(outcome)) {
-                setCurrent(o.getNextSection());
-                found = true;
+    public void proceed() {
+        if (this.phase.equals(StoryPhase.ENDED))
+            proceedToEnd();
+        else {
+            if (this.current.isTemporary())
+                restore();
+            else {
+                final String nextSectionId = this.current.getLink(0).getNextSection();
+                setCurrent(getSection(nextSectionId));
+            }
+        }
+    }
+
+    public void proceed(final String input) {
+
+        boolean linkFound = proceedToDefaultLink(input);
+
+        if (!linkFound)
+            linkFound = proceedToLink(input);
+
+        if (!linkFound)
+            proceedToUnavailable();
+    }
+
+    private boolean proceedToDefaultLink(final String input) {
+        boolean linkFound = false;
+
+        switch (this.phase) {
+            case HOME:
+                if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
+                    start();
+                    linkFound = true;
+                } else if (command(Commands.INSTRUCTIONS).check(input) || command(Commands.HELP).check(input)) {
+                    proceedToHelp();
+                    linkFound = true;
+                } else if (command(Commands.LOAD_GAME).check(input)) {
+                    loadGame();
+                    linkFound = true;
+                } else if (command(Commands.QUIT).check(input)) {
+                    quit();
+                    linkFound = true;
+                }
+                break;
+            case STARTED:
+                if (command(Commands.REPEAT).check(input)) {
+                    linkFound = true;
+                } else if (command(Commands.INSTRUCTIONS).check(input) || command(Commands.HELP).check(input)) {
+                    proceedToHelp();
+                    linkFound = true;
+                } else if (command(Commands.INVENTORY).check(input)) {
+                    proceedToInventory();
+                    linkFound = true;
+                } else if (command(Commands.EXAMINE).check(input)) {
+                    stash();
+                    // TODO
+                    linkFound = true;
+                } else if (command(Commands.LOAD_GAME).check(input)) {
+                    loadGame();
+                    linkFound = true;
+                } else if (command(Commands.SAVE_GAME).check(input)) {
+                    saveGame();
+                    linkFound = true;
+                } else if (command(Commands.QUIT).check(input)) {
+                    quit();
+                    linkFound = true;
+                }
+                break;
+            case ENDED:
+                if (command(Commands.QUIT).check(input)) {
+                    quit();
+                    linkFound = true;
+                } else if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
+                    start();
+                    linkFound = true;
+                } else if (command(Commands.LOAD_GAME).check(input)) {
+                    loadGame();
+                    linkFound = true;
+                } else if (command(Commands.INSTRUCTIONS).check(input) || command(Commands.HELP).check(input)) {
+                    proceedToHelp();
+                    linkFound = true;
+                }
+                break;
+        }
+
+        return linkFound;
+    }
+
+    private void loadGame() {
+        // TODO
+    }
+
+    private void saveGame() {
+        stash();
+        // TODO
+    }
+
+    private void proceedToHome() {
+        setCurrent(getSection(Section.HOME_SECTION));
+    }
+
+    private void proceedToHelp() {
+        stash();
+        setCurrent(getSection(Section.HELP_SECTION));
+    }
+
+    private void proceedToInventory() {
+        stash();
+        setCurrent(StoryLoader.getInstance().createInventorySection(this.current));
+    }
+
+    private void proceedToEnd() {
+        setCurrent(getSection(Section.END_SECTION));
+    }
+
+    private void proceedToQuit() {
+        setCurrent(getSection(Section.QUIT_SECTION));
+    }
+
+    private boolean proceedToLink(final String input) {
+        boolean linkFound = false;
+        String nextSectionId;
+        final List<Link> links = this.current.getLinks();
+        for (final Link link : links) {
+            if (link.check(input)) {
+                nextSectionId = link.getNextSection();
+                setCurrent(getSection(nextSectionId));
+                linkFound = true;
                 break;
             }
         }
-        if (!found)
-            throw new StoryException();
+        return linkFound;
     }
 
-    public void proceedToHelp() {
-        setCurrent(this.sections.get(HELP));
+    private void proceedToUnavailable() {
+        stash();
+        setCurrent(getSection(Section.UNAVAILABLE_SECTION));
     }
 
-    void proceedToEnd() {
-
-        setCurrent(this.sections.get(END));
+    void quit() {
+        proceedToQuit();
+        setPhase(StoryPhase.QUIT);
     }
 
-    void proceedToQuit() {
-        setCurrent(this.sections.get(QUIT));
+    private void stash() {
+        this.stashed = this.current;
     }
 
-    List<String> getOutcomes(final String id) {
-        final List<Link> sectionOutcomes = this.outcomes.get(id);
-        if(sectionOutcomes == null)
-            return new ArrayList<String>();
-        final List<String> result =  new ArrayList<String>(sectionOutcomes.size());
-        for(final Link o: sectionOutcomes) {
-            result.add(o.getOutcome());
-        }
-        return result;
+    private void restore() {
+        setCurrent(this.stashed);
     }
 
-    boolean hasOneOutcome() {
-        return getCurrent().hasOneOutcome();
+    Section getSection(final String id) {
+        return this.sections.get(id);
     }
 
-    void setStarting(Section starting) {
-        this.starting = starting;
+    public StoryPhase getPhase() {
+        return phase;
     }
 
-    Section getCurrent() {
-        return current;
+    private void setPhase(StoryPhase phase) {
+        this.phase = phase;
     }
 
-    void setCurrent(Section current) {
-        this.current = current;
-        if (current.isEnding()) {
-            this.ended = true;
-            this.started = false;
-        }
+    private Command command(final String key) {
+        return StoryLoader.getInstance().command(key);
     }
 
-    public boolean isStarted() {
-        return started;
-    }
-
-    boolean isEnded() {
-        return ended;
-    }
-
-    public StoryItems getItems() {
-        return items;
-    }
-
-    public boolean isSuspended() {
-        return suspended;
-    }
-
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
+    public List<String> getCurrentText() {
+        return this.current.getText();
     }
 }

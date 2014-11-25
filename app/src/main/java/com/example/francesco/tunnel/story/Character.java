@@ -1,4 +1,4 @@
-package com.example.francesco.tunnel.character;
+package com.example.francesco.tunnel.story;
 
 /**
  * Created by Francesco on 20/11/2014.

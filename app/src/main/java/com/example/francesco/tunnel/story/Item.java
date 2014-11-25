@@ -1,4 +1,4 @@
-package com.example.francesco.tunnel.character;
+package com.example.francesco.tunnel.story;
 
 /**
  * Created by Francesco on 20/11/2014.
@@ -11,27 +11,39 @@ public class Item {
 
     final private String description;
 
-    public Item(String id, String name, String description) {
+    Item(String id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public String getDescription() {
+    String getDescription() {
         return description;
     }
 
-    public boolean check(final String words) {
-        // TODO
-        return false;
+    /**
+     * @param words
+     * @return True se il nome dell'oggetto (ex: "chiave") compare nella String di parole informata
+     * come parametro (ex:"chiave dorata")
+     */
+    boolean check(final String words) {
+        boolean found = false;
+        final String[] everyWord = words.split("\\s+");
+        for (String word : everyWord) {
+            if(word.equalsIgnoreCase(this.name)) {
+                found = true;
+                break;
+            }
+        }
+        return found;
     }
 
     @Override

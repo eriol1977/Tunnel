@@ -6,9 +6,8 @@ import android.view.View;
 
 import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.story.Story;
-import com.example.francesco.tunnel.story.StoryMaker;
-import com.example.francesco.tunnel.story.StoryTeller;
-import com.example.francesco.tunnel.story.StringLoader;
+import com.example.francesco.tunnel.story.StoryLoader;
+import com.example.francesco.tunnel.story.StoryPhase;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -22,20 +21,17 @@ import java.util.Map;
  * [dopo un back, ricomincia da capo; dopo un home, resta senza voce]
  * - implementare salva e carica partita
  * - commentare codice
- * - implementare comandi inventario, oggetti, prendi, usa, esamina
+ * - implementare comando esamina
  * - testare storiella in inglese/portoghese
- * - rendere uniforme lo StoryTeller: usare stash() o fare come inventario per le sezioni extra?
  */
 
 public abstract class StoryTellerActivity extends Activity implements View.OnClickListener {
 
     private String title;
 
-    protected StringLoader sl;
+    protected StoryLoader loader;
 
-    protected StoryTeller teller;
-
-    protected StoryMaker maker;
+    protected Story story;
 
     //private static final String STORY_DATA = "STORY_DATA";
 
@@ -43,19 +39,15 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sl = new StringLoader(this);
-
-        maker = new StoryMaker(sl);
+        loader = StoryLoader.getInstance(this);
+        story = loader.getStory();
 
         //if (savedInstanceState != null) {
         //    teller = (StoryTeller) savedInstanceState.getSerializable(STORY_DATA);
         //} else {
-        teller = new StoryTeller(buildStory(), sl);
-        teller.introduce();
+        story.home();
         //}
     }
-
-    protected abstract Story buildStory();
 
     protected abstract void displayText(List<String> text);
 
@@ -64,23 +56,14 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     @Override
     public void onClick(View v) {
 
-        if (teller.hasToQuit())
+        if (story.getPhase().equals(StoryPhase.QUIT))
             finish();
 
-        if (!teller.storyHasEnded()) {
-            if (teller.hasOneOutcome()) {
-                teller.proceed();
-                displayText(teller.getCurrentText());
-            } else {
-                processInput();
-            }
+        if (story.hasDirectOutcome()) {
+            story.proceed();
+            displayText(story.getCurrentText());
         } else {
-            if (teller.isEndPhase()) {
-                processInput();
-            } else {
-                teller.proceedToEnd();
-                displayText(teller.getCurrentText());
-            }
+            processInput();
         }
     }
 
