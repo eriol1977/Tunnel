@@ -57,7 +57,7 @@ public class StoryLoader {
 
     private final static String SEPARATOR = ":";
 
-    private final static String LIST_SEPARATOR = ",";
+    final static String LIST_SEPARATOR = ",";
 
     private final static String NO_PREFIX = "no_";
 
@@ -355,6 +355,18 @@ public class StoryLoader {
                 text.add(command(commandId).getCommandWords());
             }
         }
+        return createTemporarySection(text, current);
+    }
+
+    public Section createSaveSection(final Section current) {
+        List<String> text = new ArrayList<String>(1);
+        text.add(msg(Messages.GAME_SAVED));
+        return createTemporarySection(text, current);
+    }
+
+    public Section createLoadSection(Section current) {
+        List<String> text = new ArrayList<String>(1);
+        text.add(msg(Messages.GAME_LOADED));
         return createTemporarySection(text, current);
     }
 

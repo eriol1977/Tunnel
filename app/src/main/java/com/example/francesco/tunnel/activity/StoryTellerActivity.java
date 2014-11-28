@@ -1,10 +1,12 @@
 package com.example.francesco.tunnel.activity;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.francesco.tunnel.R;
+import com.example.francesco.tunnel.story.Section;
 import com.example.francesco.tunnel.story.Story;
 import com.example.francesco.tunnel.story.StoryLoader;
 import com.example.francesco.tunnel.story.StoryPhase;
@@ -19,7 +21,7 @@ import java.util.Map;
  * TODOS:
  * - immagazzinare i dati quando si interrompe la partita per un po' (tipo home screen, o telefonata ricevuta...)
  * [dopo un back, ricomincia da capo; dopo un home, resta senza voce]
- * - implementare salva e carica partita
+ * - implementare salva e carica partita: mancano gli switch!
  * - commentare codice
  * - testare storiella in inglese/portoghese
  */
@@ -31,6 +33,10 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     protected StoryLoader loader;
 
     protected Story story;
+
+    private static final String SAVE_DATA_SECTION = "sectionId";
+
+    private static final String SAVE_DATA_INVENTORY = "inventory";
 
     //private static final String STORY_DATA = "STORY_DATA";
 
@@ -55,8 +61,18 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     @Override
     public void onClick(View v) {
 
-        if (story.getPhase().equals(StoryPhase.QUIT))
+        if (story.getPhase().equals(StoryPhase.QUIT)) {
             finish();
+        } else if (story.getPhase().equals(StoryPhase.SAVING)) {
+            saveGame();
+            story.proceed();
+            displayText(story.getCurrentText());
+            return;
+        } else if (story.getPhase().equals(StoryPhase.LOADING)) {
+            loadGame();
+            displayText(story.getCurrentText());
+            return;
+        }
 
         if (story.hasDirectOutcome()) {
             if (story.unavailableCommand() || story.isTemporarySection()) {
@@ -69,6 +85,27 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         } else {
             processInput();
         }
+    }
+
+    private void saveGame()
+    {
+        final String inventoryItemIds = loader.getCharacter().getInventory().getItemIds();
+        final String sectionId = story.getSavingSectionId();
+        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(SAVE_DATA_SECTION, sectionId);
+        editor.putString(SAVE_DATA_INVENTORY, inventoryItemIds);
+        editor.commit();
+    }
+
+    private void loadGame()
+    {
+        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        String defaultValue = Section.HOME_SECTION;
+        final String sectionId = preferences.getString(SAVE_DATA_SECTION,defaultValue);
+        defaultValue = "";
+        final String inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY,defaultValue);
+        this.story.load(sectionId, inventoryItemIds);
     }
 
     //@Override

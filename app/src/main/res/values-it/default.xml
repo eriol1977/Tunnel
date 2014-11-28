@@ -11,6 +11,8 @@
     <item name="m_cant_get" type="string">non si può prendere</item>
     <item name="m_cant_use" type="string">non si può usare qui</item>
     <item name="m_cant_examine" type="string">non puoi esaminare questo oggetto</item>
+    <item name="m_game_loaded" type="string">tocca per caricare la partita</item>
+    <item name="m_game_saved" type="string">tocca per salvare la partita</item>
 
     <!-- commands -->
     <item name="c_get" type="string">prendo</item>

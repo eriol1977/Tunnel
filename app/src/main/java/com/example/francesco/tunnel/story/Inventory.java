@@ -26,5 +26,25 @@ public class Inventory {
         return this.items;
     }
 
-    void reset() {this.items.clear();}
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    void reset() {
+        this.items.clear();
+    }
+
+    /**
+     * @return ex "i_key,i_torch,i_ring"
+     */
+    public String getItemIds() {
+        final StringBuilder sb = new StringBuilder();
+        if (!this.items.isEmpty()) {
+            for (final Item item : this.items) {
+                sb.append(item.getId()).append(StoryLoader.LIST_SEPARATOR);
+            }
+            sb.delete(sb.length() - StoryLoader.LIST_SEPARATOR.length(), sb.length());
+        }
+        return sb.toString();
+    }
 }

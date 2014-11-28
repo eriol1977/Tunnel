@@ -32,7 +32,7 @@ public class Story {
     }
 
     void setSections(final List<Section> sections) {
-        for(final Section section: sections) {
+        for (final Section section : sections) {
             addSection(section);
         }
     }
@@ -55,8 +55,7 @@ public class Story {
         proceedToHome();
     }
 
-    private void reset()
-    {
+    private void reset() {
         this.sections.clear();
         this.phase = null;
         this.starting = null;
@@ -67,6 +66,13 @@ public class Story {
 
     void start() {
         setCurrent(starting);
+        setPhase(StoryPhase.STARTED);
+    }
+
+    public void load(final String sectionId, final String inventoryItemIds) {
+        reset();
+        setCurrent(getSection(sectionId));
+        this.character.getInventory().setItems(StoryLoader.getInstance().items(inventoryItemIds.split(StoryLoader.LIST_SEPARATOR)));
         setPhase(StoryPhase.STARTED);
     }
 
@@ -82,6 +88,10 @@ public class Story {
         if (this.phase.equals(StoryPhase.ENDED))
             proceedToEnd();
         else {
+            // dopo aver salvato, torna allo stato normale
+            if (this.phase.equals(StoryPhase.SAVING))
+                setPhase(StoryPhase.STARTED);
+
             if (this.current.isTemporary())
                 restore();
             else {
@@ -172,15 +182,16 @@ public class Story {
         return linkFound;
     }
 
-
-
     private void loadGame() {
-        // TODO
+        stash();
+        setCurrent(StoryLoader.getInstance().createLoadSection(this.current));
+        setPhase(StoryPhase.LOADING);
     }
 
     private void saveGame() {
         stash();
-        // TODO
+        setCurrent(StoryLoader.getInstance().createSaveSection(this.current));
+        setPhase(StoryPhase.SAVING);
     }
 
     private void proceedToHome() {
@@ -266,5 +277,9 @@ public class Story {
 
     public List<String> getCurrentText() {
         return this.current.getText();
+    }
+
+    public String getSavingSectionId() {
+        return this.stashed.getId();
     }
 }

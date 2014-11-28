@@ -19,4 +19,8 @@ public class Messages {
 
     public final static String CANT_EXAMINE = "m_cant_examine";
 
+    public final static String GAME_LOADED = "m_game_loaded";
+
+    public final static String GAME_SAVED = "m_game_saved";
+
 }
