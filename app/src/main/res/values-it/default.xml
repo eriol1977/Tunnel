@@ -10,7 +10,7 @@
     <item name="m_no_object" type="string">quest\'oggetto non c\'è!</item>
     <item name="m_cant_get" type="string">non si può prendere</item>
     <item name="m_cant_use" type="string">non si può usare qui</item>
-    <item name="m_cant_examine" type="string">non noti nulla di speciale</item>
+    <item name="m_cant_examine" type="string">non puoi esaminare questo oggetto</item>
 
     <!-- commands -->
     <item name="c_get" type="string">prendo</item>
@@ -24,7 +24,7 @@
     <item name="c_load_game" type="string">carica</item>
     <item name="c_quit" type="string">fine</item>
     <item name="c_inventory" type="string">inventario</item>
-    <item name="c_examine" type="string">esamino</item>
+    <item name="c_examine" type="string">guardo</item>
     <item name="c_go_back" type="string">indietro</item>
 
     <!-- sections -->
@@ -44,7 +44,7 @@
     <item name="help_9" type="string">Inventario, per sapere quali oggetti ti porti appresso.</item>
     <item name="help_10" type="string">Prendo, seguìto dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
     <item name="help_11" type="string">Uso, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
-    <item name="help_12" type="string">Esamino, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminare più a fondo l\'oggetto.</item>
+    <item name="help_12" type="string">Guardo, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminare più a fondo l\'oggetto.</item>
 
     <item name="end_1" type="string">La partita è giunta al termine.</item>
     <item name="end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>

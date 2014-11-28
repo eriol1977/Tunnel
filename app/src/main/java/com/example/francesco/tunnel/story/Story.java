@@ -127,8 +127,7 @@ public class Story {
                     proceedToInventory();
                     linkFound = true;
                 } else if (command(Commands.EXAMINE).check(input)) {
-                    stash();
-                    // TODO
+                    proceedToExamine(input);
                     linkFound = true;
                 } else if (command(Commands.LOAD_GAME).check(input)) {
                     loadGame();
@@ -187,6 +186,11 @@ public class Story {
     private void proceedToInventory() {
         stash();
         setCurrent(StoryLoader.getInstance().createInventorySection(this.current));
+    }
+
+    private void proceedToExamine(final String input) {
+        stash();
+        setCurrent(StoryLoader.getInstance().createExamineSection(this.current, input));
     }
 
     private void proceedToEnd() {

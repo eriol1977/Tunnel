@@ -21,7 +21,7 @@ import java.util.Map;
  * [dopo un back, ricomincia da capo; dopo un home, resta senza voce]
  * - implementare salva e carica partita
  * - commentare codice
- * - implementare comando esamina
+ * - implementare comando "comandi"
  * - testare storiella in inglese/portoghese
  */
 

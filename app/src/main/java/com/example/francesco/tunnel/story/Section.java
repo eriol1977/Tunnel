@@ -184,6 +184,16 @@ public class Section {
         return this.usableItems.contains(item);
     }
 
+    Item checkUsableItem(final String input) {
+        if (this.usableItems != null) {
+            for (final Item item : this.usableItems) {
+                if (item.check(input))
+                    return item;
+            }
+        }
+        return null;
+    }
+
     void setItemsGets(List<Item> items) {
         this.itemGets = new ArrayList<ItemGet>(items.size());
         for (final Item item : items) {

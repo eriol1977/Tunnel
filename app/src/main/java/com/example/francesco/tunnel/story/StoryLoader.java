@@ -326,6 +326,25 @@ public class StoryLoader {
         return createTemporarySection(text, current);
     }
 
+    Section createExamineSection(final Section current, final String input) {
+        List<Item> items = this.character.getInventory().getItems();
+        List<String> text = new ArrayList<String>(1);
+        for (final Item item : items) {
+            if (item.check(input)) {
+                text.add(item.getDescription());
+            }
+        }
+        if (text.isEmpty()) {
+            Item item = current.checkUsableItem(input);
+            if (item != null)
+                text.add(item.getDescription());
+        }
+        if (text.isEmpty()) {
+            text.add(msg(Messages.CANT_EXAMINE));
+        }
+        return createTemporarySection(text, current);
+    }
+
     /**
      * @param text
      * @param current
