@@ -36,4 +36,12 @@ public class Command {
         }
         return found == this.commandWords.length;
     }
+
+    public String getCommandWords() {
+        final StringBuilder sb = new StringBuilder();
+        for(final String commandWord: this.commandWords) {
+            sb.append(commandWord).append(" ");
+        }
+        return sb.toString();
+    }
 }

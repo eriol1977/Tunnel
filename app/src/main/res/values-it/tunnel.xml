@@ -42,7 +42,9 @@
     <item name="s_4_1" type="string">Ti curvi a terra e raccogli la chiave.</item>
     <!-- aggiunge la chiave all'inventario, rimuove il paragrafo 2:2 -->
     <item name="s_4_get" type="string">i_key</item>
-    <item name="s_4_switch_1" type="string">par:2:2:""</item>
+    <item name="s_4_switch_1" type="string">par:2:1:"Non c\'è più nulla di interessante nel corridoio, perciò torni indietro."</item>
+    <item name="s_4_switch_2" type="string">par:2:2:""</item>
+    <item name="s_4_switch_3" type="string">link:2:2:""</item>
     <item name="s_4_link_1" type="string">2</item>
 
     <item name="s_5_1" type="string">Giri la chiave nella serratura, che si apre con uno scatto.</item>
@@ -68,6 +70,7 @@
     <item name="s_7_1" type="string">Afferri la torcia e la reggi dinanzi a te.</item>
     <item name="s_7_get" type="string">i_torch</item>
     <item name="s_7_switch_1" type="string">par:6:2:""</item>
+    <item name="s_7_switch_2" type="string">link:6:1:""</item>
     <item name="s_7_link_1" type="string">6</item>
 
     <item name="s_8_1" type="string">Dopo alcuni passi il buio si fa così fitto da costrìngerti a procedere a tentoni, cercando la parete con le dita.</item>

@@ -45,6 +45,10 @@ public class Story {
         return this.current.getId().equals(Section.UNAVAILABLE_SECTION);
     }
 
+    public boolean isTemporarySection() {
+        return this.current.isTemporary();
+    }
+
     public void home() {
         reset();
         setPhase(StoryPhase.HOME);
@@ -142,6 +146,9 @@ public class Story {
                     reset();
                     start();
                     linkFound = true;
+                } else if (command(Commands.ACTIONS).check(input) || command(Commands.COMMANDS).check(input)) {
+                    proceedToAvailableActions();
+                    linkFound = true;
                 }
                 break;
             case ENDED:
@@ -165,6 +172,8 @@ public class Story {
         return linkFound;
     }
 
+
+
     private void loadGame() {
         // TODO
     }
@@ -186,6 +195,11 @@ public class Story {
     private void proceedToInventory() {
         stash();
         setCurrent(StoryLoader.getInstance().createInventorySection(this.current));
+    }
+
+    private void proceedToAvailableActions() {
+        stash();
+        setCurrent(StoryLoader.getInstance().createAvailableActionsSection(this.current));
     }
 
     private void proceedToExamine(final String input) {

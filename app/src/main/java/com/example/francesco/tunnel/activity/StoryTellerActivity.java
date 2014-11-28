@@ -21,7 +21,6 @@ import java.util.Map;
  * [dopo un back, ricomincia da capo; dopo un home, resta senza voce]
  * - implementare salva e carica partita
  * - commentare codice
- * - implementare comando "comandi"
  * - testare storiella in inglese/portoghese
  */
 
@@ -60,7 +59,7 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             finish();
 
         if (story.hasDirectOutcome()) {
-            if (story.unavailableCommand()) {
+            if (story.unavailableCommand() || story.isTemporarySection()) {
                 story.proceed();
                 processInput();
             } else {

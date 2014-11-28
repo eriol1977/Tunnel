@@ -345,6 +345,19 @@ public class StoryLoader {
         return createTemporarySection(text, current);
     }
 
+    public Section createAvailableActionsSection(final Section current) {
+        final List<Link> links = current.getLinks();
+        List<String> text = new ArrayList<String>(links.size());
+        String[] commandIds;
+        for(final Link link: links) {
+            commandIds = link.getCommandIds();
+            for(final String commandId: commandIds) {
+                text.add(command(commandId).getCommandWords());
+            }
+        }
+        return createTemporarySection(text, current);
+    }
+
     /**
      * @param text
      * @param current
@@ -386,6 +399,7 @@ public class StoryLoader {
     public Character getCharacter() {
         return character;
     }
+
 
 
 }

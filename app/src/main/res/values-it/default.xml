@@ -26,6 +26,8 @@
     <item name="c_inventory" type="string">inventario</item>
     <item name="c_examine" type="string">guardo</item>
     <item name="c_go_back" type="string">indietro</item>
+    <item name="c_actions" type="string">azioni</item>
+    <item name="c_commands" type="string">comandi</item>
 
     <!-- sections -->
     <item name="home_1" type="string">Benvenuto, sarò la tua guida lungo il percorso.</item>
@@ -45,6 +47,7 @@
     <item name="help_10" type="string">Prendo, seguìto dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
     <item name="help_11" type="string">Uso, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
     <item name="help_12" type="string">Guardo, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminare più a fondo l\'oggetto.</item>
+    <item name="help_13" type="string">Comandi, o Azioni, per scoprire tutte le azioni disponibili nella sezione narrativa.</item>
 
     <item name="end_1" type="string">La partita è giunta al termine.</item>
     <item name="end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>

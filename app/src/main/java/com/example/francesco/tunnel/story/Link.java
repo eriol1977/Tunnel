@@ -125,6 +125,13 @@ public class Link {
         this.commandIds = commandIds;
     }
 
+    String[] getCommandIds() {
+        // per evitare ripetizioni di comandi, siccome c'è un link "gemello"
+        if(this.noItemIds != null && this.noItemIds.length > 0)
+            return new String[]{};
+        return commandIds;
+    }
+
     void setItemIds(List<String> itemIds) {
         this.itemIds = new String[itemIds.size()];
         for(int i = 0; i < itemIds.size(); i++) {

@@ -40,6 +40,10 @@ public class Commands {
 
     public final static String GO_BACK = "c_go_back";
 
+    public final static String ACTIONS = "c_actions";
+
+    public final static String COMMANDS = "c_commands";
+
     public Commands(Map<String, Command> commands) {
         this.commands = commands;
     }
