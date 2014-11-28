@@ -52,7 +52,7 @@ public class Link {
          * nella String informata
          */
         boolean commandFound = false;
-        if (this.commandIds.length == 0) {
+        if (this.commandIds == null || this.commandIds.length == 0) {
             commandFound = true;
         } else {
             for (final String commandId : this.commandIds) {
@@ -63,7 +63,7 @@ public class Link {
         }
 
         boolean itemFound = false;
-        if (this.itemIds.length == 0) {
+        if (this.itemIds == null || this.itemIds.length == 0) {
             itemFound = true;
         }
         /**
@@ -125,11 +125,21 @@ public class Link {
         this.commandIds = commandIds;
     }
 
+    void setItemIds(List<String> itemIds) {
+        this.itemIds = new String[itemIds.size()];
+        for(int i = 0; i < itemIds.size(); i++) {
+            this.itemIds[i] = itemIds.get(i);
+        }
+    }
+
     void setItemIds(String... itemIds) {
         this.itemIds = itemIds;
     }
 
-    void setNoItemIds(String... noItemIds) {
-        this.noItemIds = noItemIds;
+    void setNoItemIds(List<String> noItemIds) {
+        this.noItemIds = new String[noItemIds.size()];
+        for(int i = 0; i < noItemIds.size(); i++) {
+            this.noItemIds[i] = noItemIds.get(i);
+        }
     }
 }

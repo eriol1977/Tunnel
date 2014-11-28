@@ -10,19 +10,21 @@ public class Inventory {
 
     private List<Item> items = new ArrayList<Item>();
 
-    public void addItem(final Item item) {
+    void addItem(final Item item) {
         this.items.add(item);
     }
 
-    public void removeItem(final Item item) {
+    void removeItem(final Item item) {
         this.items.remove(item);
     }
 
-    public boolean checkItem(final Item item) {
+    boolean checkItem(final Item item) {
         return this.items.contains(item);
     }
 
-    public List<Item> getItems() {
-        return items;
+    List<Item> getItems() {
+        return this.items;
     }
+
+    void reset() {this.items.clear();}
 }

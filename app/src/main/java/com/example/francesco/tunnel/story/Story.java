@@ -17,7 +17,13 @@ public class Story {
 
     private Section stashed;
 
-    private final Map<String, Section> sections = new HashMap<String, Section>();
+    private final Character character;
+
+    private Map<String, Section> sections = new HashMap<String, Section>();
+
+    public Story(Character character) {
+        this.character = character;
+    }
 
     void addSection(final Section section) {
         this.sections.put(section.getId(), section);
@@ -25,13 +31,34 @@ public class Story {
             this.starting = section;
     }
 
+    void setSections(final List<Section> sections) {
+        for(final Section section: sections) {
+            addSection(section);
+        }
+    }
+
     public boolean hasDirectOutcome() {
         return this.current.hasDirectOutcome();
     }
 
+    public boolean unavailableCommand() {
+        return this.current.getId().equals(Section.UNAVAILABLE_SECTION);
+    }
+
     public void home() {
+        reset();
         setPhase(StoryPhase.HOME);
         proceedToHome();
+    }
+
+    private void reset()
+    {
+        this.sections.clear();
+        this.phase = null;
+        this.starting = null;
+        this.stashed = null;
+        this.current = null;
+        StoryLoader.getInstance().resetStory();
     }
 
     void start() {
@@ -112,6 +139,10 @@ public class Story {
                 } else if (command(Commands.QUIT).check(input)) {
                     quit();
                     linkFound = true;
+                } else if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
+                    reset();
+                    start();
+                    linkFound = true;
                 }
                 break;
             case ENDED:
@@ -119,6 +150,7 @@ public class Story {
                     quit();
                     linkFound = true;
                 } else if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
+                    reset();
                     start();
                     linkFound = true;
                 } else if (command(Commands.LOAD_GAME).check(input)) {

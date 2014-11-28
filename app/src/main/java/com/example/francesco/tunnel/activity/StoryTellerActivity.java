@@ -60,8 +60,13 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             finish();
 
         if (story.hasDirectOutcome()) {
-            story.proceed();
-            displayText(story.getCurrentText());
+            if (story.unavailableCommand()) {
+                story.proceed();
+                processInput();
+            } else {
+                story.proceed();
+                displayText(story.getCurrentText());
+            }
         } else {
             processInput();
         }

@@ -62,12 +62,16 @@ public class StoryLoader {
 
     private StoryLoader(StoryTellerActivity activity) {
         this.activity = activity;
-        this.story = new Story();
         this.character = new Character();
+        this.story = new Story(this.character);
         commands = loadCommands();
         items = loadItems();
+    }
+
+    void resetStory() {
+        this.character.getInventory().reset();
         loadDefaultSections();
-        loadSections();
+        this.story.setSections(loadSections());
     }
 
     public static StoryLoader getInstance(final StoryTellerActivity activity) {
@@ -169,7 +173,7 @@ public class StoryLoader {
             section.setItemDrops(loadSectionItemDrops(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
             section.setLinkSwitches(loadSectionLinkSwitches(id));
-            this.story.addSection(section);
+            sections.add(section);
         }
         return sections;
     }
@@ -250,8 +254,8 @@ public class StoryLoader {
                             itemIds.add(itemId); // i_torch
                         }
                     }
-                    link.setItemIds((String[]) itemIds.toArray());
-                    link.setNoItemIds((String[]) noItemIds.toArray());
+                    link.setItemIds(itemIds);
+                    link.setNoItemIds(noItemIds);
                 }
 
                 links.add(link);
@@ -272,7 +276,7 @@ public class StoryLoader {
                 sectionSwitch = sectionSwitches.get(switchId);
                 switchInfo = sectionSwitch.split(SEPARATOR);
                 if (switchInfo[0].equals(SECTION_SWITCH_KIND_PARAGRAPH)) {
-                    switches.add(new ParagraphSwitch(switchInfo[1], Integer.valueOf(switchInfo[2]).intValue(), switchInfo[3]));
+                    switches.add(new ParagraphSwitch(switchInfo[1], Integer.valueOf(switchInfo[2]).intValue(), switchInfo.length == 4 ? switchInfo[3] : ""));
                 }
             }
             return switches;

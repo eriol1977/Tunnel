@@ -9,7 +9,9 @@
     <item name="c_corridor" type="string">corridoio</item>
     <item name="c_open_door" type="string">apro porta</item>
     <item name="c_across" type="string">fondo</item>
-    <item name="c_go_on" type="string">proseguo avanzo dritto</item>
+    <item name="c_go_on" type="string">avanti</item>
+    <item name="c_straight_on" type="string">dritto</item>
+    <item name="c_proceed" type="string">proseguo</item>
 
     <!-- items -->
     <item name="i_torch" type="string">torcia:La torcia è piuttosto consumata, non durerà molto</item>
@@ -37,36 +39,41 @@
     <!-- sezione collegata direttamente, senza bisogno di impartire comandi -->
     <item name="s_3_link_1" type="string">1</item>
 
-    <item name="s_4_1" type="string">Ti chini a terra e raccogli la chiave.</item>
+    <item name="s_4_1" type="string">Ti curvi a terra e raccogli la chiave.</item>
     <!-- aggiunge la chiave all'inventario, rimuove il paragrafo 2:2 -->
     <item name="s_4_get" type="string">i_key</item>
     <item name="s_4_switch_1" type="string">par:2:2:""</item>
     <item name="s_4_link_1" type="string">2</item>
 
     <item name="s_5_1" type="string">Giri la chiave nella serratura, che si apre con uno scatto.</item>
+    <item name="s_5_2" type="string">Attraversi la soglia con cautela.</item>
     <!-- rimuove la chiave dall'inventario, cambia il testo del paragrafo 1:3 -->
     <!-- sostituisce il secondo link del paragrafo 1 con 6:c_go_on -->
-    <item name="s_5_switch_1" type="string">link:1:2:6:c_go_on</item>
+    <item name="s_5_switch_1" type="string">link:1:3:6:c_go_on</item>
     <item name="s_5_switch_2" type="string">par:1:3:"Davanti a te c\'è una porta aperta."</item>
+    <item name="s_5_drop" type="string">i_key</item>
     <item name="s_5_link_1" type="string">6</item>
 
-    <item name="s_6_1" type="string">Attraversi la soglia e ti ritrovi in una sala più ampia della precedente.</item>
+    <item name="s_6_1" type="string">Ti trovi in un\'ampia sala dalla volta di pietra.</item>
     <item name="s_6_2" type="string">C\'è una torcia appesa a un gancio nella parete.</item>
     <item name="s_6_3" type="string">In fondo alla sala si apre un corridoio buio.</item>
     <!-- sezioni collegate e relativi comandi; accede alla 8 se non possiede la torcia, altrimenti alla 9 -->
     <item name="s_6_link_1" type="string">7:c_get:i_torch</item>
-    <item name="s_6_link_2" type="string">8:c_across,c_corridor:no_i_torch</item>
-    <item name="s_6_link_3" type="string">9:c_across,c_corridor:i_torch</item>
+    <item name="s_6_link_2" type="string">8:c_across,c_corridor,c_go_on,c_straight_on,c_proceed:no_i_torch</item>
+    <item name="s_6_link_3" type="string">10:c_across,c_corridor,c_go_on,c_straight_on,c_proceed:i_torch</item>
     <item name="s_6_link_4" type="string">1:c_go_back</item>
 
     <item name="s_7_1" type="string">Afferri la torcia e la reggi dinanzi a te.</item>
-    <item name="s_7_get" type="string">i_torch:5:2:""</item>
+    <item name="s_7_get" type="string">i_torch</item>
+    <item name="s_7_switch_1" type="string">par:6:2:""</item>
     <item name="s_7_link_1" type="string">6</item>
 
-    <item name="s_8_1" type="string">Dopo alcuni passi il buio si fa così fitto da costringerti a procedere a tentoni, cercando la parete con le dita.</item>
+    <item name="s_8_1" type="string">Dopo alcuni passi il buio si fa così fitto da costrìngerti a procedere a tentoni, cercando la parete con le dita.</item>
     <item name="s_8_2" type="string">Il corridoio sembra proseguire dritto.</item>
     <item name="s_8_link_1" type="string">6:c_go_back</item>
     <item name="s_8_link_2" type="string">9:c_go_on</item>
+    <item name="s_8_link_3" type="string">9:c_straight_on</item>
+    <item name="s_8_link_4" type="string">9:c_proceed</item>
 
     <item name="s_9_1" type="string">Avanzi nel buio più assoluto, finché all\'improvviso la terra ti manca sotto i piedi.</item>
     <item name="s_9_2" type="string">Urlando di terrore, precipiti incontro alla tua morte.</item>
@@ -74,9 +81,10 @@
 
     <item name="s_10_1" type="string">Grazie alla torcia che ti illumina il cammino, riesci a percorrere il corridoio senza problemi.</item>
     <item name="s_10_2" type="string">Più di una volta sei costretto a schivare le fauci spalancate di pozzi senza fondo, ringraziando in silenzio la tua torcia.</item>
-    <item name="s_10_3" type="string">Dopo un lungo tratto, intravedi una luminosità soffusa che indica la fine del corridoio.</item>
+    <item name="s_10_3" type="string">Dopo un lungo tratto, intravedi una luminosità soffusa che ìndica la fine del corridoio.</item>
     <item name="s_10_4" type="string">Quasi a farlo apposta, la torcia si spegne mentre ti appresti a raggiungere l\'uscita. Butti l\'oggetto ormai inutile e varchi la soglia del nuovo ambiente.</item>
     <item name="s_10_drop" type="string">i_torch</item>
+    <item name="s_10_link_1" type="string">11</item>
 
     <item name="s_11_1" type="string">La sala è del tutto spoglia, a parte il piedistallo di roccia scolpita che campeggia nel mezzo.</item>
     <item name="s_11_2" type="string">Sul piedistallo c\'è una leva.</item>
@@ -88,9 +96,9 @@
     <item name="s_12_2" type="string">Decidi di restare nella sala.</item>
     <item name="s_12_link_1" type="string">11</item>
 
-    <item name="s_13_1" type="string">Non appena tiri la leva, l'intera sala inizia a vibrare sotto l'effetto di un terremoto.</item>
+    <item name="s_13_1" type="string">Non appena tiri la leva, l\'intera sala inizia a vibrare sotto l\'effetto di un terremoto.</item>
     <item name="s_13_2" type="string">Ti aggrappi al piedistallo per restare in piedi, ma una voragine si apre nel pavimento e...</item>
-    <item name="s_13_3" type="string">L'avventura continua!</item>
+    <item name="s_13_3" type="string">L\'avventura continua!</item>
     <item name="s_13_4" type="string">Arrivederci alla prossima puntata!</item>
     <item name="s_13_link_1" type="string">end</item>
 
