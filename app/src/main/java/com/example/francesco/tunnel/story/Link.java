@@ -63,7 +63,7 @@ public class Link {
         }
 
         boolean itemFound = false;
-        if (this.itemIds == null || this.itemIds.length == 0) {
+        if ((this.itemIds == null || this.itemIds.length == 0) && (this.noItemIds == null || this.noItemIds.length == 0)) {
             itemFound = true;
         }
         /**

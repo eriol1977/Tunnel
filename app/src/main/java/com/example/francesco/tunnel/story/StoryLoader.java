@@ -3,6 +3,7 @@ package com.example.francesco.tunnel.story;
 import com.example.francesco.tunnel.activity.StoryTellerActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -230,7 +231,9 @@ public class StoryLoader {
             String sectionLink;
             String[] linkInfo;
             Link link;
-            for (String linkId : sectionLinks.keySet()) {
+            List<String> orderedKeys = new ArrayList<String>(sectionLinks.keySet());
+            Collections.sort(orderedKeys);
+            for (String linkId : orderedKeys) {
 
                 // es: s_6_link_3 --> 9:c_across,c_corridor:i_torch
                 sectionLink = sectionLinks.get(linkId);
@@ -297,7 +300,7 @@ public class StoryLoader {
                 if (switchInfo[0].equals(SECTION_SWITCH_KIND_LINK)) {
                     switches.add(new LinkSwitch(switchInfo[1],
                             Integer.valueOf(switchInfo[2]).intValue(),
-                            switchInfo[3],
+                            switchInfo.length > 3 ? switchInfo[3] : "",
                             switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{},
                             switchInfo.length > 5 ? switchInfo[5].split(LIST_SEPARATOR) : new String[]{}));
                 }
