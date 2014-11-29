@@ -22,7 +22,17 @@ public abstract class VoiceStoryTellerActivity extends StoryTellerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkTts();
+    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkTts();
+    }
+
+    private void checkTts()
+    {
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, CHECK_TTS);
@@ -36,12 +46,6 @@ public abstract class VoiceStoryTellerActivity extends StoryTellerActivity {
     }
 
     private void speak(final String text) {
-        // per attribuire un id da usare in onUtteranceCompleted
-        // HashMap<String, String> params = new HashMap<String,String>();
-        // params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,
-        //         "speak");
-        // tts.speak(text, TextToSpeech.QUEUE_ADD, params);
-
         tts.speak(text, TextToSpeech.QUEUE_ADD, null);
     }
 
@@ -63,22 +67,12 @@ public abstract class VoiceStoryTellerActivity extends StoryTellerActivity {
         if (requestCode == CHECK_TTS) {
             if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
                 // success, create the TTS instance
-                tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+                tts = new TextToSpeech(this.getApplicationContext(), new TextToSpeech.OnInitListener() {
                     @Override
                     public void onInit(int status) {
                         if (status == TextToSpeech.SUCCESS) {
                             if (tts.isLanguageAvailable(Locale.ITALIAN) == TextToSpeech.LANG_AVAILABLE) {
                                 tts.setLanguage(Locale.ITALIAN);
-
-                                // per fare qualcosa ogni volta che completa di leggere una riga
-                                // tts.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
-                                //    @Override
-                                //    public void onUtteranceCompleted(String utteranceId) {
-                                //        if (utteranceId == "speak") {
-                                //        }
-                                //    }
-                                //});
-
                                 displayText(story.getCurrentText()); // testo home
                             } else {
                                 finish();

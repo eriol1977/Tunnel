@@ -270,7 +270,18 @@ public class Story {
         return this.current.getText();
     }
 
-    public String getSavingSectionId() {
-        return this.stashed.getId();
+    /**
+     * @param temporary
+     * @return In caso di salvataggio temporario, dovuto all'interruzione dell'app, ritorna l'id della
+     * sezione attuale; altrimenti, siccome ci troviamo nella sezione "salva", ritorna l'id della
+     * sezione immagazzinata, che sarebbe l'attuale sezione narrativa
+     */
+    public String getSavingSectionId(final boolean temporary) {
+        String id = null;
+        if (temporary && this.current != null)
+            id = this.current.getId();
+        else
+            id = this.stashed.getId();
+        return id;
     }
 }

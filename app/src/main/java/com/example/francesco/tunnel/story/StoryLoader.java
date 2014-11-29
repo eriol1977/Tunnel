@@ -537,14 +537,16 @@ public class StoryLoader {
      */
     public String stringifyParagraphSwitchesSoFar() {
         final StringBuilder sb = new StringBuilder();
-        for (final ParagraphSwitch ps : this.paragraphSwitchesSoFar) {
-            sb.append(ps.getSectionId()).append(SEPARATOR);
-            sb.append(ps.getParagraphPosition()).append(SEPARATOR);
-            if (!ps.getNewParagraph().isEmpty())
-                sb.append(ps.getNewParagraph());
-            sb.append(STRONG_SEPARATOR);
+        if (!this.paragraphSwitchesSoFar.isEmpty()) {
+            for (final ParagraphSwitch ps : this.paragraphSwitchesSoFar) {
+                sb.append(ps.getSectionId()).append(SEPARATOR);
+                sb.append(ps.getParagraphPosition()).append(SEPARATOR);
+                if (!ps.getNewParagraph().isEmpty())
+                    sb.append(ps.getNewParagraph());
+                sb.append(STRONG_SEPARATOR);
+            }
+            sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
         }
-        sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
         return sb.toString();
     }
 
@@ -563,33 +565,35 @@ public class StoryLoader {
         final StringBuilder sb = new StringBuilder();
         StringBuilder commands;
         StringBuilder items;
-        for (final LinkSwitch ls : this.linkSwitchesSoFar) {
-            sb.append(ls.getSectionId()).append(SEPARATOR);
-            sb.append(ls.getLinkIndex());
-            if (!ls.getNextSection().isEmpty()) {
-                sb.append(SEPARATOR).append(ls.getNextSection());
+        if (!this.linkSwitchesSoFar.isEmpty()) {
+            for (final LinkSwitch ls : this.linkSwitchesSoFar) {
+                sb.append(ls.getSectionId()).append(SEPARATOR);
+                sb.append(ls.getLinkIndex());
+                if (!ls.getNextSection().isEmpty()) {
+                    sb.append(SEPARATOR).append(ls.getNextSection());
 
-                if (ls.getCommandIds() != null && ls.getCommandIds().length > 0) {
-                    commands = new StringBuilder();
-                    for (final String commandId : ls.getCommandIds()) {
-                        commands.append(commandId).append(LIST_SEPARATOR);
-                    }
-                    commands.delete(commands.length() - LIST_SEPARATOR.length(), commands.length());
-                    sb.append(SEPARATOR).append(commands.toString());
-
-                    if (ls.getItemIds() != null && ls.getItemIds().length > 0) {
-                        items = new StringBuilder();
-                        for (final String itemId : ls.getItemIds()) {
-                            items.append(itemId).append(LIST_SEPARATOR);
+                    if (ls.getCommandIds() != null && ls.getCommandIds().length > 0) {
+                        commands = new StringBuilder();
+                        for (final String commandId : ls.getCommandIds()) {
+                            commands.append(commandId).append(LIST_SEPARATOR);
                         }
-                        items.delete(items.length() - LIST_SEPARATOR.length(), items.length());
-                        sb.append(SEPARATOR).append(items.toString());
+                        commands.delete(commands.length() - LIST_SEPARATOR.length(), commands.length());
+                        sb.append(SEPARATOR).append(commands.toString());
+
+                        if (ls.getItemIds() != null && ls.getItemIds().length > 0) {
+                            items = new StringBuilder();
+                            for (final String itemId : ls.getItemIds()) {
+                                items.append(itemId).append(LIST_SEPARATOR);
+                            }
+                            items.delete(items.length() - LIST_SEPARATOR.length(), items.length());
+                            sb.append(SEPARATOR).append(items.toString());
+                        }
                     }
                 }
+                sb.append(STRONG_SEPARATOR);
             }
-            sb.append(STRONG_SEPARATOR);
+            sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
         }
-        sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
         return sb.toString();
     }
 

@@ -19,9 +19,7 @@ import java.util.Map;
 
 /**
  * TODOS:
- * - immagazzinare i dati quando si interrompe la partita per un po' (tipo home screen, o telefonata ricevuta...)
- * [dopo un back, ricomincia da capo; dopo un home, resta senza voce]
- * - implementare salva e carica partita: mancano gli switch!
+ * - in caso di tasto back, chiedere conferma prima di uscire, ma anche dopo il comando fine...
  * - commentare codice
  * - testare storiella in inglese/portoghese
  */
@@ -42,20 +40,39 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     private static final String SAVE_DATA_LINK_SWITCHES = "linkSwitches";
 
-    //private static final String STORY_DATA = "STORY_DATA";
+    private static final String TEMP_SAVE_DATA_SECTION = "temp_sectionId";
+
+    private static final String TEMP_SAVE_DATA_INVENTORY = "temp_inventory";
+
+    private static final String TEMP_SAVE_DATA_PARAGRAPH_SWITCHES = "temp_parSwitches";
+
+    private static final String TEMP_SAVE_DATA_LINK_SWITCHES = "temp_linkSwitches";
+
+    private static final String TEMP_DATA_SAVED = "tempDataSaved";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         loader = StoryLoader.getInstance(this);
-        story = loader.getStory();
 
-        //if (savedInstanceState != null) {
-        //    teller = (StoryTeller) savedInstanceState.getSerializable(STORY_DATA);
-        //} else {
-        loader.init();
-        //}
+        boolean stateWasSaved = false;
+        if (savedInstanceState != null)
+            stateWasSaved = savedInstanceState.getBoolean(TEMP_DATA_SAVED, false);
+
+        if (stateWasSaved) {
+            loadGame(true);
+        } else {
+            loader.init();
+        }
+
+        story = loader.getStory();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // TODO chiedere conferma prima di uscire
+        super.onBackPressed();
     }
 
     protected abstract void displayText(List<String> text);
@@ -68,12 +85,12 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         if (story.getPhase().equals(StoryPhase.QUIT)) {
             finish();
         } else if (story.getPhase().equals(StoryPhase.SAVING)) {
-            saveGame();
+            saveGame(false);
             story.proceed();
             displayText(story.getCurrentText());
             return;
         } else if (story.getPhase().equals(StoryPhase.LOADING)) {
-            loadGame();
+            loadGame(false);
             displayText(story.getCurrentText());
             return;
         }
@@ -91,36 +108,73 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         }
     }
 
-    private void saveGame() {
-        final String sectionId = story.getSavingSectionId();
-        final String inventoryItemIds = loader.stringifyInventory();
-        final String paragraphSwitches = loader.stringifyParagraphSwitchesSoFar();
-        final String linkSwitches = loader.stringifyLinkSwitchesSoFar();
-        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        final SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(SAVE_DATA_SECTION, sectionId);
-        editor.putString(SAVE_DATA_INVENTORY, inventoryItemIds);
-        editor.putString(SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
-        editor.putString(SAVE_DATA_LINK_SWITCHES, linkSwitches);
-        editor.commit();
+    /**
+     * Salva il gioco.
+     *
+     * @param temporary True quando si tratta di un salvataggio temporaneo, dovuto all'interruzione
+     *                  dell'app
+     *
+     * @return True se il salvataggio è andato a buon fine, altrimenti false
+     */
+    private boolean saveGame(final boolean temporary) {
+        final String sectionId = story.getSavingSectionId(temporary);
+        if(sectionId != null) {
+            final String inventoryItemIds = loader.stringifyInventory();
+            final String paragraphSwitches = loader.stringifyParagraphSwitchesSoFar();
+            final String linkSwitches = loader.stringifyLinkSwitchesSoFar();
+            final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+            final SharedPreferences.Editor editor = preferences.edit();
+            if (temporary) {
+                editor.putString(TEMP_SAVE_DATA_SECTION, sectionId);
+                editor.putString(TEMP_SAVE_DATA_INVENTORY, inventoryItemIds);
+                editor.putString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
+                editor.putString(TEMP_SAVE_DATA_LINK_SWITCHES, linkSwitches);
+            } else {
+                editor.putString(SAVE_DATA_SECTION, sectionId);
+                editor.putString(SAVE_DATA_INVENTORY, inventoryItemIds);
+                editor.putString(SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
+                editor.putString(SAVE_DATA_LINK_SWITCHES, linkSwitches);
+            }
+            editor.commit();
+            return true;
+        }
+        return false;
     }
 
-    private void loadGame() {
+    /**
+     * Carica il gioco.
+     *
+     * @param temporary True quando si tratta di un caricamento di dati te, dovuto all'interruzione
+     *                  dell'app
+     */
+    private void loadGame(final boolean temporary) {
         final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        String defaultValue = Section.HOME_SECTION;
-        final String sectionId = preferences.getString(SAVE_DATA_SECTION, defaultValue);
-        defaultValue = "";
-        final String inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY, defaultValue);
-        final String paragraphSwitches = preferences.getString(SAVE_DATA_PARAGRAPH_SWITCHES, defaultValue);
-        final String linkSwitches = preferences.getString(SAVE_DATA_LINK_SWITCHES, defaultValue);
+        final String defaultValue = Section.HOME_SECTION;
+        final String emptyDefaultValue = "";
+        String sectionId;
+        String inventoryItemIds;
+        String paragraphSwitches;
+        String linkSwitches;
+        if (temporary) {
+            sectionId = preferences.getString(TEMP_SAVE_DATA_SECTION, defaultValue);
+            inventoryItemIds = preferences.getString(TEMP_SAVE_DATA_INVENTORY, emptyDefaultValue);
+            paragraphSwitches = preferences.getString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
+            linkSwitches = preferences.getString(TEMP_SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
+        } else {
+            sectionId = preferences.getString(SAVE_DATA_SECTION, defaultValue);
+            inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY, emptyDefaultValue);
+            paragraphSwitches = preferences.getString(SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
+            linkSwitches = preferences.getString(SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
+        }
         loader.load(sectionId, inventoryItemIds, paragraphSwitches, linkSwitches);
     }
 
-    //@Override
-    //protected void onSaveInstanceState(Bundle outState) {
-    //    outState.putSerializable(STORY_DATA, teller);
-    //    super.onSaveInstanceState(outState);
-    //}
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        final boolean saveResult = saveGame(true);
+        outState.putBoolean(TEMP_DATA_SAVED, saveResult);
+        super.onSaveInstanceState(outState);
+    }
 
     protected void setTitle(String title) {
         this.title = title;
