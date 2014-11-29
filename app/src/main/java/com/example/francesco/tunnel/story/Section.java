@@ -75,42 +75,12 @@ public class Section {
 
         // entrando nella sezione, alcuni paragrafi di altre sezioni vengono cambiati o rimossi
         if (this.paragraphSwitches != null) {
-            Section section;
-            String newParagraph;
-            int position;
-            for (final ParagraphSwitch pSwitch : this.paragraphSwitches) {
-                section = sl.getStory().getSection(pSwitch.getSectionId());
-                newParagraph = pSwitch.getNewParagraph();
-                position = pSwitch.getParagraphPosition();
-                if (newParagraph.isEmpty())
-                    section.removeParagraph(position);
-                else if (position == -1)
-                    section.addParagraph(newParagraph);
-                else
-                    section.updateParagraph(newParagraph, position);
-            }
+            sl.loadParagraphSwitches(this.paragraphSwitches);
         }
 
         // entrando nella sezione, alcuni link di altre sezioni vengono cambiati o rimossi
         if (this.linkSwitches != null) {
-            Section section;
-            int position;
-            String nextSection;
-            String[] commandIds;
-            String[] itemIds;
-            for (final LinkSwitch lSwitch : this.linkSwitches) {
-                section = sl.getStory().getSection(lSwitch.getSectionId());
-                position = lSwitch.getLinkIndex();
-                nextSection = lSwitch.getNextSection();
-                commandIds = lSwitch.getCommandIds();
-                itemIds = lSwitch.getItemIds();
-                if (nextSection.isEmpty())
-                    section.removeLink(position);
-                else if (position == -1)
-                    section.addLink(nextSection, commandIds, itemIds);
-                else
-                    section.updateLink(position, nextSection, commandIds, itemIds);
-            }
+            sl.loadLinkSwitches(this.linkSwitches);
         }
     }
 

@@ -38,18 +38,18 @@
     <item name="home_4" type="string">Vuoi iniziare una nuova partita o ascoltare le istruzioni complete?</item>
 
     <item name="help_1" type="string">Oltre alle azioni dipendenti dal contesto della sezione narrativa (ad esempio, Apro Porta, o Vado a Destra, o anche solo Destra), puoi sempre usare i seguenti comandi:</item>
-    <item name="help_2" type="string">Aiuto, o Istruzioni, per tornare qui.</item>
-    <item name="help_3" type="string">Ripeti, per farti ripetere l\'ultima parte della narrazione.</item>
-    <item name="help_4" type="string">Inizio, o Nuova Partita, per iniziare una nuova partita.</item>
-    <item name="help_5" type="string">Salva, per salvare la tua posizione nel gioco.</item>
-    <item name="help_6" type="string">Carica, per riprendere il gioco dalla posizione salvata.</item>
-    <item name="help_7" type="string">Indietro, per tornare alla precedente sezione narrativa, quando consentito.</item>
-    <item name="help_8" type="string">Fine, per uscire dal gioco.</item>
-    <item name="help_9" type="string">Inventario, per sapere quali oggetti ti porti appresso.</item>
-    <item name="help_10" type="string">Prendo, seguìto dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
-    <item name="help_11" type="string">Uso, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
-    <item name="help_12" type="string">Guardo, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminare più a fondo l\'oggetto.</item>
-    <item name="help_13" type="string">Comandi, o Azioni, per scoprire tutte le azioni disponibili nella sezione narrativa.</item>
+    <item name="help_2" type="string">Inizio, o Nuova Partita, per iniziare una nuova partita.</item>
+    <item name="help_3" type="string">Aiuto, o Istruzioni, per tornare qui.</item>
+    <item name="help_4" type="string">Ripeti, per farti ripetere l\'ultima parte della narrazione.</item>
+    <item name="help_5" type="string">Indietro, per tornare alla precedente sezione narrativa, quando consentito.</item>
+    <item name="help_6" type="string">Prendo, seguìto dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
+    <item name="help_7" type="string">Uso, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
+    <item name="help_8" type="string">Inventario, per sapere quali oggetti ti porti appresso.</item>
+    <item name="help_9" type="string">Guardo, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminare più a fondo l\'oggetto.</item>
+    <item name="help_10" type="string">Comandi, o Azioni, per scoprire tutte le azioni disponibili nella sezione narrativa.</item>
+    <item name="help_11" type="string">Salva, per salvare la tua posizione nel gioco.</item>
+    <item name="help_12" type="string">Carica, per riprendere il gioco dalla posizione salvata.</item>
+    <item name="help_13" type="string">Fine, per uscire dal gioco.</item>
 
     <item name="end_1" type="string">La partita è giunta al termine.</item>
     <item name="end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>

@@ -38,6 +38,10 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     private static final String SAVE_DATA_INVENTORY = "inventory";
 
+    private static final String SAVE_DATA_PARAGRAPH_SWITCHES = "parSwitches";
+
+    private static final String SAVE_DATA_LINK_SWITCHES = "linkSwitches";
+
     //private static final String STORY_DATA = "STORY_DATA";
 
     @Override
@@ -50,7 +54,7 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         //if (savedInstanceState != null) {
         //    teller = (StoryTeller) savedInstanceState.getSerializable(STORY_DATA);
         //} else {
-        story.home();
+        loader.init();
         //}
     }
 
@@ -87,25 +91,29 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         }
     }
 
-    private void saveGame()
-    {
-        final String inventoryItemIds = loader.getCharacter().getInventory().getItemIds();
+    private void saveGame() {
         final String sectionId = story.getSavingSectionId();
+        final String inventoryItemIds = loader.stringifyInventory();
+        final String paragraphSwitches = loader.stringifyParagraphSwitchesSoFar();
+        final String linkSwitches = loader.stringifyLinkSwitchesSoFar();
         final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putString(SAVE_DATA_SECTION, sectionId);
         editor.putString(SAVE_DATA_INVENTORY, inventoryItemIds);
+        editor.putString(SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
+        editor.putString(SAVE_DATA_LINK_SWITCHES, linkSwitches);
         editor.commit();
     }
 
-    private void loadGame()
-    {
+    private void loadGame() {
         final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         String defaultValue = Section.HOME_SECTION;
-        final String sectionId = preferences.getString(SAVE_DATA_SECTION,defaultValue);
+        final String sectionId = preferences.getString(SAVE_DATA_SECTION, defaultValue);
         defaultValue = "";
-        final String inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY,defaultValue);
-        this.story.load(sectionId, inventoryItemIds);
+        final String inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY, defaultValue);
+        final String paragraphSwitches = preferences.getString(SAVE_DATA_PARAGRAPH_SWITCHES, defaultValue);
+        final String linkSwitches = preferences.getString(SAVE_DATA_LINK_SWITCHES, defaultValue);
+        loader.load(sectionId, inventoryItemIds, paragraphSwitches, linkSwitches);
     }
 
     //@Override

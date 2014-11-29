@@ -25,6 +25,10 @@ public class StoryLoader {
 
     private final Items items;
 
+    private final List<ParagraphSwitch> paragraphSwitchesSoFar = new ArrayList<ParagraphSwitch>();
+
+    private final List<LinkSwitch> linkSwitchesSoFar = new ArrayList<LinkSwitch>();
+
     private final static String COMMAND_PREFIX = "c_";
 
     private final static String ITEM_PREFIX = "i_";
@@ -57,7 +61,9 @@ public class StoryLoader {
 
     private final static String SEPARATOR = ":";
 
-    final static String LIST_SEPARATOR = ",";
+    private final static String STRONG_SEPARATOR = ";";
+
+    private final static String LIST_SEPARATOR = ",";
 
     private final static String NO_PREFIX = "no_";
 
@@ -70,9 +76,12 @@ public class StoryLoader {
     }
 
     void resetStory() {
+        this.story.reset();
         this.character.getInventory().reset();
         loadDefaultSections();
         this.story.setSections(loadSections());
+        this.paragraphSwitchesSoFar.clear();
+        this.linkSwitchesSoFar.clear();
     }
 
     public static StoryLoader getInstance(final StoryTellerActivity activity) {
@@ -349,9 +358,9 @@ public class StoryLoader {
         final List<Link> links = current.getLinks();
         List<String> text = new ArrayList<String>(links.size());
         String[] commandIds;
-        for(final Link link: links) {
+        for (final Link link : links) {
             commandIds = link.getCommandIds();
-            for(final String commandId: commandIds) {
+            for (final String commandId : commandIds) {
                 text.add(command(commandId).getCommandWords());
             }
         }
@@ -380,6 +389,208 @@ public class StoryLoader {
         tempSection.setText(text);
         tempSection.addLink(current.getId(), null, null);
         return tempSection;
+    }
+
+    ///////// init, SAVE & LOAD
+
+    public void init() {
+        resetStory();
+        this.story.home();
+    }
+
+    public void load(final String sectionId, final String inventoryItemIds, final String paragraphSwitches, final String linkSwitches) {
+        resetStory();
+        story.setCurrent(story.getSection(sectionId));
+        loadInventory(inventoryItemIds);
+        parseAndLoadSwitches(paragraphSwitches, linkSwitches);
+        story.setPhase(StoryPhase.STARTED);
+    }
+
+    /**
+     * Carica gli oggetti informati nell'inventario.
+     *
+     * @param inventoryItemIds ex: "i_key,i_torch,i_ring"
+     */
+    void loadInventory(final String inventoryItemIds) {
+        this.character.getInventory().setItems(items(inventoryItemIds.split(StoryLoader.LIST_SEPARATOR)));
+    }
+
+    /**
+     * Crea oggetti ParagraphSwitch e LinkSwitch a partire dal formato String esemplificato qui
+     * sotto, quindi li carica, applicando i loro effetti sulla storia, e li immagazzina in liste
+     * locali.
+     *
+     * @param paragraphSwitches ex: "1:3:Davanti a te c\'è una porta aperta;2:2"
+     *                          tradotto:
+     *                          - sostituisci il terzo paragrafo della sezione 1 con il testo
+     *                          "Davanti a te c'è una porta aperta";
+     *                          - cancella il secondo paragrafo della sezione 2
+     * @param linkSwitches      ex: "1:2;1:3;1:-1:6:c_go_on,c_straight_on,c_proceed"
+     *                          tradotto:
+     *                          - cancella il secondo link della sezione 1
+     *                          - cancella il terzo link della sezione 1
+     *                          - aggiungi un nuovo link alla sezione 1, che punti alla sezione 6
+     *                          in base ai comandi c_go_on,c_straight_on,c_proceed
+     */
+    void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches) {
+
+        String[] switchInfo;
+        final String[] pss = paragraphSwitches.split(STRONG_SEPARATOR);
+        final List<ParagraphSwitch> pars = new ArrayList<ParagraphSwitch>(pss.length);
+        for (final String ps : pss) {
+            switchInfo = ps.split(SEPARATOR);
+            pars.add(new ParagraphSwitch(switchInfo[0], Integer.valueOf(switchInfo[1]).intValue(), switchInfo.length == 3 ? switchInfo[2] : ""));
+        }
+        loadParagraphSwitches(pars);
+
+        final String[] lss = linkSwitches.split(STRONG_SEPARATOR);
+        final List<LinkSwitch> links = new ArrayList<LinkSwitch>(lss.length);
+        for (final String ls : lss) {
+            switchInfo = ls.split(SEPARATOR);
+            links.add(new LinkSwitch(switchInfo[0],
+                    Integer.valueOf(switchInfo[1]).intValue(),
+                    switchInfo.length > 2 ? switchInfo[2] : "",
+                    switchInfo.length > 3 ? switchInfo[3].split(LIST_SEPARATOR) : new String[]{},
+                    switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{}));
+        }
+        loadLinkSwitches(links);
+    }
+
+    /**
+     * Carica i ParagraphSwitch informati, applicando i loro effetti sulla storia, quindi li
+     * immagazzina in una lista locale.
+     *
+     * @param switches
+     */
+    void loadParagraphSwitches(final List<ParagraphSwitch> switches) {
+        Section section;
+        String newParagraph;
+        int position;
+        for (final ParagraphSwitch pSwitch : switches) {
+            section = this.story.getSection(pSwitch.getSectionId());
+            newParagraph = pSwitch.getNewParagraph();
+            position = pSwitch.getParagraphPosition();
+            if (newParagraph.isEmpty())
+                section.removeParagraph(position);
+            else if (position == -1)
+                section.addParagraph(newParagraph);
+            else
+                section.updateParagraph(newParagraph, position);
+        }
+        this.paragraphSwitchesSoFar.addAll(switches);
+    }
+
+    /**
+     * Carica i LinkSwitch informati, applicando i loro effetti sulla storia, quindi li
+     * immagazzina in una lista locale.
+     *
+     * @param switches
+     */
+    void loadLinkSwitches(final List<LinkSwitch> switches) {
+        Section section;
+        int position;
+        String nextSection;
+        String[] commandIds;
+        String[] itemIds;
+        for (final LinkSwitch lSwitch : switches) {
+            section = this.story.getSection(lSwitch.getSectionId());
+            position = lSwitch.getLinkIndex();
+            nextSection = lSwitch.getNextSection();
+            commandIds = lSwitch.getCommandIds();
+            itemIds = lSwitch.getItemIds();
+            if (nextSection.isEmpty())
+                section.removeLink(position);
+            else if (position == -1)
+                section.addLink(nextSection, commandIds, itemIds);
+            else
+                section.updateLink(position, nextSection, commandIds, itemIds);
+        }
+        this.linkSwitchesSoFar.addAll(switches);
+    }
+
+    /**
+     * Trasforma il contenuto dell'inventario nel formato String esemplificato qui sotto.
+     *
+     * @return ex: "i_key,i_torch,i_ring"
+     */
+    public String stringifyInventory() {
+        final List<Item> itemList = this.character.getInventory().getItems();
+        final StringBuilder sb = new StringBuilder();
+        if (!itemList.isEmpty()) {
+            for (final Item item : itemList) {
+                sb.append(item.getId()).append(StoryLoader.LIST_SEPARATOR);
+            }
+            sb.delete(sb.length() - StoryLoader.LIST_SEPARATOR.length(), sb.length());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Trasforma i ParagraphSwitch immagazzinati nel corso della storia nel formato String
+     * esemplificato qui sotto.
+     *
+     * @return ex: "1:3:Davanti a te c\'è una porta aperta;2:2"
+     * tradotto:
+     * - sostituisci il terzo paragrafo della sezione 1 con il testo
+     * "Davanti a te c'è una porta aperta";
+     * - cancella il secondo paragrafo della sezione 2
+     */
+    public String stringifyParagraphSwitchesSoFar() {
+        final StringBuilder sb = new StringBuilder();
+        for (final ParagraphSwitch ps : this.paragraphSwitchesSoFar) {
+            sb.append(ps.getSectionId()).append(SEPARATOR);
+            sb.append(ps.getParagraphPosition()).append(SEPARATOR);
+            if (!ps.getNewParagraph().isEmpty())
+                sb.append(ps.getNewParagraph());
+            sb.append(STRONG_SEPARATOR);
+        }
+        sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
+        return sb.toString();
+    }
+
+    /**
+     * Trasforma i LinkSwitch immagazzinati nel corso della storia nel formato String
+     * esemplificato qui sotto.
+     *
+     * @return ex: "1:2;1:3;1:-1:6:c_go_on,c_straight_on,c_proceed"
+     * tradotto:
+     * - cancella il secondo link della sezione 1
+     * - cancella il terzo link della sezione 1
+     * - aggiungi un nuovo link alla sezione 1, che punti alla sezione 6
+     * in base ai comandi c_go_on,c_straight_on,c_proceed
+     */
+    public String stringifyLinkSwitchesSoFar() {
+        final StringBuilder sb = new StringBuilder();
+        StringBuilder commands;
+        StringBuilder items;
+        for (final LinkSwitch ls : this.linkSwitchesSoFar) {
+            sb.append(ls.getSectionId()).append(SEPARATOR);
+            sb.append(ls.getLinkIndex());
+            if (!ls.getNextSection().isEmpty()) {
+                sb.append(SEPARATOR).append(ls.getNextSection());
+
+                if (ls.getCommandIds() != null && ls.getCommandIds().length > 0) {
+                    commands = new StringBuilder();
+                    for (final String commandId : ls.getCommandIds()) {
+                        commands.append(commandId).append(LIST_SEPARATOR);
+                    }
+                    commands.delete(commands.length() - LIST_SEPARATOR.length(), commands.length());
+                    sb.append(SEPARATOR).append(commands.toString());
+
+                    if (ls.getItemIds() != null && ls.getItemIds().length > 0) {
+                        items = new StringBuilder();
+                        for (final String itemId : ls.getItemIds()) {
+                            items.append(itemId).append(LIST_SEPARATOR);
+                        }
+                        items.delete(items.length() - LIST_SEPARATOR.length(), items.length());
+                        sb.append(SEPARATOR).append(items.toString());
+                    }
+                }
+            }
+            sb.append(STRONG_SEPARATOR);
+        }
+        sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
+        return sb.toString();
     }
 
     ///////// GETTERS
@@ -411,7 +622,4 @@ public class StoryLoader {
     public Character getCharacter() {
         return character;
     }
-
-
-
 }

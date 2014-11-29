@@ -49,30 +49,21 @@ public class Story {
         return this.current.isTemporary();
     }
 
-    public void home() {
-        reset();
+    void home() {
         setPhase(StoryPhase.HOME);
         proceedToHome();
     }
 
-    private void reset() {
+    void reset() {
         this.sections.clear();
         this.phase = null;
         this.starting = null;
         this.stashed = null;
         this.current = null;
-        StoryLoader.getInstance().resetStory();
     }
 
     void start() {
         setCurrent(starting);
-        setPhase(StoryPhase.STARTED);
-    }
-
-    public void load(final String sectionId, final String inventoryItemIds) {
-        reset();
-        setCurrent(getSection(sectionId));
-        this.character.getInventory().setItems(StoryLoader.getInstance().items(inventoryItemIds.split(StoryLoader.LIST_SEPARATOR)));
         setPhase(StoryPhase.STARTED);
     }
 
@@ -153,7 +144,7 @@ public class Story {
                     quit();
                     linkFound = true;
                 } else if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
-                    reset();
+                    StoryLoader.getInstance().resetStory();
                     start();
                     linkFound = true;
                 } else if (command(Commands.ACTIONS).check(input) || command(Commands.COMMANDS).check(input)) {
@@ -166,7 +157,7 @@ public class Story {
                     quit();
                     linkFound = true;
                 } else if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
-                    reset();
+                    StoryLoader.getInstance().resetStory();
                     start();
                     linkFound = true;
                 } else if (command(Commands.LOAD_GAME).check(input)) {
@@ -267,7 +258,7 @@ public class Story {
         return phase;
     }
 
-    private void setPhase(StoryPhase phase) {
+    void setPhase(StoryPhase phase) {
         this.phase = phase;
     }
 
