@@ -17,6 +17,7 @@
     <item name="i_torch" type="string">torcia:La torcia è piuttosto consumata, non durerà molto</item>
     <item name="i_key" type="string">chiave:La chiave, pur consumata dal tempo, presenta ancora qualche traccia di tinta dorata.</item>
     <item name="i_lever" type="string">leva:La leva non è altro che un pezzo di legno incassato nel piedistallo roccioso.</item>
+    <item name="i_door" type="string">porta:La porta, di legno rinforzato con borchie di metallo, è dotata di serratura.</item>
 
     <!-- sections -->
     <item name="sections" type="string">13</item>
@@ -26,6 +27,8 @@
     <item name="s_1_1" type="string">Ti trovi in una sala circolare.</item>
     <item name="s_1_2" type="string">Alla tua destra, la sala dà su un corridoio.</item>
     <item name="s_1_3" type="string">Davanti a te vi è una porta chiusa.</item>
+    <!-- elementi osservabili in questa sezione -->
+    <item name="s_1_observable" type="string">i_door</item>
     <!-- sezioni collegate e relativi comandi; per accedere alla 5, deve usare la chiave -->
     <item name="s_1_link_1" type="string">2:c_right,c_corridor</item>
     <item name="s_1_link_2" type="string">3:c_open_door</item>
@@ -33,6 +36,7 @@
 
     <item name="s_2_1" type="string">Il corridoio termina in un vicolo cieco.</item>
     <item name="s_2_2" type="string">Noti il luccichio di una chiave al suolo.</item>
+    <item name="s_2_observable" type="string">i_key</item>
     <!-- sezioni collegate e relativi comandi; per accedere alla 4, deve prendere la chiave -->
     <item name="s_2_link_1" type="string">1:c_go_back</item>
     <item name="s_2_link_2" type="string">4:c_get:i_key</item>
@@ -63,6 +67,7 @@
     <item name="s_6_1" type="string">Raggiungi in un\'ampia sala dalla volta di pietra.</item>
     <item name="s_6_2" type="string">Vi è una torcia appesa a un gancio nella parete.</item>
     <item name="s_6_3" type="string">In fondo alla sala si apre un corridoio buio.</item>
+    <item name="s_6_observable" type="string">i_torch</item>
     <!-- sezioni collegate e relativi comandi; accede alla 8 se non possiede la torcia, altrimenti alla 9 -->
     <item name="s_6_link_1" type="string">7:c_get:i_torch</item>
     <item name="s_6_link_2" type="string">8:c_across,c_corridor,c_go_on,c_straight_on,c_proceed:no_i_torch</item>
@@ -96,6 +101,7 @@
     <item name="s_11_1" type="string">La sala è del tutto spoglia, a parte il piedistallo di roccia scolpita che campeggia nel mezzo.</item>
     <item name="s_11_2" type="string">Sul piedistallo vi è una leva.</item>
     <item name="s_11_usable" type="string">i_lever</item>
+    <item name="s_11_observable" type="string">i_lever</item>
     <item name="s_11_link_1" type="string">12:c_go_back</item>
     <item name="s_11_link_2" type="string">13:c_use:i_lever</item>
 

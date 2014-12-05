@@ -20,6 +20,8 @@ public class Section {
 
     private List<Item> usableItems;
 
+    private List<Item> observableItems;
+
     private List<ParagraphSwitch> paragraphSwitches;
 
     private List<LinkSwitch> linkSwitches;
@@ -154,9 +156,13 @@ public class Section {
         return this.usableItems.contains(item);
     }
 
-    Item checkUsableItem(final String input) {
-        if (this.usableItems != null) {
-            for (final Item item : this.usableItems) {
+    void setObservableItems(List<Item> items) {
+        this.observableItems = items;
+    }
+
+    Item checkObservableItem(final String input) {
+        if (this.observableItems != null) {
+            for (final Item item : this.observableItems) {
                 if (item.check(input))
                     return item;
             }

@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- labels -->
-    <item name="l_title" type="string">Labirinto</item>
+    <!--&lt;!&ndash; labels &ndash;&gt;-->
+    <!--<item name="l_title" type="string">Labirinto</item>-->
 
-    <!-- commands -->
-    <item name="c_enter" type="string">entro</item>
-    <item name="c_right" type="string">destra</item>
-    <item name="c_left" type="string">sinistra</item>
-    <item name="c_go_on" type="string">avanti</item>
-    <item name="c_straight_on" type="string">dritto</item>
-    <item name="c_proceed" type="string">proseguo</item>
+    <!--&lt;!&ndash; commands &ndash;&gt;-->
+    <!--<item name="c_enter" type="string">entro</item>-->
+    <!--<item name="c_right" type="string">destra</item>-->
+    <!--<item name="c_left" type="string">sinistra</item>-->
+    <!--<item name="c_go_on" type="string">avanti</item>-->
+    <!--<item name="c_straight_on" type="string">dritto</item>-->
+    <!--<item name="c_proceed" type="string">proseguo</item>-->
 
-    <!-- items -->
-    <item name="i_torch" type="string">torcia:la torcia è del tutto comune</item>
-    <item name="i_key" type="string">chiave:La chiave, pur consumata dal tempo, presenta ancora qualche traccia di tinta dorata.</item>
+    <!--&lt;!&ndash; items &ndash;&gt;-->
+    <!--<item name="i_torch" type="string">torcia:la torcia è del tutto comune</item>-->
+    <!--<item name="i_key" type="string">chiave:La chiave, pur consumata dal tempo, presenta ancora qualche traccia di tinta dorata.</item>-->
 
-    <!-- sections -->
-    <item name="sections" type="string">13</item>
-    <item name="starting" type="string">1</item>
-    <item name="ending" type="string">11,12</item>
+    <!--&lt;!&ndash; sections &ndash;&gt;-->
+    <!--<item name="sections" type="string">13</item>-->
+    <!--<item name="starting" type="string">1</item>-->
+    <!--<item name="ending" type="string">11,12</item>-->
 
-    <item name="s_1_1" type="string">Ti trovi dinanzi all\'ingresso del labirinto, fauci oscure intagliate nel fianco della montagna.</item>
-    <item name="s_1_2" type="string">Una ventata gelida proveniente dall\'interno ti fa venire la pelle d\'oca.</item>
-    <item name="s_1_3" type="string">Entri, o torni indietro?</item>
-    <item name="s_1_link_1" type="string">2:c_go_back</item>
-    <item name="s_1_link_2" type="string">3:c_enter</item>
+    <!--<item name="s_1_1" type="string">Ti trovi dinanzi all\'ingresso del labirinto, fauci oscure intagliate nel fianco della montagna.</item>-->
+    <!--<item name="s_1_2" type="string">Una ventata gelida proveniente dall\'interno ti fa venire la pelle d\'oca.</item>-->
+    <!--<item name="s_1_3" type="string">Entri, o torni indietro?</item>-->
+    <!--<item name="s_1_link_1" type="string">2:c_go_back</item>-->
+    <!--<item name="s_1_link_2" type="string">3:c_enter</item>-->
 
-    <item name="s_2_1" type="string">Maledicendo la tua vigliaccheria, volti le spalle all\'entrata e torni sui tuoi passi.</item>
-    <item name="s_2_2" type="string">Non saprai mai quali splendidi tesori si celino nel labirinto.</item>
-    <item name="s_2_link_1" type="string">11</item>
+    <!--<item name="s_2_1" type="string">Maledicendo la tua vigliaccheria, volti le spalle all\'entrata e torni sui tuoi passi.</item>-->
+    <!--<item name="s_2_2" type="string">Non saprai mai quali splendidi tesori si celino nel labirinto.</item>-->
+    <!--<item name="s_2_link_1" type="string">11</item>-->
 
-    <item name="s_3_1" type="string">Trattenendo il respiro, fai un passo ed entri nell\'oscurità del labirinto.</item>
-    <item name="s_3_2" type="string">Il tunnel di pietra prosegue dritto per una cinquantina di passi, prima di dividersi.</item>
-    <item name="s_3_3" type="string">Una torcia appesa alla parete segnala il crocevia.</item>
-    <item name="s_3_4" type="string">Vai a destra o a sinistra?</item>
-    <item name="s_3_link_1" type="string">4:c_right</item>
-    <item name="s_3_link_2" type="string">8:c_left</item>
-    <item name="s_3_link_3" type="string">13:c_get:i_torch</item>
+    <!--<item name="s_3_1" type="string">Trattenendo il respiro, fai un passo ed entri nell\'oscurità del labirinto.</item>-->
+    <!--<item name="s_3_2" type="string">Il tunnel di pietra prosegue dritto per una cinquantina di passi, prima di dividersi.</item>-->
+    <!--<item name="s_3_3" type="string">Una torcia appesa alla parete segnala il crocevia.</item>-->
+    <!--<item name="s_3_4" type="string">Vai a destra o a sinistra?</item>-->
+    <!--<item name="s_3_link_1" type="string">4:c_right</item>-->
+    <!--<item name="s_3_link_2" type="string">8:c_left</item>-->
+    <!--<item name="s_3_link_3" type="string">13:c_get:i_torch</item>-->
 
-    <item name="s_4_1" type="string">Svolti a destra e prosegui nella luce sempre più fioca, sino a trovarti di fronte a una nuova diramazione.</item>
-    <item name="s_4_2" type="string">Davanti a te si ode uno strano brontolio.</item>
-    <item name="s_4_3" type="string">Alla tua sinistra tutto è silenzioso.</item>
-    <item name="s_4_4" type="string">Prosegui dritto o vai a sinistra?</item>
-    <item name="s_4_link_1" type="string">5:c_go_on,c_straight_on,c_proceed</item>
-    <item name="s_4_link_2" type="string">10:c_left</item>
+    <!--<item name="s_4_1" type="string">Svolti a destra e prosegui nella luce sempre più fioca, sino a trovarti di fronte a una nuova diramazione.</item>-->
+    <!--<item name="s_4_2" type="string">Davanti a te si ode uno strano brontolio.</item>-->
+    <!--<item name="s_4_3" type="string">Alla tua sinistra tutto è silenzioso.</item>-->
+    <!--<item name="s_4_4" type="string">Prosegui dritto o vai a sinistra?</item>-->
+    <!--<item name="s_4_link_1" type="string">5:c_go_on,c_straight_on,c_proceed</item>-->
+    <!--<item name="s_4_link_2" type="string">10:c_left</item>-->
 
-    <item name="s_5_1" type="string">Il tunnel si apre in un\'ampia sala circolare, dal cui soffitto una cascatella d\'acqua cade a formare una pozza.</item>
-    <item name="s_5_2" type="string">Il brontolio che avevi udito era quello dell\'acqua corrente!</item>
-    <item name="s_5_3" type="string">Davanti al minuscolo specchio d\'acqua, vedi uno scrigno con due serrature, e una chiave in ciascuna serratura.</item>
-    <item name="s_5_4" type="string">Devi scegliere quale delle due utilizzare: destra o sinistra?</item>
-    <item name="s_5_link_1" type="string">7:c_right</item>
-    <item name="s_5_link_2" type="string">6:c_left</item>
+    <!--<item name="s_5_1" type="string">Il tunnel si apre in un\'ampia sala circolare, dal cui soffitto una cascatella d\'acqua cade a formare una pozza.</item>-->
+    <!--<item name="s_5_2" type="string">Il brontolio che avevi udito era quello dell\'acqua corrente!</item>-->
+    <!--<item name="s_5_3" type="string">Davanti al minuscolo specchio d\'acqua, vedi uno scrigno con due serrature, e una chiave in ciascuna serratura.</item>-->
+    <!--<item name="s_5_4" type="string">Devi scegliere quale delle due utilizzare: destra o sinistra?</item>-->
+    <!--<item name="s_5_link_1" type="string">7:c_right</item>-->
+    <!--<item name="s_5_link_2" type="string">6:c_left</item>-->
 
-    <item name="s_6_1" type="string">La serratura di sinistra si apre con uno scatto secco e in quell\'istante provi una forte fitta di dolore.</item>
-    <item name="s_6_2" type="string">Con orrore, vedi una spina acuminata conficcata nel dorso della tua mano.</item>
-    <item name="s_6_3" type="string">Nel giro di un istante il veleno si diffonde nel tuo corpo, regalandoti una morte lenta e dolorosa.</item>
-    <item name="s_6_link_1" type="string">11</item>
+    <!--<item name="s_6_1" type="string">La serratura di sinistra si apre con uno scatto secco e in quell\'istante provi una forte fitta di dolore.</item>-->
+    <!--<item name="s_6_2" type="string">Con orrore, vedi una spina acuminata conficcata nel dorso della tua mano.</item>-->
+    <!--<item name="s_6_3" type="string">Nel giro di un istante il veleno si diffonde nel tuo corpo, regalandoti una morte lenta e dolorosa.</item>-->
+    <!--<item name="s_6_link_1" type="string">11</item>-->
 
-    <item name="s_7_1" type="string">La serratura di destra si apre con uno scatto lieve.</item>
-    <item name="s_7_2" type="string">Sollevi con cautela il coperchio dello scrigno, ed ecco che il bagliore di innumerevoli gemme e monete preziose ti invade gli occhi.</item>
-    <item name="s_7_3" type="string">Felice come non mai per la tua scoperta, ti riempi le tasche di preziosi prima di incamminarti verso l\'uscita del labirinto.</item>
-    <item name="s_7_link_1" type="string">12</item>
+    <!--<item name="s_7_1" type="string">La serratura di destra si apre con uno scatto lieve.</item>-->
+    <!--<item name="s_7_2" type="string">Sollevi con cautela il coperchio dello scrigno, ed ecco che il bagliore di innumerevoli gemme e monete preziose ti invade gli occhi.</item>-->
+    <!--<item name="s_7_3" type="string">Felice come non mai per la tua scoperta, ti riempi le tasche di preziosi prima di incamminarti verso l\'uscita del labirinto.</item>-->
+    <!--<item name="s_7_link_1" type="string">12</item>-->
 
-    <item name="s_8_1" type="string">Svolti a sinistra e prosegui nell\'oscurità quasi completa.</item>
-    <item name="s_8_2" type="string">Dopo alcuni passi non sei più in grado di scorgere nulla.</item>
-    <item name="s_8_3" type="string">Torni indietro o prosegui?</item>
-    <item name="s_8_link_1" type="string">9:c_go_on,c_straight_on,c_proceed</item>
-    <item name="s_8_link_2" type="string">4:c_go_back</item>
+    <!--<item name="s_8_1" type="string">Svolti a sinistra e prosegui nell\'oscurità quasi completa.</item>-->
+    <!--<item name="s_8_2" type="string">Dopo alcuni passi non sei più in grado di scorgere nulla.</item>-->
+    <!--<item name="s_8_3" type="string">Torni indietro o prosegui?</item>-->
+    <!--<item name="s_8_link_1" type="string">9:c_go_on,c_straight_on,c_proceed</item>-->
+    <!--<item name="s_8_link_2" type="string">4:c_go_back</item>-->
 
-    <item name="s_9_1" type="string">Avanzi fiducioso nel buio, certo che prima o poi un raggio di luce ti illuminerà il cammino.</item>
-    <item name="s_9_2" type="string">Invece piombi tra le fauci spalancate di una fossa scavata nel mezzo del cammino.</item>
-    <item name="s_9_3" type="string">Mentre precipiti urlando, rimpiangi di non essere tornato indietro quando potevi.</item>
-    <item name="s_9_link_1" type="string">11</item>
+    <!--<item name="s_9_1" type="string">Avanzi fiducioso nel buio, certo che prima o poi un raggio di luce ti illuminerà il cammino.</item>-->
+    <!--<item name="s_9_2" type="string">Invece piombi tra le fauci spalancate di una fossa scavata nel mezzo del cammino.</item>-->
+    <!--<item name="s_9_3" type="string">Mentre precipiti urlando, rimpiangi di non essere tornato indietro quando potevi.</item>-->
+    <!--<item name="s_9_link_1" type="string">11</item>-->
 
-    <item name="s_10_1" type="string">Svolti a sinistra, preferendo di gran lunga il silenzio a quel sinistro brontolio.</item>
-    <item name="s_10_2" type="string">Peccato che il silenzio celi la presenza di un formidabile predatore: il ragno, più grande di un uomo, si cala dal soffitto alle tue spalle e ti avvolge nell\'abbraccio delle sue otto zampe pelose.</item>
-    <item name="s_10_3" type="string">Ti dibatti inutilmente per lunghi e terribili istanti, prima che il morso del pungiglione ti privi misericordiosamente dei sensi.</item>
-    <item name="s_10_link_1" type="string">11</item>
+    <!--<item name="s_10_1" type="string">Svolti a sinistra, preferendo di gran lunga il silenzio a quel sinistro brontolio.</item>-->
+    <!--<item name="s_10_2" type="string">Peccato che il silenzio celi la presenza di un formidabile predatore: il ragno, più grande di un uomo, si cala dal soffitto alle tue spalle e ti avvolge nell\'abbraccio delle sue otto zampe pelose.</item>-->
+    <!--<item name="s_10_3" type="string">Ti dibatti inutilmente per lunghi e terribili istanti, prima che il morso del pungiglione ti privi misericordiosamente dei sensi.</item>-->
+    <!--<item name="s_10_link_1" type="string">11</item>-->
 
-    <item name="s_11_1" type="string">Peccato, hai perso.</item>
-    <item name="s_11_2" type="string">Non arrenderti, riprova!</item>
+    <!--<item name="s_11_1" type="string">Peccato, hai perso.</item>-->
+    <!--<item name="s_11_2" type="string">Non arrenderti, riprova!</item>-->
 
-    <item name="s_12_1" type="string">Bravo, hai vinto!</item>
-    <item name="s_12_2" type="string">Hai sconfitto le insidie del labirinto, uscendone ricco di tesori e di storie da raccontare.</item>
+    <!--<item name="s_12_1" type="string">Bravo, hai vinto!</item>-->
+    <!--<item name="s_12_2" type="string">Hai sconfitto le insidie del labirinto, uscendone ricco di tesori e di storie da raccontare.</item>-->
 
-    <item name="s_13_1" type="string">Facendo attenzione a non bruciarti, stacchi la torcia dal gancio e la reggi di fronte a te.</item>
-    <item name="s_13_get" type="string">i_torch</item>
-    <item name="s_13_switch_1" type="string">par:3:3:C\'è un gancio appeso alla parete, dove hai preso la torcia</item>
-    <item name="s_13_link_1" type="string">3</item>
+    <!--<item name="s_13_1" type="string">Facendo attenzione a non bruciarti, stacchi la torcia dal gancio e la reggi di fronte a te.</item>-->
+    <!--<item name="s_13_get" type="string">i_torch</item>-->
+    <!--<item name="s_13_switch_1" type="string">par:3:3:C\'è un gancio appeso alla parete, dove hai preso la torcia</item>-->
+    <!--<item name="s_13_link_1" type="string">3</item>-->
 
 </resources>

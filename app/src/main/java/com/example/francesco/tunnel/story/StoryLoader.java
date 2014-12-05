@@ -44,6 +44,8 @@ public class StoryLoader {
 
     private final static String SECTION_USABLEITEM_SUFFIX = "_usable";
 
+    private final static String SECTION_OBSERVABLEITEM_SUFFIX = "_observable";
+
     private final static String SECTION_ITEMGET_SUFFIX = "_get";
 
     private final static String SECTION_ITEMDROP_SUFFIX = "_drop";
@@ -186,6 +188,7 @@ public class StoryLoader {
             section.setText(loadSectionText(SECTION_PREFIX + id + "_"));
             section.setLinks(loadSectionLinks(section));
             section.setUsableItems(loadSectionUsableItems(id));
+            section.setObservableItems(loadSectionObservableItems(id));
             section.setItemsGets(loadSectionItemGets(id));
             section.setItemDrops(loadSectionItemDrops(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
@@ -215,6 +218,15 @@ public class StoryLoader {
 
     private List<Item> loadSectionUsableItems(String id) {
         final String itemGroup = msg(SECTION_PREFIX + id + SECTION_USABLEITEM_SUFFIX); // es: s_6_usable
+        if (itemGroup != null) {
+            String[] ids = itemGroup.split(LIST_SEPARATOR);
+            return items(ids);
+        }
+        return new ArrayList<Item>();
+    }
+
+    private List<Item> loadSectionObservableItems(String id) {
+        final String itemGroup = msg(SECTION_PREFIX + id + SECTION_OBSERVABLEITEM_SUFFIX); // es: s_6_observable
         if (itemGroup != null) {
             String[] ids = itemGroup.split(LIST_SEPARATOR);
             return items(ids);
@@ -351,7 +363,7 @@ public class StoryLoader {
             }
         }
         if (text.isEmpty()) {
-            Item item = current.checkUsableItem(input);
+            Item item = current.checkObservableItem(input);
             if (item != null)
                 text.add(item.getDescription());
         }
