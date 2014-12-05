@@ -66,6 +66,7 @@
     <item name="s_5_switch_3" type="string">link:1:-1:6:c_go_on,c_straight_on,c_proceed</item>
     <item name="s_5_switch_4" type="string">par:1:3:Davanti a te vi è una porta aperta</item>
     <item name="s_5_drop" type="string">i_key</item>
+    <item name="s_5_notes_drop" type="string">n_1,n_2</item>
     <item name="s_5_link_1" type="string">6</item>
 
     <item name="s_6_1" type="string">Raggiungi in un\'ampia sala dalla volta di pietra.</item>

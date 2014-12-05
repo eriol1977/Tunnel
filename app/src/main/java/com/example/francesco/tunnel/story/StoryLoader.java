@@ -51,6 +51,8 @@ public class StoryLoader {
 
     private final static String SECTION_ITEMDROP_SUFFIX = "_drop";
 
+    private final static String SECTION_NOTES_DROP_SUFFIX = "_notes_drop";
+
     private final static String SECTION_LINK_SUFFIX = "_link";
 
     private final static String SECTION_SWITCH_SUFFIX = "_switch";
@@ -192,6 +194,7 @@ public class StoryLoader {
             section.setObservableItems(loadSectionObservableItems(id));
             section.setItemsGets(loadSectionItemGets(id));
             section.setItemDrops(loadSectionItemDrops(id));
+            section.setNoteDrops(loadSectionNoteDrops(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
             section.setLinkSwitches(loadSectionLinkSwitches(id));
             sections.add(section);
@@ -251,6 +254,14 @@ public class StoryLoader {
             return items(ids);
         }
         return new ArrayList<Item>();
+    }
+
+    private String[] loadSectionNoteDrops(final String id) {
+        final String notesGroup = msg(SECTION_PREFIX + id + SECTION_NOTES_DROP_SUFFIX); // es: s_5_notes_drop
+        if (notesGroup != null) {
+            return notesGroup.split(LIST_SEPARATOR);
+        }
+        return new String[]{};
     }
 
     private List<Link> loadSectionLinks(final Section section) {

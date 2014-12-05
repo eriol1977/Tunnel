@@ -30,6 +30,8 @@ public class Section {
 
     private List<ItemDrop> itemDrops;
 
+    private String[] noteDrops;
+
     /**
      * Default sections
      */
@@ -72,6 +74,13 @@ public class Section {
         if (this.itemDrops != null) {
             for (final ItemDrop itemDrop : this.itemDrops) {
                 sl.getCharacter().getInventory().removeItem(sl.item(itemDrop.getItemId()));
+            }
+        }
+
+        // entrando nella sezione, una o più note vengono rimosse dall'elenco del personaggio
+        if (this.noteDrops != null) {
+            for (final String noteId : this.noteDrops) {
+                sl.getCharacter().getNotes().remove(noteId);
             }
         }
 
@@ -182,6 +191,10 @@ public class Section {
         for (final Item item : items) {
             this.itemDrops.add(new ItemDrop(item.getId()));
         }
+    }
+
+    void setNoteDrops(final String[] noteIds) {
+        this.noteDrops = noteIds;
     }
 
     //////// SWITCHES
