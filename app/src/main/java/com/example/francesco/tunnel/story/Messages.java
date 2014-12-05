@@ -23,4 +23,6 @@ public class Messages {
 
     public final static String GAME_SAVED = "m_game_saved";
 
+    public final static String EMPTY_NOTES = "m_empty_notes";
+
 }

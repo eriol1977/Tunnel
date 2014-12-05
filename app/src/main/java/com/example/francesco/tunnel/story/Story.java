@@ -152,6 +152,9 @@ public class Story {
                 } else if (command(Commands.ACTIONS).check(input) || command(Commands.COMMANDS).check(input)) {
                     proceedToAvailableActions();
                     linkFound = true;
+                } else if (command(Commands.NOTES).check(input)) {
+                    proceedToNotes();
+                    linkFound = true;
                 }
                 break;
             case ENDED:
@@ -201,6 +204,11 @@ public class Story {
     private void proceedToInventory() {
         stash();
         setCurrent(StoryLoader.getInstance().createInventorySection(this.current));
+    }
+
+    private void proceedToNotes() {
+        stash();
+        setCurrent(StoryLoader.getInstance().createNotesSection(this.current));
     }
 
     private void proceedToAvailableActions() {

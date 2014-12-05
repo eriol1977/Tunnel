@@ -36,6 +36,8 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     private static final String SAVE_DATA_INVENTORY = "inventory";
 
+    private static final String SAVE_DATA_NOTES = "notes";
+
     private static final String SAVE_DATA_PARAGRAPH_SWITCHES = "parSwitches";
 
     private static final String SAVE_DATA_LINK_SWITCHES = "linkSwitches";
@@ -43,6 +45,8 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     private static final String TEMP_SAVE_DATA_SECTION = "temp_sectionId";
 
     private static final String TEMP_SAVE_DATA_INVENTORY = "temp_inventory";
+
+    private static final String TEMP_SAVE_DATA_NOTES = "temp_notes";
 
     private static final String TEMP_SAVE_DATA_PARAGRAPH_SWITCHES = "temp_parSwitches";
 
@@ -113,13 +117,13 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
      *
      * @param temporary True quando si tratta di un salvataggio temporaneo, dovuto all'interruzione
      *                  dell'app
-     *
      * @return True se il salvataggio è andato a buon fine, altrimenti false
      */
     private boolean saveGame(final boolean temporary) {
         final String sectionId = story.getSavingSectionId(temporary);
-        if(sectionId != null) {
+        if (sectionId != null) {
             final String inventoryItemIds = loader.stringifyInventory();
+            final String notesIds = loader.stringifyNotes();
             final String paragraphSwitches = loader.stringifyParagraphSwitchesSoFar();
             final String linkSwitches = loader.stringifyLinkSwitchesSoFar();
             final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
@@ -127,11 +131,13 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             if (temporary) {
                 editor.putString(TEMP_SAVE_DATA_SECTION, sectionId);
                 editor.putString(TEMP_SAVE_DATA_INVENTORY, inventoryItemIds);
+                editor.putString(TEMP_SAVE_DATA_NOTES, notesIds);
                 editor.putString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
                 editor.putString(TEMP_SAVE_DATA_LINK_SWITCHES, linkSwitches);
             } else {
                 editor.putString(SAVE_DATA_SECTION, sectionId);
                 editor.putString(SAVE_DATA_INVENTORY, inventoryItemIds);
+                editor.putString(SAVE_DATA_NOTES, notesIds);
                 editor.putString(SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
                 editor.putString(SAVE_DATA_LINK_SWITCHES, linkSwitches);
             }
@@ -153,20 +159,23 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         final String emptyDefaultValue = "";
         String sectionId;
         String inventoryItemIds;
+        String notesIds;
         String paragraphSwitches;
         String linkSwitches;
         if (temporary) {
             sectionId = preferences.getString(TEMP_SAVE_DATA_SECTION, defaultValue);
             inventoryItemIds = preferences.getString(TEMP_SAVE_DATA_INVENTORY, emptyDefaultValue);
+            notesIds = preferences.getString(TEMP_SAVE_DATA_NOTES, emptyDefaultValue);
             paragraphSwitches = preferences.getString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(TEMP_SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
         } else {
             sectionId = preferences.getString(SAVE_DATA_SECTION, defaultValue);
             inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY, emptyDefaultValue);
+            notesIds = preferences.getString(SAVE_DATA_NOTES, emptyDefaultValue);
             paragraphSwitches = preferences.getString(SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
         }
-        loader.load(sectionId, inventoryItemIds, paragraphSwitches, linkSwitches);
+        loader.load(sectionId, inventoryItemIds, notesIds, paragraphSwitches, linkSwitches);
     }
 
     @Override

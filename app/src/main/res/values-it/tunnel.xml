@@ -15,9 +15,13 @@
 
     <!-- items -->
     <item name="i_torch" type="string">torcia:La torcia è piuttosto consumata, non durerà molto</item>
-    <item name="i_key" type="string">chiave:La chiave, pur consumata dal tempo, presenta ancora qualche traccia di tinta dorata.</item>
+    <item name="i_key" type="string">chiave:La chiave sembra dorata, sotto le incrostazioni della rùggine:n_1</item>
     <item name="i_lever" type="string">leva:La leva non è altro che un pezzo di legno incassato nel piedistallo roccioso.</item>
-    <item name="i_door" type="string">porta:La porta, di legno rinforzato con borchie di metallo, è dotata di serratura.</item>
+    <item name="i_door" type="string">porta:La porta, di legno rinforzato con borchie di metallo, presenta chiazze di vecchia vernice dorata:n_2</item>
+
+    <!-- notes -->
+    <item name="n_1" type="string">La chiave sembra dorata</item>
+    <item name="n_2" type="string">La porta era dorata</item>
 
     <!-- sections -->
     <item name="sections" type="string">13</item>

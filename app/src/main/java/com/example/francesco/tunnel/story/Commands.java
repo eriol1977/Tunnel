@@ -44,6 +44,8 @@ public class Commands {
 
     public final static String COMMANDS = "c_commands";
 
+    public final static String NOTES = "c_notes";
+
     public Commands(Map<String, Command> commands) {
         this.commands = commands;
     }

@@ -4,6 +4,7 @@ import com.example.francesco.tunnel.activity.StoryTellerActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +85,7 @@ public class StoryLoader {
 
     void resetStory() {
         this.story.reset();
-        this.character.getInventory().reset();
+        this.character.reset();
         loadDefaultSections();
         this.story.setSections(loadSections());
         this.paragraphSwitchesSoFar.clear();
@@ -126,7 +127,7 @@ public class StoryLoader {
         String[] nameAndDescription;
         for (String key : pairs.keySet()) {
             nameAndDescription = pairs.get(key).split(SEPARATOR);
-            items.put(key, new Item(key, nameAndDescription[0], nameAndDescription[1]));
+            items.put(key, new Item(key, nameAndDescription[0], nameAndDescription[1], nameAndDescription.length > 2 ? nameAndDescription[2] : ""));
         }
         return new Items(items);
     }
@@ -360,12 +361,15 @@ public class StoryLoader {
         for (final Item item : items) {
             if (item.check(input)) {
                 text.add(item.getDescription());
+                addNote(item);
             }
         }
         if (text.isEmpty()) {
             Item item = current.checkObservableItem(input);
-            if (item != null)
+            if (item != null) {
                 text.add(item.getDescription());
+                addNote(item);
+            }
         }
         if (text.isEmpty()) {
             text.add(msg(Messages.CANT_EXAMINE));
@@ -417,10 +421,11 @@ public class StoryLoader {
         this.story.home();
     }
 
-    public void load(final String sectionId, final String inventoryItemIds, final String paragraphSwitches, final String linkSwitches) {
+    public void load(final String sectionId, final String inventoryItemIds, final String notesIds, final String paragraphSwitches, final String linkSwitches) {
         resetStory();
         story.setCurrent(story.getSection(sectionId));
         loadInventory(inventoryItemIds);
+        loadNotes(notesIds);
         parseAndLoadSwitches(paragraphSwitches, linkSwitches);
         story.setPhase(StoryPhase.STARTED);
     }
@@ -432,6 +437,13 @@ public class StoryLoader {
      */
     void loadInventory(final String inventoryItemIds) {
         this.character.getInventory().setItems(items(inventoryItemIds.split(StoryLoader.LIST_SEPARATOR)));
+    }
+
+    private void loadNotes(final String notesIds) {
+        final String[] ids = notesIds.split(StoryLoader.LIST_SEPARATOR);
+        for (final String id : ids) {
+            this.character.getNotes().add(id, msg(id));
+        }
     }
 
     /**
@@ -453,7 +465,7 @@ public class StoryLoader {
      */
     void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches) {
 
-        if(!paragraphSwitches.isEmpty()) {
+        if (!paragraphSwitches.isEmpty()) {
             String[] switchInfo;
             final String[] pss = paragraphSwitches.split(STRONG_SEPARATOR);
             final List<ParagraphSwitch> pars = new ArrayList<ParagraphSwitch>(pss.length);
@@ -464,7 +476,7 @@ public class StoryLoader {
             loadParagraphSwitches(pars);
         }
 
-        if(!linkSwitches.isEmpty()) {
+        if (!linkSwitches.isEmpty()) {
             String[] switchInfo;
             final String[] lss = linkSwitches.split(STRONG_SEPARATOR);
             final List<LinkSwitch> links = new ArrayList<LinkSwitch>(lss.length);
@@ -538,11 +550,28 @@ public class StoryLoader {
      * @return ex: "i_key,i_torch,i_ring"
      */
     public String stringifyInventory() {
-        final List<Item> itemList = this.character.getInventory().getItems();
         final StringBuilder sb = new StringBuilder();
+        final List<Item> itemList = this.character.getInventory().getItems();
         if (!itemList.isEmpty()) {
             for (final Item item : itemList) {
                 sb.append(item.getId()).append(StoryLoader.LIST_SEPARATOR);
+            }
+            sb.delete(sb.length() - StoryLoader.LIST_SEPARATOR.length(), sb.length());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Trasforma le note del giocatore nel formato String esemplificato qui sotto.
+     *
+     * @return ex: "n_1,n_4,n_8"
+     */
+    public String stringifyNotes() {
+        final StringBuilder sb = new StringBuilder();
+        final Collection<String> notesIds = this.character.getNotes().getIds();
+        if (!notesIds.isEmpty()) {
+            for (final String noteId : notesIds) {
+                sb.append(noteId).append(StoryLoader.LIST_SEPARATOR);
             }
             sb.delete(sb.length() - StoryLoader.LIST_SEPARATOR.length(), sb.length());
         }
@@ -619,6 +648,26 @@ public class StoryLoader {
             sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
         }
         return sb.toString();
+    }
+
+    ///////// NOTES
+
+    // TODO: rimuovere una nota quando non è più necessaria
+
+    void addNote(final Item item) {
+        if (!item.getNote().isEmpty())
+            this.character.getNotes().add(item.getNote(), msg(item.getNote()));
+    }
+
+    public Section createNotesSection(Section current) {
+        List<String> text = new ArrayList<String>(1);
+        final Collection<String> notes = this.character.getNotes().get();
+        if (!notes.isEmpty())
+            for (final String note : notes)
+                text.add(note);
+        else
+            text.add(msg(Messages.EMPTY_NOTES));
+        return createTemporarySection(text, current);
     }
 
     ///////// GETTERS

@@ -11,10 +11,13 @@ public class Item {
 
     final private String description;
 
-    Item(String id, String name, String description) {
+    final private String note;
+
+    Item(final String id, final String name, final String description, final String note) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.note = note;
     }
 
     String getId() {
@@ -27,6 +30,10 @@ public class Item {
 
     String getDescription() {
         return description;
+    }
+
+    String getNote() {
+        return note;
     }
 
     /**
