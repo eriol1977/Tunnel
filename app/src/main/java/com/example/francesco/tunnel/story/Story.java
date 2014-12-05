@@ -120,6 +120,8 @@ public class Story {
                 } else if (command(Commands.QUIT).check(input)) {
                     quit();
                     linkFound = true;
+                } else if (command(Commands.REPEAT).check(input)) {
+                    linkFound = true;
                 }
                 break;
             case STARTED:
@@ -165,6 +167,8 @@ public class Story {
                     linkFound = true;
                 } else if (command(Commands.INSTRUCTIONS).check(input) || command(Commands.HELP).check(input)) {
                     proceedToHelp();
+                    linkFound = true;
+                } else if (command(Commands.REPEAT).check(input)) {
                     linkFound = true;
                 }
                 break;

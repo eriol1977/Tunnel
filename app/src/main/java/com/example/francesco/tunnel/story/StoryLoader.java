@@ -3,6 +3,7 @@ package com.example.francesco.tunnel.story;
 import com.example.francesco.tunnel.activity.StoryTellerActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,10 @@ public class StoryLoader {
     private final static String ITEM_PREFIX = "i_";
 
     private final static String SECTIONS = "sections";
+
+    private final static String STARTING = "starting";
+
+    private final static String ENDING = "ending";
 
     private final static String SECTION_PREFIX = "s_";
 
@@ -167,14 +172,16 @@ public class StoryLoader {
     private List<Section> loadSections() {
         List<Section> sections = new ArrayList<Section>();
         final int sectionQty = Integer.valueOf(msg(SECTIONS)).intValue();
+        final int startingSectionId = Integer.valueOf(msg(STARTING)).intValue();
+        final List<String> endingSectionsIds = Arrays.asList(msg(ENDING).split(LIST_SEPARATOR));
         String id;
         Section section;
         for (int i = 1; i <= sectionQty; i++) {
             id = String.valueOf(i);
             section = new Section(id);
-            if (i == 1)
+            if (i == startingSectionId)
                 section.setStarting(true);
-            if (i == sectionQty)
+            if (endingSectionsIds.contains(id))
                 section.setEnding(true);
             section.setText(loadSectionText(SECTION_PREFIX + id + "_"));
             section.setLinks(loadSectionLinks(section));
@@ -434,26 +441,31 @@ public class StoryLoader {
      */
     void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches) {
 
-        String[] switchInfo;
-        final String[] pss = paragraphSwitches.split(STRONG_SEPARATOR);
-        final List<ParagraphSwitch> pars = new ArrayList<ParagraphSwitch>(pss.length);
-        for (final String ps : pss) {
-            switchInfo = ps.split(SEPARATOR);
-            pars.add(new ParagraphSwitch(switchInfo[0], Integer.valueOf(switchInfo[1]).intValue(), switchInfo.length == 3 ? switchInfo[2] : ""));
+        if(!paragraphSwitches.isEmpty()) {
+            String[] switchInfo;
+            final String[] pss = paragraphSwitches.split(STRONG_SEPARATOR);
+            final List<ParagraphSwitch> pars = new ArrayList<ParagraphSwitch>(pss.length);
+            for (final String ps : pss) {
+                switchInfo = ps.split(SEPARATOR);
+                pars.add(new ParagraphSwitch(switchInfo[0], Integer.valueOf(switchInfo[1]).intValue(), switchInfo.length == 3 ? switchInfo[2] : ""));
+            }
+            loadParagraphSwitches(pars);
         }
-        loadParagraphSwitches(pars);
 
-        final String[] lss = linkSwitches.split(STRONG_SEPARATOR);
-        final List<LinkSwitch> links = new ArrayList<LinkSwitch>(lss.length);
-        for (final String ls : lss) {
-            switchInfo = ls.split(SEPARATOR);
-            links.add(new LinkSwitch(switchInfo[0],
-                    Integer.valueOf(switchInfo[1]).intValue(),
-                    switchInfo.length > 2 ? switchInfo[2] : "",
-                    switchInfo.length > 3 ? switchInfo[3].split(LIST_SEPARATOR) : new String[]{},
-                    switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{}));
+        if(!linkSwitches.isEmpty()) {
+            String[] switchInfo;
+            final String[] lss = linkSwitches.split(STRONG_SEPARATOR);
+            final List<LinkSwitch> links = new ArrayList<LinkSwitch>(lss.length);
+            for (final String ls : lss) {
+                switchInfo = ls.split(SEPARATOR);
+                links.add(new LinkSwitch(switchInfo[0],
+                        Integer.valueOf(switchInfo[1]).intValue(),
+                        switchInfo.length > 2 ? switchInfo[2] : "",
+                        switchInfo.length > 3 ? switchInfo[3].split(LIST_SEPARATOR) : new String[]{},
+                        switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{}));
+            }
+            loadLinkSwitches(links);
         }
-        loadLinkSwitches(links);
     }
 
     /**

@@ -141,7 +141,7 @@ public class Section {
     }
 
     boolean hasDirectOutcome() {
-        return this.links.size() == 1 || this.isTemporary();
+        return this.links.size() == 1 || this.isTemporary() || this.isEnding();
     }
 
     //////// ITEMS
