@@ -11,21 +11,21 @@ public class ParagraphSwitch {
 
     private final String newParagraph;
 
-    public ParagraphSwitch(String sectionId, int paragraphPosition, String newParagraph) {
+    ParagraphSwitch(String sectionId, int paragraphPosition, String newParagraph) {
         this.sectionId = sectionId;
         this.paragraphPosition = paragraphPosition;
         this.newParagraph = newParagraph;
     }
 
-    public String getSectionId() {
+    String getSectionId() {
         return sectionId;
     }
 
-    public int getParagraphPosition() {
+    int getParagraphPosition() {
         return paragraphPosition;
     }
 
-    public String getNewParagraph() {
+    String getNewParagraph() {
         return newParagraph;
     }
 }

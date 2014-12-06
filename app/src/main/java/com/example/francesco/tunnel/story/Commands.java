@@ -46,6 +46,8 @@ public class Commands {
 
     public final static String NOTES = "c_notes";
 
+    public final static String JOIN = "c_join";
+
     public Commands(Map<String, Command> commands) {
         this.commands = commands;
     }

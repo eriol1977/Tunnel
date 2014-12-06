@@ -11,21 +11,21 @@ public class ItemSwitch {
 
     private final String newNoteId;
 
-    public ItemSwitch(String itemId, String newDescription, String newNoteId) {
+    ItemSwitch(String itemId, String newDescription, String newNoteId) {
         this.itemId = itemId;
         this.newDescription = newDescription;
         this.newNoteId = newNoteId;
     }
 
-    public String getItemId() {
+    String getItemId() {
         return itemId;
     }
 
-    public String getNewDescription() {
+    String getNewDescription() {
         return newDescription;
     }
 
-    public String getNewNoteId() {
+    String getNewNoteId() {
         return newNoteId;
     }
 }

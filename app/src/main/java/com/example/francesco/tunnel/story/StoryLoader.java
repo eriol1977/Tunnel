@@ -413,6 +413,10 @@ public class StoryLoader {
         return createTemporarySection(text, current);
     }
 
+    Section createJoinSection(final Section current, final String input) {
+        return null;
+    }
+
     public Section createAvailableActionsSection(final Section current) {
         final List<Link> links = current.getLinks();
         List<String> text = new ArrayList<String>(links.size());

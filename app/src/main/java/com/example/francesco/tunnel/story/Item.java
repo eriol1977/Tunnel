@@ -54,18 +54,8 @@ public class Item {
      */
     boolean check(final String words) {
         final String[] nameWords = this.name.split("\\s+");
-        final int allNameWords = nameWords.length;
-        int foundNameWords = 0;
         final String[] commandWords = words.split("\\s+");
-        for (String commandWord : commandWords) {
-            for (String nameWord : nameWords) {
-                if (commandWord.equalsIgnoreCase(nameWord)) {
-                    foundNameWords++;
-                    break;
-                }
-            }
-        }
-        return foundNameWords == allNameWords;
+        return Checker.checkWords(commandWords, nameWords);
     }
 
     @Override

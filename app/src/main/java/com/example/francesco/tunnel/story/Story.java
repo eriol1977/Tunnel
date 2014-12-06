@@ -155,6 +155,9 @@ public class Story {
                 } else if (command(Commands.NOTES).check(input)) {
                     proceedToNotes();
                     linkFound = true;
+                } else if (command(Commands.JOIN).check(input)) {
+                    proceedToJoin(input);
+                    linkFound = true;
                 }
                 break;
             case ENDED:
@@ -219,6 +222,11 @@ public class Story {
     private void proceedToExamine(final String input) {
         stash();
         setCurrent(StoryLoader.getInstance().createExamineSection(this.current, input));
+    }
+
+    private void proceedToJoin(final String input) {
+        stash();
+        setCurrent(StoryLoader.getInstance().createJoinSection(this.current, input));
     }
 
     private void proceedToEnd() {

@@ -1,6 +1,7 @@
 package com.example.francesco.tunnel.story;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,6 +21,10 @@ public class Inventory {
 
     boolean checkItem(final Item item) {
         return this.items.contains(item);
+    }
+
+    boolean checkItems(final Item[] input) {
+        return this.items.containsAll(Arrays.asList(input));
     }
 
     List<Item> getItems() {
