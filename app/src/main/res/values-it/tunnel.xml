@@ -12,15 +12,16 @@
     <item name="c_go_on" type="string">avanti</item>
     <item name="c_straight_on" type="string">dritto</item>
     <item name="c_proceed" type="string">proseguo</item>
+    <item name="c_open_portal" type="string">apro portale</item>
 
     <!-- items -->
     <item name="i_torch" type="string">torcia:La torcia è piuttosto consumata, non durerà molto</item>
     <item name="i_key" type="string">chiave:La chiave sembra dorata, sotto le incrostazioni della rùggine:n_1</item>
     <item name="i_lever" type="string">leva:La leva non è altro che un pezzo di legno incassato nel piedistallo roccioso.</item>
     <item name="i_door" type="string">porta:La porta, di legno rinforzato con borchie di metallo, presenta chiazze di vecchia vernice dorata:n_2</item>
-    <item name="i_portal" type="string">portale:Il portale sembra inamovibile e privo di serratura, a parte un incavo di forma circolare:n_3</item>
-    <item name="i_arc" type="string">arc:Tra le numerose immagini scolpite con maestria sull'arco di pietra, ti colpisce quella di un sole e una luna stretti in un tenero abbraccio:n_4</item>
-    <item name="i_desk" type="string">scrivania:La scrivania è sommersa di cianfrusaglie. L'unico oggetto di interesse è un medaglione che raffigura un piccolo sole.:n_5</item>
+    <item name="i_portal" type="string">portale:Il portale sembra inamovibile e privo di serratura, a parte un ìncavo di forma circolare:n_3</item>
+    <item name="i_arc" type="string">arco:Tra le numerose immagini scolpite con maestria sull\'arco di pietra, ti colpisce quella di un sole e una luna stretti in un tenero abbraccio:n_4</item>
+    <item name="i_desk" type="string">scrivania:La scrivania è sommersa di cianfrusaglie. L\'unico oggetto di interesse è un medaglione che raffigura un piccolo sole.:n_5</item>
     <item name="i_shelf" type="string">scaffale:Adagiato tra i volumi ammuffiti e le ragnatele, noti un medaglione in forma di luna crescente.:n_6</item>
     <item name="i_sun_medallion" type="string">medaglione sole:Il medaglione ha una forma vagamente semi circolare:n_7</item>
     <item name="i_moon_medallion" type="string">medaglione luna:Il medaglione ha una forma vagamente semi circolare:n_8</item>
@@ -30,7 +31,7 @@
     <item name="n_1" type="string">La chiave sembra dorata</item>
     <item name="n_2" type="string">La porta era dorata</item>
     <item name="n_3" type="string">Il portale presenta un incavo circolare</item>
-    <item name="n_4" type="string">Sull'arco è scolpito l'abbraccio del sole e della luna</item>
+    <item name="n_4" type="string">Sull\'arco è scolpito l\'abbraccio del sole e della luna</item>
     <item name="n_5" type="string">Sulla scrivania vi è un medaglione del sole</item>
     <item name="n_6" type="string">Sullo scaffale vi è un medaglione della luna</item>
     <item name="n_7" type="string">Il medaglione del sole ha una forma semi circolare</item>
@@ -136,16 +137,17 @@
     <item name="s_13_3" type="string">Perdi l\'equilibrio e cadi nel vuoto.</item>
     <item name="s_13_link_1" type="string">14</item>
 
-    <item name="s_14_1" type="string">Dopo una caduta che ti sembra interminabile, piombi su un un mucchio di fieno.</item>
+    <item name="s_14_1" type="string">Dopo una caduta che ti sembra interminabile, piombi su un mucchio di fieno.</item>
     <item name="s_14_2" type="string">Ringraziando la tua buona stella, ti rialzi, ti scuoti la paglia di dosso e ti guardi attorno.</item>
     <item name="s_14_link_1" type="string">15</item>
 
     <item name="s_15_1" type="string">L\'unica uscita visibile da questa sala è un massiccio portale di ferro battuto, sormontato da un arco di pietra istoriata.</item>
     <item name="s_15_2" type="string">Tra te e il portale vi è una scrivania carica di oggetti disposti alla rinfusa.</item>
     <item name="s_15_3" type="string">Alle tue spalle, contro la parete, vi è uno scaffale zeppo di libri polverosi.</item>
+    <item name="s_15_observable" type="string">i_arc,i_portal,i_desk,i_shelf,i_sun_medallion,i_moon_medallion</item>
     <item name="s_15_link_1" type="string">16:c_get:i_sun_medallion</item>
-    <item name="s_15_link_2" type="string">17:c_get:i_sun_medallion</item>
-    <item name="s_15_link_3" type="string">18:c_open_door</item>
+    <item name="s_15_link_2" type="string">17:c_get:i_moon_medallion</item>
+    <item name="s_15_link_3" type="string">18:c_open_door,c_open_portal</item>
     <item name="s_15_link_4" type="string">20:c_use:i_medallion</item>
 
     <item name="s_16_1" type="string">Senza tanti complimenti, spazzi via il mucchio di cianfrusaglie dalla scrivania per impadronirti del medaglione.</item>
@@ -158,11 +160,11 @@
     <item name="s_17_1" type="string">Infilando le dita tra le ragnatele appiccicose, afferri il medaglione.</item>
     <item name="s_17_get" type="string">i_moon_medallion</item>
     <item name="s_17_notes_drop" type="string">n_6</item>
-    <item name="s_17_switch_1" type="string">item:i_shelf:Nient'altro che tomi ammuffiti sullo scaffale:""</item>
+    <item name="s_17_switch_1" type="string">item:i_shelf:Nient\'altro che tomi ammuffiti sullo scaffale:""</item>
     <item name="s_17_link_1" type="string">15</item>
 
     <item name="s_18_1" type="string">Il portale deve pesare parecchie tonnellate, tanto che al tuo tocco non si smuove di un millimetro.</item>
-    <item name="s_18_2" type="string">Dovrai trovare un'altra maniera di aprirlo.</item>
+    <item name="s_18_2" type="string">Dovrai trovare un\'altra maniera di aprirlo.</item>
     <item name="s_18_link_1" type="string">15</item>
 
     <item name="s_19_1" type="string">Quando li sovrapponi, i due medaglioni si uniscono a formare un disco quasi perfetto.</item>

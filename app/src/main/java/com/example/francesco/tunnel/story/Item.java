@@ -47,18 +47,25 @@ public class Item {
     /**
      * @param words
      * @return True se il nome dell'oggetto (ex: "chiave") compare nella String di parole informata
-     * come parametro (ex:"chiave dorata")
+     * come parametro (ex:"chiave dorata").
+     * Si considera anche il caso di nome oggetto formato da più termini, come "medaglione sole":
+     * in questo caso il comando "prendo medaglione" non deve essere accettato, invece "prendo
+     * medaglione del sole" o "uso medaglione col sole" sì.
      */
     boolean check(final String words) {
-        boolean found = false;
-        final String[] everyWord = words.split("\\s+");
-        for (String word : everyWord) {
-            if(word.equalsIgnoreCase(this.name)) {
-                found = true;
-                break;
+        final String[] nameWords = this.name.split("\\s+");
+        final int allNameWords = nameWords.length;
+        int foundNameWords = 0;
+        final String[] commandWords = words.split("\\s+");
+        for (String commandWord : commandWords) {
+            for (String nameWord : nameWords) {
+                if (commandWord.equalsIgnoreCase(nameWord)) {
+                    foundNameWords++;
+                    break;
+                }
             }
         }
-        return found;
+        return foundNameWords == allNameWords;
     }
 
     @Override
