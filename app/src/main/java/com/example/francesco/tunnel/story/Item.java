@@ -9,9 +9,9 @@ public class Item {
 
     final private String name;
 
-    final private String description;
+    private String description;
 
-    final private String note;
+    private String note;
 
     Item(final String id, final String name, final String description, final String note) {
         this.id = id;
@@ -32,8 +32,16 @@ public class Item {
         return description;
     }
 
+    void setDescription(String description) {
+        this.description = description;
+    }
+
     String getNote() {
         return note;
+    }
+
+    void setNote(String note) {
+        this.note = note;
     }
 
     /**

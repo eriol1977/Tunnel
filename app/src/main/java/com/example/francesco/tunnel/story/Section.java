@@ -26,6 +26,8 @@ public class Section {
 
     private List<LinkSwitch> linkSwitches;
 
+    private List<ItemSwitch> itemSwitches;
+
     private List<ItemGet> itemGets;
 
     private List<ItemDrop> itemDrops;
@@ -92,6 +94,11 @@ public class Section {
         // entrando nella sezione, alcuni link di altre sezioni vengono cambiati o rimossi
         if (this.linkSwitches != null) {
             sl.loadLinkSwitches(this.linkSwitches);
+        }
+
+        // entrando nella sezione, alcune descrizioni o note di oggetti vengono cambiate o rimosse
+        if (this.itemSwitches != null) {
+            sl.loadItemSwitches(this.itemSwitches);
         }
     }
 
@@ -205,6 +212,10 @@ public class Section {
 
     void setLinkSwitches(final List<LinkSwitch> linkSwitches) {
         this.linkSwitches = linkSwitches;
+    }
+
+    void setItemSwitches(final List<ItemSwitch> itemSwitches) {
+        this.itemSwitches = itemSwitches;
     }
 
     //////// OTHERS

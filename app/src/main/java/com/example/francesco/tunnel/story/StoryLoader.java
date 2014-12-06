@@ -31,6 +31,8 @@ public class StoryLoader {
 
     private final List<LinkSwitch> linkSwitchesSoFar = new ArrayList<LinkSwitch>();
 
+    private final List<ItemSwitch> itemSwitchesSoFar = new ArrayList<ItemSwitch>();
+
     private final static String COMMAND_PREFIX = "c_";
 
     private final static String ITEM_PREFIX = "i_";
@@ -60,6 +62,8 @@ public class StoryLoader {
     private final static String SECTION_SWITCH_KIND_PARAGRAPH = "par";
 
     private final static String SECTION_SWITCH_KIND_LINK = "link";
+
+    private final static String SECTION_SWITCH_KIND_ITEM = "item";
 
     private final static String HOME_SECTION_PREFIX = "home_";
 
@@ -92,6 +96,7 @@ public class StoryLoader {
         this.story.setSections(loadSections());
         this.paragraphSwitchesSoFar.clear();
         this.linkSwitchesSoFar.clear();
+        this.itemSwitchesSoFar.clear();
     }
 
     public static StoryLoader getInstance(final StoryTellerActivity activity) {
@@ -197,6 +202,7 @@ public class StoryLoader {
             section.setNoteDrops(loadSectionNoteDrops(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
             section.setLinkSwitches(loadSectionLinkSwitches(id));
+            section.setItemSwitches(loadSectionItemSwitches(id));
             sections.add(section);
         }
         return sections;
@@ -315,7 +321,7 @@ public class StoryLoader {
             String sectionSwitch;
             String[] switchInfo;
             for (String switchId : sectionSwitches.keySet()) {
-                // ex: s_5_switch_2 --> par:1:3:"Davanti a te c\'è una porta aperta."
+                // ex: s_5_switch_2 --> par:1:3:Davanti a te c\'è una porta aperta.
                 sectionSwitch = sectionSwitches.get(switchId);
                 switchInfo = sectionSwitch.split(SEPARATOR);
                 if (switchInfo[0].equals(SECTION_SWITCH_KIND_PARAGRAPH)) {
@@ -348,6 +354,25 @@ public class StoryLoader {
             return switches;
         }
         return new ArrayList<LinkSwitch>();
+    }
+
+    private List<ItemSwitch> loadSectionItemSwitches(final String id) {
+        final Map<String, String> sectionSwitches = activity.getKeyValuePairsStartingWithPrefix(SECTION_PREFIX + id + SECTION_SWITCH_SUFFIX);// es: s_4_switch
+        if (sectionSwitches != null) {
+            List<ItemSwitch> switches = new ArrayList<ItemSwitch>();
+            String sectionSwitch;
+            String[] switchInfo;
+            for (String switchId : sectionSwitches.keySet()) {
+                // ex: s_5_switch_2 --> item:i_desk:La scrivania è sgombra:n_5
+                sectionSwitch = sectionSwitches.get(switchId);
+                switchInfo = sectionSwitch.split(SEPARATOR);
+                if (switchInfo[0].equals(SECTION_SWITCH_KIND_ITEM)) {
+                    switches.add(new ItemSwitch(switchInfo[1], switchInfo[2], switchInfo.length == 3 ? switchInfo[2] : ""));
+                }
+            }
+            return switches;
+        }
+        return new ArrayList<ItemSwitch>();
     }
 
     ///////// SPECIAL SECTIONS
@@ -432,12 +457,12 @@ public class StoryLoader {
         this.story.home();
     }
 
-    public void load(final String sectionId, final String inventoryItemIds, final String notesIds, final String paragraphSwitches, final String linkSwitches) {
+    public void load(final String sectionId, final String inventoryItemIds, final String notesIds, final String paragraphSwitches, final String linkSwitches, final String itemSwitches) {
         resetStory();
         story.setCurrent(story.getSection(sectionId));
         loadInventory(inventoryItemIds);
         loadNotes(notesIds);
-        parseAndLoadSwitches(paragraphSwitches, linkSwitches);
+        parseAndLoadSwitches(paragraphSwitches, linkSwitches, itemSwitches);
         story.setPhase(StoryPhase.STARTED);
     }
 
@@ -472,9 +497,14 @@ public class StoryLoader {
      *                          - cancella il secondo link della sezione 1
      *                          - cancella il terzo link della sezione 1
      *                          - aggiungi un nuovo link alla sezione 1, che punti alla sezione 6
-     *                          in base ai comandi c_go_on,c_straight_on,c_proceed
+     * @param itemSwitches      ex: i_shelf:Nient'altro che tomi ammuffiti sullo scaffale:"";i_desk:La scrivania è sgombra:n_9
+     *                          tradotto:
+     *                          - cambia la descrizione di i_shelf in "Nient'altro che tomi ammuffiti sullo scaffale"
+     *                          - rimuove la nota di i_shelf
+     *                          - cambia la descrizione di i_desk in "La scrivania è sgombra"
+     *                          - cambia la nota di i_desk in n_9
      */
-    void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches) {
+    void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches, final String itemSwitches) {
 
         if (!paragraphSwitches.isEmpty()) {
             String[] switchInfo;
@@ -500,6 +530,17 @@ public class StoryLoader {
                         switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{}));
             }
             loadLinkSwitches(links);
+        }
+
+        if (!itemSwitches.isEmpty()) {
+            String[] switchInfo;
+            final String[] iss = itemSwitches.split(STRONG_SEPARATOR);
+            final List<ItemSwitch> its = new ArrayList<ItemSwitch>(iss.length);
+            for (final String is : iss) {
+                switchInfo = is.split(SEPARATOR);
+                its.add(new ItemSwitch(switchInfo[0], switchInfo[1], switchInfo.length == 3 ? switchInfo[2] : ""));
+            }
+            loadItemSwitches(its);
         }
     }
 
@@ -553,6 +594,28 @@ public class StoryLoader {
                 section.updateLink(position, nextSection, commandIds, itemIds);
         }
         this.linkSwitchesSoFar.addAll(switches);
+    }
+
+    /**
+     * Carica gli ItemSwitch informati, applicando i loro effetti sulla storia, quindi li
+     * immagazzina in una lista locale.
+     *
+     * @param switches
+     */
+    void loadItemSwitches(final List<ItemSwitch> switches) {
+        String itemId;
+        String newDescription;
+        String newNoteId;
+        Item item;
+        for (final ItemSwitch iSwitch : switches) {
+            itemId = iSwitch.getItemId();
+            newDescription = iSwitch.getNewDescription();
+            newNoteId = iSwitch.getNewNoteId();
+            item = item(itemId);
+            item.setDescription(newDescription);
+            item.setNote(newNoteId);
+        }
+        this.itemSwitchesSoFar.addAll(switches);
     }
 
     /**
@@ -661,9 +724,31 @@ public class StoryLoader {
         return sb.toString();
     }
 
-    ///////// NOTES
+    /**
+     * Trasforma gli ItemSwitch immagazzinati nel corso della storia nel formato String
+     * esemplificato qui sotto.
+     *
+     * @return ex: i_shelf:Nient'altro che tomi ammuffiti sullo scaffale:"";i_desk:La scrivania è sgombra:n_9
+     * tradotto:
+     * - cambia la descrizione di i_shelf in "Nient'altro che tomi ammuffiti sullo scaffale"
+     * - rimuove la nota di i_shelf
+     * - cambia la descrizione di i_desk in "La scrivania è sgombra"
+     * - cambia la nota di i_desk in n_9
+     */
+    public String stringifyItemSwitchesSoFar() {
+        final StringBuilder sb = new StringBuilder();
+        if (!this.itemSwitchesSoFar.isEmpty()) {
+            for (final ItemSwitch is : itemSwitchesSoFar) {
+                sb.append(is.getItemId()).append(SEPARATOR);
+                sb.append(is.getNewDescription()).append(SEPARATOR);
+                sb.append(is.getNewNoteId()).append(STRONG_SEPARATOR);
+            }
+            sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
+        }
+        return sb.toString();
+    }
 
-    // TODO: rimuovere una nota quando non è più necessaria
+    ///////// NOTES
 
     void addNote(final Item item) {
         if (!item.getNote().isEmpty())
@@ -710,4 +795,6 @@ public class StoryLoader {
     public Character getCharacter() {
         return character;
     }
+
+
 }
