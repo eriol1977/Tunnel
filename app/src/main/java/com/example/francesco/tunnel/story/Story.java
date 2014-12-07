@@ -1,5 +1,6 @@
 package com.example.francesco.tunnel.story;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,30 @@ public class Story {
 
     public boolean isTemporarySection() {
         return this.current.isTemporary();
+    }
+
+    /**
+     * @return Tutti i possibili input di comando, in base alla sezione attuale.
+     * ex: "Torno indietro","Apro porta","Prendo medaglione sole"
+     */
+    public List<String> getCommandInputs() {
+        List<String> text = new ArrayList<String>();
+        if (this.phase.equals(StoryPhase.HOME)) {
+            text.add("inizio"); // TODO
+            text.add("carica");
+            text.add("aiuto");
+            text.add("fine");
+        } else {
+            final List<Link> links = current.getLinks();
+            String[] commandIds;
+            for (final Link link : links) {
+                commandIds = link.getCommandIds();
+                for (final String commandId : commandIds) {
+                    text.add(command(commandId).getCommandWords());
+                }
+            }
+        }
+        return text;
     }
 
     void home() {

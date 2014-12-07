@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">Tunnel</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_hear_story_teller">HearStoryTellerActivity</string>
+    <string name="title_activity_tunnel_hear">Tunnel</string>
 
 </resources>
