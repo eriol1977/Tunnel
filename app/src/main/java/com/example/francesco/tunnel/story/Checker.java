@@ -20,7 +20,9 @@ public class Checker {
                     break;
                 }
             }
+            if (foundWords == allWordsToFind)
+                return true;
         }
-        return foundWords == allWordsToFind;
+        return false;
     }
 }

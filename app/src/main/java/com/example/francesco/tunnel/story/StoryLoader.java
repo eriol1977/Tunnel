@@ -27,6 +27,8 @@ public class StoryLoader {
 
     private final Items items;
 
+    private final Joins joins;
+
     private final List<ParagraphSwitch> paragraphSwitchesSoFar = new ArrayList<ParagraphSwitch>();
 
     private final List<LinkSwitch> linkSwitchesSoFar = new ArrayList<LinkSwitch>();
@@ -36,6 +38,8 @@ public class StoryLoader {
     private final static String COMMAND_PREFIX = "c_";
 
     private final static String ITEM_PREFIX = "i_";
+
+    private final static String JOIN_PREFIX = "j_";
 
     private final static String SECTIONS = "sections";
 
@@ -87,6 +91,7 @@ public class StoryLoader {
         this.story = new Story(this.character);
         commands = loadCommands();
         items = loadItems();
+        joins = loadJoins();
     }
 
     void resetStory() {
@@ -137,6 +142,19 @@ public class StoryLoader {
             items.put(key, new Item(key, nameAndDescription[0], nameAndDescription[1], nameAndDescription.length > 2 ? nameAndDescription[2] : ""));
         }
         return new Items(items);
+    }
+
+    private Joins loadJoins() {
+        final Map<String, String> pairs = activity.getKeyValuePairsStartingWithPrefix(JOIN_PREFIX);
+        final List<Join> js = new ArrayList<Join>(pairs.size());
+        String[] joinInfo;
+        String[] itemIds;
+        for (String key : pairs.keySet()) {
+            joinInfo = pairs.get(key).split(SEPARATOR);
+            itemIds = joinInfo[1].split(LIST_SEPARATOR);
+            js.add(new Join(key, joinInfo[0], items(itemIds), joinInfo[2]));
+        }
+        return new Joins(js);
     }
 
     private void loadDefaultSections() {
@@ -414,7 +432,16 @@ public class StoryLoader {
     }
 
     Section createJoinSection(final Section current, final String input) {
-        return null;
+        final String joinResult = this.joins.getJoinResult(input, this.character.getInventory());
+        Section joinSection;
+        if (joinResult != null) {
+            joinSection = this.story.getSection(joinResult);
+            joinSection.addLink(current.getId(), null, null);
+            return joinSection;
+        }
+        final List<String> text = new ArrayList<String>(1);
+        text.add(msg(Messages.CANT_JOIN));
+        return createTemporarySection(text, current);
     }
 
     public Section createAvailableActionsSection(final Section current) {

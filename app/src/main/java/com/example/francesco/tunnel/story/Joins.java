@@ -13,7 +13,11 @@ public class Joins {
         this.joins = joins;
     }
 
-    List<Join> get() {
-        return this.joins;
+    String getJoinResult(final String input, final Inventory inventory) {
+        for (final Join join : this.joins) {
+            if (join.check(input, inventory))
+                return join.getTargetSectionId();
+        }
+        return null;
     }
 }

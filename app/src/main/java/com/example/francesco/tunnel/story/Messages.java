@@ -25,4 +25,6 @@ public class Messages {
 
     public final static String EMPTY_NOTES = "m_empty_notes";
 
+    public final static String CANT_JOIN = "m_cant_join";
+
 }

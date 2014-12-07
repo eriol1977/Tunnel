@@ -14,6 +14,7 @@
     <item name="m_game_loaded" type="string">tocca per caricare la partita</item>
     <item name="m_game_saved" type="string">tocca per salvare la partita</item>
     <item name="m_empty_notes" type="string">non ti viene in mente nulla di interessante</item>
+    <item name="m_cant_join" type="string">non puoi unire questi oggetti, o non li possiedi ancora</item>
 
     <!-- commands -->
     <item name="c_get" type="string">prendo</item>
@@ -47,7 +48,7 @@
     <item name="help_5" type="string">Indietro, per tornare alla precedente sezione narrativa, quando consentito.</item>
     <item name="help_6" type="string">Prendo, seguìto dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
     <item name="help_7" type="string">Uso, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
-    <item name="help_8" type="string">Unisco, seguito dai nomi di più oggetti presenti nell'inventario, per creare un nuovo oggetto a partire dai singoli.</item>
+    <item name="help_8" type="string">Unisco, seguito dai nomi di più oggetti presenti nell\'inventario, per creare un nuovo oggetto a partire dai singoli.</item>
     <item name="help_9" type="string">Inventario, per sapere quali oggetti ti porti appresso.</item>
     <item name="help_10" type="string">Guardo, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminarlo più a fondo.</item>
     <item name="help_11" type="string">Note, per riepilogare le scoperte fatte mediante l\'osservazione degli ambienti e degli oggetti.</item>

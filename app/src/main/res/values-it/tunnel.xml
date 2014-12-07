@@ -43,7 +43,7 @@
 
     <!-- sections -->
     <item name="sections" type="string">20</item>
-    <item name="starting" type="string">13</item>
+    <item name="starting" type="string">15</item>
     <item name="ending" type="string">9,20</item>
 
     <item name="s_1_1" type="string">Ti trovi in una sala circolare.</item>
@@ -172,7 +172,7 @@
     <item name="s_19_drop" type="string">i_sun_medallion,i_moon_medallion</item>
     <item name="s_19_notes_drop" type="string">n_7,n_8</item>
 
-    <item name="s_20_1" type="string">Appoggi il medaglione nell\'incavo circolare al centro del portale, seguendo l\'indizio dei bassorilievi sull\'arco di pietra.</item>
+    <item name="s_20_1" type="string">Appoggi il medaglione nell\'ìncavo circolare al centro del portale, seguendo l\'indizio dei bassorilievi sull\'arco di pietra.</item>
     <item name="s_20_2" type="string">Con un raspare di metallo su pietra, l\'intero blocco di ferro del portale scorre lateralmente sino a scomparire nella parete rocciosa.</item>
     <item name="s_20_3" type="string">Felice per la tua intuizione, ti affretti a varcare la soglia.</item>
     <item name="s_20_4" type="string">Non fai che un passo nella sala successiva, che il portale torna a richiudersi, lento e inesorabile.</item>

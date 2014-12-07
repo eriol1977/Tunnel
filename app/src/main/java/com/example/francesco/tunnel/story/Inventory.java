@@ -23,8 +23,8 @@ public class Inventory {
         return this.items.contains(item);
     }
 
-    boolean checkItems(final Item[] input) {
-        return this.items.containsAll(Arrays.asList(input));
+    boolean checkItems(final List<Item> input) {
+        return this.items.containsAll(input);
     }
 
     List<Item> getItems() {

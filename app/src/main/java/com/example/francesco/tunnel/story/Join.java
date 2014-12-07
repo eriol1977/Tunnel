@@ -1,5 +1,7 @@
 package com.example.francesco.tunnel.story;
 
+import java.util.List;
+
 /**
  * Created by Francesco on 06/12/2014.
  */
@@ -9,11 +11,11 @@ public class Join {
 
     private final String words;
 
-    private final Item[] items;
+    private final List<Item> items;
 
     private final String targetSectionId;
 
-    Join(final String id, final String words, final Item[] items, final String targetSectionId) {
+    Join(final String id, final String words, final List<Item> items, final String targetSectionId) {
         this.id = id;
         this.words = words;
         this.items = items;
@@ -37,7 +39,7 @@ public class Join {
         if (inventory.checkItems(this.items)) {
             result = Checker.checkWords(input.split("\\s+"), this.words.split("\\s+"));
             if (!result) {
-                final int itemCount = this.items.length;
+                final int itemCount = this.items.size();
                 int checked = 0;
                 for (final Item item : this.items) {
                     if (item.check(input))
@@ -47,18 +49,6 @@ public class Join {
             }
         }
         return result;
-    }
-
-    String getId() {
-        return id;
-    }
-
-    String getWords() {
-        return words;
-    }
-
-    Item[] getItems() {
-        return items;
     }
 
     String getTargetSectionId() {
