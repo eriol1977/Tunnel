@@ -15,6 +15,7 @@
     <item name="m_game_saved" type="string">tocca per salvare la partita</item>
     <item name="m_empty_notes" type="string">non ti viene in mente nulla di interessante</item>
     <item name="m_cant_join" type="string">non puoi unire questi oggetti, o non li possiedi ancora</item>
+    <item name="m_are_you_sure" type="string">OK per confermare, No per cancellare l\'operazione</item>
 
     <!-- commands -->
     <item name="c_get" type="string">prendo</item>
@@ -34,11 +35,13 @@
     <item name="c_commands" type="string">comandi</item>
     <item name="c_notes" type="string">note</item>
     <item name="c_join" type="string">unisco</item>
+    <item name="c_yes" type="string">OK</item>
+    <item name="c_no" type="string">no</item>
 
     <!-- sections -->
     <item name="home_1" type="string">Benvenuto, sarò la tua guida lungo il percorso.</item>
     <item name="home_2" type="string">Per interagire, premi una qualsiasi parte dello schermo e attendi il bip sonoro, quindi pronuncia il tuo comando in base al contesto.</item>
-    <item name="home_3" type="string">Puoi interrompermi in qualsiasi momento premendo lo schermo per impartire un comando.</item>
+    <item name="home_3" type="string">Puoi interròmpermi in qualsiasi momento premendo lo schermo per impartire un comando.</item>
     <item name="home_4" type="string">Vuoi iniziare una nuova partita o ascoltare le istruzioni complete?</item>
 
     <item name="help_1" type="string">Oltre alle azioni dipendenti dal contesto della sezione narrativa (ad esempio, Apro Porta, o Vado a Destra, o anche solo Destra), puoi sempre usare i seguenti comandi:</item>
@@ -60,6 +63,6 @@
     <item name="end_1" type="string">La partita è giunta al termine.</item>
     <item name="end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>
 
-    <item name="quit_1" type="string">Grazie per aver giocato insieme a me!</item>
-    <item name="quit_2" type="string">Premi lo schermo per abbandonare il gioco.</item>
+    <item name="quit_1" type="string">Grazie per aver giocato!</item>
+    <item name="quit_2" type="string">Tocca lo schermo per abbandonare il gioco.</item>
 </resources>

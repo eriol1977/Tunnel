@@ -63,16 +63,27 @@ public class Story {
     }
 
     void start() {
-        setCurrent(starting);
-        setPhase(StoryPhase.STARTED);
+        if (this.phase.equals(StoryPhase.HOME))
+            setCurrent(starting);
+        else // chiede conferma prima di reiniziare la storia
+            setCurrent(StoryLoader.getInstance().createAreYouSureSection(this.starting, this.current));
     }
 
     void setCurrent(final Section section) {
+        if (section.isEnding()) {
+            setPhase(StoryPhase.ENDED);
+        } else if (section.getId().equals(Section.QUIT_SECTION)) {
+            setPhase(StoryPhase.QUIT);
+        } else if (section.getId().equals(this.starting.getId())) {
+            StoryLoader.getInstance().resetStory();
+            setPhase(StoryPhase.STARTED);
+        } else if (section.getId().equals(Section.LOADING)) {
+            setPhase(StoryPhase.LOADING);
+        } else if (section.getId().equals(Section.SAVING)) {
+            setPhase(StoryPhase.SAVING);
+        }
         this.current = section;
         this.current.activate();
-        if (this.current.isEnding()) {
-            setPhase(StoryPhase.ENDED);
-        }
     }
 
     public void proceed() {
@@ -146,7 +157,6 @@ public class Story {
                     quit();
                     linkFound = true;
                 } else if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
-                    StoryLoader.getInstance().resetStory();
                     start();
                     linkFound = true;
                 } else if (command(Commands.ACTIONS).check(input) || command(Commands.COMMANDS).check(input)) {
@@ -165,7 +175,6 @@ public class Story {
                     quit();
                     linkFound = true;
                 } else if (command(Commands.START).check(input) || command(Commands.NEW_GAME).check(input)) {
-                    StoryLoader.getInstance().resetStory();
                     start();
                     linkFound = true;
                 } else if (command(Commands.LOAD_GAME).check(input)) {
@@ -185,14 +194,18 @@ public class Story {
 
     private void loadGame() {
         stash();
-        setCurrent(StoryLoader.getInstance().createLoadSection(this.current));
-        setPhase(StoryPhase.LOADING);
+        final Section loadSection = StoryLoader.getInstance().createLoadSection(this.current);
+        if (this.phase.equals(StoryPhase.HOME))
+            setCurrent(loadSection);
+        else // prima di caricare un'altra partita, chiede conferma
+            setCurrent(StoryLoader.getInstance().createAreYouSureSection(loadSection, this.current));
     }
 
     private void saveGame() {
         stash();
-        setCurrent(StoryLoader.getInstance().createSaveSection(this.current));
-        setPhase(StoryPhase.SAVING);
+        final Section saveSection = StoryLoader.getInstance().createSaveSection(this.current);
+        // prima di sovrascrivere il salvataggio, chiede conferma
+        setCurrent(StoryLoader.getInstance().createAreYouSureSection(saveSection, this.current));
     }
 
     private void proceedToHome() {
@@ -233,8 +246,8 @@ public class Story {
         setCurrent(getSection(Section.END_SECTION));
     }
 
-    private void proceedToQuit() {
-        setCurrent(getSection(Section.QUIT_SECTION));
+    public void proceedToQuit() {
+        setCurrent(StoryLoader.getInstance().createAreYouSureSection(getSection(Section.QUIT_SECTION), this.current));
     }
 
     private boolean proceedToLink(final String input) {
@@ -259,7 +272,6 @@ public class Story {
 
     void quit() {
         proceedToQuit();
-        setPhase(StoryPhase.QUIT);
     }
 
     private void stash() {

@@ -161,6 +161,8 @@ public class StoryLoader {
         loadHomeSection();
         loadHelpSection();
         loadEndSection();
+        loadLoadSection();
+        loadSaveSection();
         loadQuitSection();
         loadUnavailableSection();
     }
@@ -175,6 +177,22 @@ public class StoryLoader {
         final Section help = new Section(Section.HELP_SECTION);
         help.setText(loadSectionText(HELP_SECTION_PREFIX));
         this.story.addSection(help);
+    }
+
+    private void loadLoadSection() {
+        final Section loadSection = new Section(Section.LOADING);
+        List<String> text = new ArrayList<String>(1);
+        text.add(msg(Messages.GAME_LOADED));
+        loadSection.setText(text);
+        this.story.addSection(loadSection);
+    }
+
+    private void loadSaveSection() {
+        final Section saveSection = new Section(Section.SAVING);
+        List<String> text = new ArrayList<String>(1);
+        text.add(msg(Messages.GAME_SAVED));
+        saveSection.setText(text);
+        this.story.addSection(saveSection);
     }
 
     private void loadEndSection() {
@@ -444,7 +462,7 @@ public class StoryLoader {
         return createTemporarySection(text, current);
     }
 
-    public Section createAvailableActionsSection(final Section current) {
+    Section createAvailableActionsSection(final Section current) {
         final List<Link> links = current.getLinks();
         List<String> text = new ArrayList<String>(links.size());
         String[] commandIds;
@@ -457,16 +475,26 @@ public class StoryLoader {
         return createTemporarySection(text, current);
     }
 
-    public Section createSaveSection(final Section current) {
-        List<String> text = new ArrayList<String>(1);
-        text.add(msg(Messages.GAME_SAVED));
-        return createTemporarySection(text, current);
+    Section createSaveSection(final Section current) {
+        Section saveSection = this.story.getSection(Section.SAVING);
+        saveSection.updateLink(1, current.getId(), null, null);
+        return saveSection;
     }
 
-    public Section createLoadSection(Section current) {
-        List<String> text = new ArrayList<String>(1);
-        text.add(msg(Messages.GAME_LOADED));
-        return createTemporarySection(text, current);
+    Section createLoadSection(Section current) {
+        Section loadSection = this.story.getSection(Section.LOADING);
+        loadSection.updateLink(1, current.getId(), null, null);
+        return loadSection;
+    }
+
+    Section createAreYouSureSection(final Section yesResult, final Section noResult) {
+        final Section section = new Section(Section.ARE_YOU_SURE);
+        final List<String> text = new ArrayList<String>(1);
+        text.add(msg(Messages.ARE_YOU_SURE));
+        section.setText(text);
+        section.addLink(yesResult.getId(), new String[]{Commands.YES}, null);
+        section.addLink(noResult.getId(), new String[]{Commands.NO}, null);
+        return section;
     }
 
     /**

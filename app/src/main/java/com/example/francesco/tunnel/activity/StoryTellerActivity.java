@@ -19,7 +19,6 @@ import java.util.Map;
 
 /**
  * TODOS:
- * - in caso di tasto back, chiedere conferma prima di uscire, ma anche dopo il comando fine...
  * - commentare codice
  * - testare storiella in inglese/portoghese
  */
@@ -79,8 +78,8 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     @Override
     public void onBackPressed() {
-        // TODO chiedere conferma prima di uscire
-        super.onBackPressed();
+        this.story.proceedToQuit();
+        displayText(story.getCurrentText());
     }
 
     protected abstract void displayText(List<String> text);

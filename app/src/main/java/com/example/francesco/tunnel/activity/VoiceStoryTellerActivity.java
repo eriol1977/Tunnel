@@ -39,6 +39,7 @@ public abstract class VoiceStoryTellerActivity extends StoryTellerActivity {
     }
 
     protected void displayText(List<String> text) {
+        tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
         for (String paragraph : text) {
             speak(paragraph);
             tts.playSilence(750, TextToSpeech.QUEUE_ADD, null);

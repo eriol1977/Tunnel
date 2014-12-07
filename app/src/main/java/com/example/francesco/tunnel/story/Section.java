@@ -40,15 +40,21 @@ public class Section {
 
     public final static String HOME_SECTION = "home";
 
-    public final static String HELP_SECTION = "help";
+    final static String HELP_SECTION = "help";
 
-    public final static String END_SECTION = "end";
+    final static String END_SECTION = "end";
 
-    public final static String QUIT_SECTION = "quit";
+    final static String QUIT_SECTION = "quit";
 
-    public final static String UNAVAILABLE_SECTION = "unavailable";
+    final static String UNAVAILABLE_SECTION = "unavailable";
 
-    public final static String TEMPORARY = "temporary"; // ex: inventario, esaminare oggetto...
+    final static String LOADING = "loading";
+
+    final static String SAVING = "saving";
+
+    final static String TEMPORARY = "temporary"; // ex: inventario, esaminare oggetto...
+
+    final static String ARE_YOU_SURE = "are_you_sure";
 
     Section(final String id) {
         this.id = id;
@@ -135,7 +141,8 @@ public class Section {
     }
 
     void removeLink(final int position) {
-        this.links.remove(position - 1);
+        if (this.links.size() >= position)
+            this.links.remove(position - 1);
     }
 
     void updateLink(final int position, final String nextSection, final String[] commandIds, final String[] itemIds) {
@@ -237,6 +244,6 @@ public class Section {
     }
 
     boolean isTemporary() {
-        return this.id.equals(Section.HELP_SECTION) || this.id.equals(Section.UNAVAILABLE_SECTION) || this.id.equals(Section.TEMPORARY);
+        return this.id.equals(Section.HELP_SECTION) || this.id.equals(Section.UNAVAILABLE_SECTION) || this.id.equals(Section.LOADING) || this.id.equals(Section.SAVING) || this.id.equals(Section.TEMPORARY);
     }
 }

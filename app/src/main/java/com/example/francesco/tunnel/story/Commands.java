@@ -48,6 +48,10 @@ public class Commands {
 
     public final static String JOIN = "c_join";
 
+    public final static String YES = "c_yes";
+
+    public final static String NO = "c_no";
+
     public Commands(Map<String, Command> commands) {
         this.commands = commands;
     }
