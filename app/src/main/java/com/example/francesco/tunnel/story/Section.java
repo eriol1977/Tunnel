@@ -52,7 +52,9 @@ public class Section {
 
     final static String SAVING = "saving";
 
-    final static String TEMPORARY = "temporary"; // ex: inventario, esaminare oggetto...
+    final static String INVENTORY = "inventory";
+
+    final static String TEMPORARY = "temporary"; // ex: esaminare oggetto...
 
     final static String ARE_YOU_SURE = "are_you_sure";
 

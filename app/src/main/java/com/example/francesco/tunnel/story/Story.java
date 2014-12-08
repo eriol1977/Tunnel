@@ -2,6 +2,7 @@ package com.example.francesco.tunnel.story;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +17,13 @@ public class Story {
 
     private Section current;
 
-    private Section stashed;
+    private LinkedList<Section> stashed = new LinkedList<Section>();
 
     private final Character character;
 
     private Map<String, Section> sections = new HashMap<String, Section>();
+
+    private boolean restartCommandIssued = false;
 
     public Story(Character character) {
         this.character = character;
@@ -55,21 +58,16 @@ public class Story {
      * ex: "Torno indietro","Apro porta","Prendo medaglione sole"
      */
     public List<String> getCommandInputs() {
-        List<String> text = new ArrayList<String>();
-        if (this.phase.equals(StoryPhase.HOME)) {
-            text.add("inizio"); // TODO
-            text.add("carica");
-            text.add("aiuto");
-            text.add("fine");
-        } else {
-            final List<Link> links = current.getLinks();
-            String[] commandIds;
-            for (final Link link : links) {
-                commandIds = link.getCommandIds();
-                for (final String commandId : commandIds) {
-                    text.add(command(commandId).getCommandWords());
-                }
-            }
+        final List<Link> links = current.getLinks();
+        List<String> text = new ArrayList<String>(links.size());
+        String[] commandIds;
+        String commandText;
+        for (final Link link : links) {
+            commandIds = link.getCommandIds();
+            commandText = command(commandIds[0]).getCommandWords();
+            if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE))
+                commandText += " " + StoryLoader.getInstance().item(link.getItemIds()[0]).getName();
+            text.add(commandText);
         }
         return text;
     }
@@ -83,8 +81,9 @@ public class Story {
         this.sections.clear();
         this.phase = null;
         this.starting = null;
-        this.stashed = null;
+        this.stashed.clear();
         this.current = null;
+        this.restartCommandIssued = true;
     }
 
     void start() {
@@ -99,19 +98,25 @@ public class Story {
             setPhase(StoryPhase.ENDED);
         } else if (section.getId().equals(Section.QUIT_SECTION)) {
             setPhase(StoryPhase.QUIT);
-        } else if (section.getId().equals(this.starting.getId())) {
+        } else if (restartCommandIssued && section.getId().equals(this.starting.getId())) {
             StoryLoader.getInstance().resetStory();
             setPhase(StoryPhase.STARTED);
+            restartCommandIssued = false;
         } else if (section.getId().equals(Section.LOADING)) {
             setPhase(StoryPhase.LOADING);
         } else if (section.getId().equals(Section.SAVING)) {
             setPhase(StoryPhase.SAVING);
+        } else if (section.getId().equals(Section.INVENTORY)) {
+            setPhase(StoryPhase.INVENTORY);
         }
         this.current = section;
         this.current.activate();
     }
 
     public void proceed() {
+        if (this.phase.equals(StoryPhase.INVENTORY))
+            setPhase(StoryPhase.STARTED);
+
         if (this.phase.equals(StoryPhase.ENDED))
             proceedToEnd();
         else {
@@ -170,7 +175,7 @@ public class Story {
                     proceedToInventory();
                     linkFound = true;
                 } else if (command(Commands.EXAMINE).check(input)) {
-                    proceedToExamine(input);
+                    proceedToExamine(input, false);
                     linkFound = true;
                 } else if (command(Commands.LOAD_GAME).check(input)) {
                     loadGame();
@@ -190,8 +195,18 @@ public class Story {
                 } else if (command(Commands.NOTES).check(input)) {
                     proceedToNotes();
                     linkFound = true;
+                }
+                break;
+            case INVENTORY:
+                if (command(Commands.EXAMINE).check(input)) {
+                    proceedToExamine(input, true);
+                    linkFound = true;
                 } else if (command(Commands.JOIN).check(input)) {
                     proceedToJoin(input);
+                    linkFound = true;
+                } else if (command(Commands.GO_BACK).check(input)) {
+                    setPhase(StoryPhase.STARTED);
+                    restore();
                     linkFound = true;
                 }
                 break;
@@ -257,9 +272,9 @@ public class Story {
         setCurrent(StoryLoader.getInstance().createAvailableActionsSection(this.current));
     }
 
-    private void proceedToExamine(final String input) {
+    private void proceedToExamine(final String input, final boolean inInventory) {
         stash();
-        setCurrent(StoryLoader.getInstance().createExamineSection(this.current, input));
+        setCurrent(StoryLoader.getInstance().createExamineSection(this.current, input, inInventory));
     }
 
     private void proceedToJoin(final String input) {
@@ -300,11 +315,13 @@ public class Story {
     }
 
     private void stash() {
-        this.stashed = this.current;
+        this.stashed.add(this.current);
     }
 
-    private void restore() {
-        setCurrent(this.stashed);
+    private Section restore() {
+        final Section last = this.stashed.removeLast();
+        setCurrent(last);
+        return last;
     }
 
     Section getSection(final String id) {
@@ -338,7 +355,7 @@ public class Story {
         if (temporary && this.current != null)
             id = this.current.getId();
         else
-            id = this.stashed.getId();
+            id = restore().getId();
         return id;
     }
 }

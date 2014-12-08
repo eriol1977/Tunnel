@@ -132,6 +132,10 @@ public class Link {
         return commandIds;
     }
 
+    String[] getItemIds() {
+        return itemIds;
+    }
+
     void setItemIds(List<String> itemIds) {
         this.itemIds = new String[itemIds.size()];
         for(int i = 0; i < itemIds.size(); i++) {

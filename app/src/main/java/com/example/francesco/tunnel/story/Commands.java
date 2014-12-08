@@ -70,4 +70,26 @@ public class Commands {
         }
         return found;
     }
+
+    public List<String> getDefaultCommands(final StoryPhase storyPhase) {
+        List<String> commands = new ArrayList<String>();
+        if (storyPhase.equals(StoryPhase.HOME) || storyPhase.equals(StoryPhase.ENDED)) {
+            commands.add(get(NEW_GAME).getCommandWords());
+            commands.add(get(LOAD_GAME).getCommandWords());
+            commands.add(get(INSTRUCTIONS).getCommandWords());
+            commands.add(get(QUIT).getCommandWords());
+            commands.add(get(REPEAT).getCommandWords());
+        } else if (storyPhase.equals(StoryPhase.STARTED)) {
+            // TODO EXAMINE e JOIN ??
+            commands.add(get(INVENTORY).getCommandWords());
+            commands.add(get(NOTES).getCommandWords());
+            commands.add(get(SAVE_GAME).getCommandWords());
+            commands.add(get(NEW_GAME).getCommandWords());
+            commands.add(get(LOAD_GAME).getCommandWords());
+            commands.add(get(INSTRUCTIONS).getCommandWords());
+            commands.add(get(QUIT).getCommandWords());
+            commands.add(get(REPEAT).getCommandWords());
+        }
+        return commands;
+    }
 }

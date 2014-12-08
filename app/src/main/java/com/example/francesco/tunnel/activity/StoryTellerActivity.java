@@ -103,13 +103,13 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         }
 
         if (story.hasDirectOutcome()) {
-            if (story.unavailableCommand() || story.isTemporarySection()) {
-                story.proceed();
-                processInput();
-            } else {
+//            if (story.unavailableCommand() || story.isTemporarySection()) {
+//                story.proceed();
+//                processInput();
+//            } else {
                 story.proceed();
                 displayText(story.getCurrentText());
-            }
+            //}
         } else {
             processInput();
         }

@@ -414,6 +414,8 @@ public class StoryLoader {
     ///////// SPECIAL SECTIONS
 
     Section createInventorySection(final Section current) {
+        Section inventorySection = new Section(Section.INVENTORY);
+        inventorySection.addLink(current.getId(), new String[]{Commands.GO_BACK}, null);
         final List<Item> items = this.character.getInventory().getItems();
         List<String> text = new ArrayList<String>(items.size() + 1);
         if (items.isEmpty())
@@ -422,30 +424,35 @@ public class StoryLoader {
             text.add(msg(Messages.INVENTORY));
             for (Item item : items) {
                 text.add(item.getName());
+                inventorySection.addLink(null, new String[]{Commands.EXAMINE}, new String[]{item.getId()});
             }
         }
-        return createTemporarySection(text, current);
+        inventorySection.setText(text);
+        return inventorySection;
     }
 
-    Section createExamineSection(final Section current, final String input) {
-        List<Item> items = this.character.getInventory().getItems();
+    Section createExamineSection(final Section current, final String input, final boolean inInventory) {
         List<String> text = new ArrayList<String>(1);
-        for (final Item item : items) {
-            if (item.check(input)) {
-                text.add(item.getDescription());
-                addNote(item);
+
+        if (inInventory) {
+            List<Item> items = this.character.getInventory().getItems();
+            for (final Item item : items) {
+                if (item.check(input)) {
+                    text.add(item.getDescription());
+                    addNote(item);
+                }
             }
-        }
-        if (text.isEmpty()) {
+        } else {
             Item item = current.checkObservableItem(input);
             if (item != null) {
                 text.add(item.getDescription());
                 addNote(item);
             }
         }
-        if (text.isEmpty()) {
+
+        if (text.isEmpty())
             text.add(msg(Messages.CANT_EXAMINE));
-        }
+
         return createTemporarySection(text, current);
     }
 
@@ -855,5 +862,7 @@ public class StoryLoader {
         return character;
     }
 
-
+    public List<String> getDefaultCommands() {
+        return this.commands.getDefaultCommands(this.story.getPhase());
+    }
 }

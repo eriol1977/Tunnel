@@ -117,30 +117,48 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         super.onStop();
     }
 
+    private List<String> commandInputs;
+
+    private List<String> defaultCommandInputs;
+
+    private int commandIndex;
+
+    private int defaultCommandIndex;
+
+    private boolean usingDefaultCommands = true;
+
     @Override
     protected void processInput() {
         textView.setVisibility(View.INVISIBLE);
         commandsView.setVisibility(View.VISIBLE);
 
         this.commandInputs = story.getCommandInputs();
-        this.commandIndex = 0;
+        this.defaultCommandInputs = loader.getDefaultCommands();
 
         if (!this.commandInputs.isEmpty()) {
-            displayCommand();
+            this.commandIndex = 0;
+            this.defaultCommandIndex = -1;
+            usingDefaultCommands = false;
+        } else {
+            this.commandIndex = -1;
+            this.defaultCommandIndex = 0;
+            usingDefaultCommands = true;
+        }
+        displayCommand();
+    }
+
+    void displayCommand() {
+        String text = null;
+        if (usingDefaultCommands && !this.defaultCommandInputs.isEmpty())
+            text = this.defaultCommandInputs.get(this.defaultCommandIndex);
+        else if (!usingDefaultCommands && !this.commandInputs.isEmpty())
+            text = this.commandInputs.get(this.commandIndex);
+        if (text != null) {
+            commandsView.setText(text);
+            tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
+            speak(text);
         }
     }
-
-    void displayCommand()
-    {
-        String text = this.commandInputs.get(this.commandIndex);
-        commandsView.setText(text);
-        tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
-        speak(text);
-    }
-
-    private List<String> commandInputs;
-
-    private int commandIndex = 0;
 
     class MyOnTouchListener implements View.OnTouchListener {
 
@@ -165,26 +183,52 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            story.proceed(commandInputs.get(commandIndex));
+            if (usingDefaultCommands)
+                story.proceed(defaultCommandInputs.get(defaultCommandIndex));
+            else
+                story.proceed(commandInputs.get(commandIndex));
             displayText(story.getCurrentText());
             return true;
         }
 
         @Override
-        public void onLongPress(MotionEvent event) {
-            story.proceed(commandInputs.get(commandIndex));
-            displayText(story.getCurrentText());
-        }
-
-        @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
-            commandIndex++;
-            if (commandIndex >= commandInputs.size())
-                commandIndex = 0;
+            // fling orizzontale
+            if (Math.abs(velocityX) > Math.abs(velocityY)) {
+                if (!commandInputs.isEmpty()) {
+                    usingDefaultCommands = false;
+                    // fling verso destra
+                    if (velocityX > 0) {
+                        commandIndex--;
+                        if (commandIndex < 0)
+                            commandIndex = commandInputs.size() - 1;
+                        // fling verso sinistra
+                    } else {
+                        commandIndex++;
+                        if (commandIndex >= commandInputs.size())
+                            commandIndex = 0;
+                    }
 
+                }
+                // fling verticale
+            } else {
+                if (!defaultCommandInputs.isEmpty()) {
+                    usingDefaultCommands = true;
+                    // fling verso il basso
+                    if (velocityY > 0) {
+                        defaultCommandIndex++;
+                        if (defaultCommandIndex >= defaultCommandInputs.size())
+                            defaultCommandIndex = 0;
+                        // fling verso l'alto
+                    } else {
+                        defaultCommandIndex--;
+                        if (defaultCommandIndex < 0)
+                            defaultCommandIndex = defaultCommandInputs.size() - 1;
+                    }
+                }
+            }
             displayCommand();
-
             return true;
         }
     }

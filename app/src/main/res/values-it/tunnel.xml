@@ -43,7 +43,7 @@
 
     <!-- sections -->
     <item name="sections" type="string">20</item>
-    <item name="starting" type="string">13</item>
+    <item name="starting" type="string">1</item>
     <item name="ending" type="string">9,20</item>
 
     <item name="s_1_1" type="string">Ti trovi in una sala circolare.</item>
