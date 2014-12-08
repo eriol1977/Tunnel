@@ -61,13 +61,43 @@ public class Story {
         final List<Link> links = current.getLinks();
         List<String> text = new ArrayList<String>(links.size());
         String[] commandIds;
+        String[] itemIds;
         String commandText;
+        Item item = null;
+        // comandi ricavati dai link definiti esplicitamente
         for (final Link link : links) {
             commandIds = link.getCommandIds();
-            commandText = command(commandIds[0]).getCommandWords();
-            if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE))
-                commandText += " " + StoryLoader.getInstance().item(link.getItemIds()[0]).getName();
-            text.add(commandText);
+            itemIds = link.getItemIds();
+            if (commandIds.length > 0) { // è 0 con noItems, per non ripetere due volte lo stesso comando
+                if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE)) {
+                    if (itemIds != null && itemIds.length > 0) {
+                        item = StoryLoader.getInstance().item(itemIds[0]);
+                        if (commandIds[0].equals(Commands.GET) || this.character.hasItem(item)) {
+                            commandText = command(commandIds[0]).getCommandWords() + " " + item.getName();
+                            text.add(commandText);
+                        }
+                    }
+                } else {
+                    commandText = command(commandIds[0]).getCommandWords();
+                    text.add(commandText);
+                }
+            }
+        }
+        // comandi ricavati dalla presenza di "observables"
+        List<Item> items = current.getObservableItems();
+        if(items != null) {
+            for (final Item i : items) {
+                commandText = command(Commands.EXAMINE).getCommandWords() + " " + i.getName();
+                text.add(commandText);
+            }
+        }
+        // comandi ricavati dalla presenza di "usables"
+        items = current.getUsableItems();
+        if(items != null) {
+            for (final Item i : items) {
+                commandText = command(Commands.USE).getCommandWords() + " " + i.getName();
+                text.add(commandText);
+            }
         }
         return text;
     }

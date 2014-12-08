@@ -14,6 +14,21 @@ import com.example.francesco.tunnel.R;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * TODOs
+ * - "carica" e "salva" attivano un ulteriore comendo, credo il primo della lista comune della sezione
+ * - spostare "unisco" nello stato "inventario" (all'inizio, usando semplicemente la parola fornita nella
+ *   definizione del join)
+ * - quando torno da una sezione temporanea, provare a non ripetere il testo...
+ *
+ * - aggiungere link in base alle osservazioni: per esempio, "prendo medaglione" e "guardo medaglione"
+ * solo dopo aver guardato la scrivania:
+ * --- la descrizione di un oggetto deve puntare a una sezione
+ * --- nella sezione si possono usare tutti gli switch necessari
+ * --- aggiungere notes_get oltre a notes_drop
+ * --- creare uno switch per aggiungere/rimuovere observables
+ * --- creare uno switch per aggiungere/rimuovere usables
+ */
 public class HearStoryTellerActivity extends StoryTellerActivity {
 
     private TextToSpeech tts;
@@ -125,7 +140,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
     private int defaultCommandIndex;
 
-    private boolean usingDefaultCommands = true;
+    private String selectedCommandInput;
 
     @Override
     protected void processInput() {
@@ -134,29 +149,22 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
         this.commandInputs = story.getCommandInputs();
         this.defaultCommandInputs = loader.getDefaultCommands();
+        this.commandIndex = 0;
+        this.defaultCommandIndex = 0;
 
         if (!this.commandInputs.isEmpty()) {
-            this.commandIndex = 0;
-            this.defaultCommandIndex = -1;
-            usingDefaultCommands = false;
-        } else {
-            this.commandIndex = -1;
-            this.defaultCommandIndex = 0;
-            usingDefaultCommands = true;
+            this.selectedCommandInput = this.commandInputs.get(0);
+        } else if (!this.defaultCommandInputs.isEmpty()) {
+            this.selectedCommandInput = this.defaultCommandInputs.get(0);
         }
         displayCommand();
     }
 
     void displayCommand() {
-        String text = null;
-        if (usingDefaultCommands && !this.defaultCommandInputs.isEmpty())
-            text = this.defaultCommandInputs.get(this.defaultCommandIndex);
-        else if (!usingDefaultCommands && !this.commandInputs.isEmpty())
-            text = this.commandInputs.get(this.commandIndex);
-        if (text != null) {
-            commandsView.setText(text);
+        if (selectedCommandInput != null) {
+            commandsView.setText(selectedCommandInput);
             tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
-            speak(text);
+            speak(selectedCommandInput);
         }
     }
 
@@ -183,10 +191,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            if (usingDefaultCommands)
-                story.proceed(defaultCommandInputs.get(defaultCommandIndex));
-            else
-                story.proceed(commandInputs.get(commandIndex));
+            story.proceed(selectedCommandInput);
             displayText(story.getCurrentText());
             return true;
         }
@@ -197,7 +202,6 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
             // fling orizzontale
             if (Math.abs(velocityX) > Math.abs(velocityY)) {
                 if (!commandInputs.isEmpty()) {
-                    usingDefaultCommands = false;
                     // fling verso destra
                     if (velocityX > 0) {
                         commandIndex--;
@@ -209,12 +213,11 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                         if (commandIndex >= commandInputs.size())
                             commandIndex = 0;
                     }
-
+                    selectedCommandInput = commandInputs.get(commandIndex);
                 }
                 // fling verticale
             } else {
                 if (!defaultCommandInputs.isEmpty()) {
-                    usingDefaultCommands = true;
                     // fling verso il basso
                     if (velocityY > 0) {
                         defaultCommandIndex++;
@@ -226,6 +229,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                         if (defaultCommandIndex < 0)
                             defaultCommandIndex = defaultCommandInputs.size() - 1;
                     }
+                    selectedCommandInput = defaultCommandInputs.get(defaultCommandIndex);
                 }
             }
             displayCommand();

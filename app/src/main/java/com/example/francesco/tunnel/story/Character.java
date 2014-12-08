@@ -29,4 +29,8 @@ public class Character {
         this.inventory.reset();
         this.notes.reset();
     }
+
+    boolean hasItem(final Item item) {
+        return this.inventory.checkItem(item);
+    }
 }

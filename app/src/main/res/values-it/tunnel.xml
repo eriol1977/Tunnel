@@ -87,14 +87,14 @@
     <item name="s_5_notes_drop" type="string">n_1,n_2</item>
     <item name="s_5_link_1" type="string">6</item>
 
-    <item name="s_6_1" type="string">Raggiungi in un\'ampia sala dalla volta di pietra.</item>
+    <item name="s_6_1" type="string">Raggiungi un\'ampia sala dalla volta di pietra.</item>
     <item name="s_6_2" type="string">Vi è una torcia appesa a un gancio nella parete.</item>
     <item name="s_6_3" type="string">In fondo alla sala si apre un corridoio buio.</item>
     <item name="s_6_observable" type="string">i_torch</item>
     <!-- sezioni collegate e relativi comandi; accede alla 8 se non possiede la torcia, altrimenti alla 9 -->
     <item name="s_6_link_1" type="string">7:c_get:i_torch</item>
-    <item name="s_6_link_2" type="string">8:c_across,c_corridor,c_go_on,c_straight_on,c_proceed:no_i_torch</item>
-    <item name="s_6_link_3" type="string">10:c_across,c_corridor,c_go_on,c_straight_on,c_proceed:i_torch</item>
+    <item name="s_6_link_2" type="string">8:c_corridor,c_across,c_go_on,c_straight_on,c_proceed:no_i_torch</item>
+    <item name="s_6_link_3" type="string">10:c_corridor,c_across,c_go_on,c_straight_on,c_proceed:i_torch</item>
     <item name="s_6_link_4" type="string">1:c_go_back</item>
 
     <item name="s_7_1" type="string">Afferri la torcia e la reggi dinanzi a te.</item>
@@ -107,8 +107,6 @@
     <item name="s_8_2" type="string">Il corridoio sembra proseguire dritto.</item>
     <item name="s_8_link_1" type="string">6:c_go_back</item>
     <item name="s_8_link_2" type="string">9:c_go_on</item>
-    <item name="s_8_link_3" type="string">9:c_straight_on</item>
-    <item name="s_8_link_4" type="string">9:c_proceed</item>
 
     <item name="s_9_1" type="string">Avanzi nel buio più assoluto, finché all\'improvviso la terra ti manca sotto i piedi.</item>
     <item name="s_9_2" type="string">Urlando di terrore, precipiti incontro alla tua morte.</item>

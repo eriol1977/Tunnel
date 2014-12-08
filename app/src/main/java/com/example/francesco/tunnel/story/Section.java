@@ -173,12 +173,20 @@ public class Section {
 
     //////// ITEMS
 
+    List<Item> getUsableItems() {
+        return usableItems;
+    }
+
     void setUsableItems(List<Item> items) {
         this.usableItems = items;
     }
 
     boolean checkUsableItem(final Item item) {
         return this.usableItems.contains(item);
+    }
+
+    List<Item> getObservableItems() {
+        return observableItems;
     }
 
     void setObservableItems(List<Item> items) {
