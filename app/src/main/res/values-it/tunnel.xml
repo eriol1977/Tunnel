@@ -43,7 +43,7 @@
 
     <!-- sections -->
     <item name="sections" type="string">20</item>
-    <item name="starting" type="string">1</item>
+    <item name="starting" type="string">15</item>
     <item name="ending" type="string">9,20</item>
 
     <item name="s_1_1" type="string">Ti trovi in una sala circolare.</item>
@@ -146,19 +146,20 @@
     <item name="s_15_link_1" type="string">16:c_get:i_sun_medallion</item>
     <item name="s_15_link_2" type="string">17:c_get:i_moon_medallion</item>
     <item name="s_15_link_3" type="string">18:c_open_door,c_open_portal</item>
-    <item name="s_15_link_4" type="string">20:c_use:i_medallion</item>
 
     <item name="s_16_1" type="string">Senza tanti complimenti, spazzi via il mucchio di cianfrusaglie dalla scrivania per impadronirti del medaglione.</item>
     <item name="s_16_get" type="string">i_sun_medallion</item>
     <item name="s_16_notes_drop" type="string">n_5</item>
     <!-- cambia descrizione dell'oggetto i_desk e rimuove la nota ad esso associata -->
     <item name="s_16_switch_1" type="string">item:i_desk:La scrivania è sgombra:""</item>
+    <item name="s_16_switch_2" type="string">link:15:1</item>
     <item name="s_16_link_1" type="string">15</item>
 
     <item name="s_17_1" type="string">Infilando le dita tra le ragnatele appiccicose, afferri il medaglione.</item>
     <item name="s_17_get" type="string">i_moon_medallion</item>
     <item name="s_17_notes_drop" type="string">n_6</item>
     <item name="s_17_switch_1" type="string">item:i_shelf:Nient\'altro che tomi ammuffiti sullo scaffale:""</item>
+    <item name="s_17_switch_2" type="string">link:15:2</item>
     <item name="s_17_link_1" type="string">15</item>
 
     <item name="s_18_1" type="string">Il portale deve pesare parecchie tonnellate, tanto che al tuo tocco non si smuove di un millimetro.</item>
@@ -169,6 +170,7 @@
     <item name="s_19_get" type="string">i_medallion</item>
     <item name="s_19_drop" type="string">i_sun_medallion,i_moon_medallion</item>
     <item name="s_19_notes_drop" type="string">n_7,n_8</item>
+    <item name="s_19_switch_1" type="string">link:15:-1:20:c_use:i_medallion</item>
 
     <item name="s_20_1" type="string">Appoggi il medaglione nell\'ìncavo circolare al centro del portale, seguendo l\'indizio dei bassorilievi sull\'arco di pietra.</item>
     <item name="s_20_2" type="string">Con un raspare di metallo su pietra, l\'intero blocco di ferro del portale scorre lateralmente sino a scomparire nella parete rocciosa.</item>

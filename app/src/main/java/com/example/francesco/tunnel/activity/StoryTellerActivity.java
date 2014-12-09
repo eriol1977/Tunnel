@@ -93,23 +93,22 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             finish();
         } else if (story.getPhase().equals(StoryPhase.SAVING)) {
             saveGame(false);
-            story.proceed();
+            story.setPhase(StoryPhase.STARTED);
             displayText(story.getCurrentText());
             return;
         } else if (story.getPhase().equals(StoryPhase.LOADING)) {
             loadGame(false);
+            story.setPhase(StoryPhase.STARTED);
             displayText(story.getCurrentText());
             return;
         }
 
         if (story.hasDirectOutcome()) {
-//            if (story.unavailableCommand() || story.isTemporarySection()) {
-//                story.proceed();
-//                processInput();
-//            } else {
-                story.proceed();
+            story.proceed();
+            if (story.getPhase().equals(StoryPhase.STARTED))
+                processInput();
+            else
                 displayText(story.getCurrentText());
-            //}
         } else {
             processInput();
         }

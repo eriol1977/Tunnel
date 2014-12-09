@@ -160,6 +160,7 @@ public class StoryLoader {
     private void loadDefaultSections() {
         loadHomeSection();
         loadHelpSection();
+        loadInventorySection();
         loadEndSection();
         loadLoadSection();
         loadSaveSection();
@@ -176,7 +177,13 @@ public class StoryLoader {
     private void loadHelpSection() {
         final Section help = new Section(Section.HELP_SECTION);
         help.setText(loadSectionText(HELP_SECTION_PREFIX));
+        help.setTemporary(true);
         this.story.addSection(help);
+    }
+
+    private void loadInventorySection() {
+        final Section inventory = new Section(Section.INVENTORY);
+        this.story.addSection(inventory);
     }
 
     private void loadLoadSection() {
@@ -184,6 +191,7 @@ public class StoryLoader {
         List<String> text = new ArrayList<String>(1);
         text.add(msg(Messages.GAME_LOADED));
         loadSection.setText(text);
+        loadSection.setTemporary(true);
         this.story.addSection(loadSection);
     }
 
@@ -192,6 +200,7 @@ public class StoryLoader {
         List<String> text = new ArrayList<String>(1);
         text.add(msg(Messages.GAME_SAVED));
         saveSection.setText(text);
+        saveSection.setTemporary(true);
         this.story.addSection(saveSection);
     }
 
@@ -212,6 +221,7 @@ public class StoryLoader {
         List<String> text = new ArrayList<String>(1);
         text.add(msg(Messages.UNAVAILABLE));
         unavailable.setText(text);
+        unavailable.setTemporary(true);
         this.story.addSection(unavailable);
     }
 
@@ -313,6 +323,7 @@ public class StoryLoader {
             String sectionLink;
             String[] linkInfo;
             Link link;
+            int linkIdNumber = 0;
             List<String> orderedKeys = new ArrayList<String>(sectionLinks.keySet());
             Collections.sort(orderedKeys);
             for (String linkId : orderedKeys) {
@@ -320,7 +331,8 @@ public class StoryLoader {
                 // es: s_6_link_3 --> 9:c_across,c_corridor:i_torch
                 sectionLink = sectionLinks.get(linkId);
                 linkInfo = sectionLink.split(SEPARATOR);
-                link = new Link(section, linkInfo[0]); // s_6_link_3, 9
+                linkIdNumber++;
+                link = new Link(String.valueOf(linkIdNumber), section, linkInfo[0]); // s_6_link_3, 9
 
                 // commands
                 if (linkInfo.length > 1) {
@@ -381,7 +393,7 @@ public class StoryLoader {
                 switchInfo = sectionSwitch.split(SEPARATOR);
                 if (switchInfo[0].equals(SECTION_SWITCH_KIND_LINK)) {
                     switches.add(new LinkSwitch(switchInfo[1],
-                            Integer.valueOf(switchInfo[2]).intValue(),
+                            switchInfo[2],
                             switchInfo.length > 3 ? switchInfo[3] : "",
                             switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{},
                             switchInfo.length > 5 ? switchInfo[5].split(LIST_SEPARATOR) : new String[]{}));
@@ -414,7 +426,8 @@ public class StoryLoader {
     ///////// SPECIAL SECTIONS
 
     Section createInventorySection(final Section current) {
-        Section inventorySection = new Section(Section.INVENTORY);
+        Section inventorySection = story.getSection(Section.INVENTORY);
+        inventorySection.clearLinks();
         inventorySection.addLink(current.getId(), new String[]{Commands.GO_BACK}, null);
         final List<Item> items = this.character.getInventory().getItems();
         List<String> text = new ArrayList<String>(items.size() + 1);
@@ -422,9 +435,15 @@ public class StoryLoader {
             text.add(msg(Messages.EMPTY_INVENTORY));
         else {
             text.add(msg(Messages.INVENTORY));
+            // per ogni oggetto, aggiungo il nome alla lista e un link "guardo"
             for (Item item : items) {
                 text.add(item.getName());
                 inventorySection.addLink(null, new String[]{Commands.EXAMINE}, new String[]{item.getId()});
+            }
+            // per ogni unione di oggetti disponibile, aggiungo un link "unisco"
+            final List<Join> availableJoins = this.joins.getAvailableJoins(this.character.getInventory());
+            for (final Join join : availableJoins) {
+                inventorySection.addLink(join.getTargetSectionId(), new String[]{Commands.JOIN}, new String[]{join.getWords()});
             }
         }
         inventorySection.setText(text);
@@ -453,20 +472,20 @@ public class StoryLoader {
         if (text.isEmpty())
             text.add(msg(Messages.CANT_EXAMINE));
 
-        return createTemporarySection(text, current);
+        return createTemporarySection(text);
     }
 
-    Section createJoinSection(final Section current, final String input) {
+    Section createJoinSection(final String input) {
         final String joinResult = this.joins.getJoinResult(input, this.character.getInventory());
         Section joinSection;
         if (joinResult != null) {
             joinSection = this.story.getSection(joinResult);
-            joinSection.addLink(current.getId(), null, null);
+            joinSection.setTemporary(true);
             return joinSection;
         }
         final List<String> text = new ArrayList<String>(1);
         text.add(msg(Messages.CANT_JOIN));
-        return createTemporarySection(text, current);
+        return createTemporarySection(text);
     }
 
     Section createAvailableActionsSection(final Section current) {
@@ -479,19 +498,7 @@ public class StoryLoader {
                 text.add(command(commandId).getCommandWords());
             }
         }
-        return createTemporarySection(text, current);
-    }
-
-    Section createSaveSection(final Section current) {
-        Section saveSection = this.story.getSection(Section.SAVING);
-        saveSection.updateLink(1, current.getId(), null, null);
-        return saveSection;
-    }
-
-    Section createLoadSection(Section current) {
-        Section loadSection = this.story.getSection(Section.LOADING);
-        loadSection.updateLink(1, current.getId(), null, null);
-        return loadSection;
+        return createTemporarySection(text);
     }
 
     Section createAreYouSureSection(final Section yesResult, final Section noResult) {
@@ -506,13 +513,12 @@ public class StoryLoader {
 
     /**
      * @param text
-     * @param current
      * @return sezione dotata di testo che torna sempre direttamente alla sezione attuale
      */
-    private Section createTemporarySection(final List<String> text, final Section current) {
+    private Section createTemporarySection(final List<String> text) {
         Section tempSection = new Section(Section.TEMPORARY);
         tempSection.setText(text);
-        tempSection.addLink(current.getId(), null, null);
+        tempSection.setTemporary(true);
         return tempSection;
     }
 
@@ -590,7 +596,7 @@ public class StoryLoader {
             for (final String ls : lss) {
                 switchInfo = ls.split(SEPARATOR);
                 links.add(new LinkSwitch(switchInfo[0],
-                        Integer.valueOf(switchInfo[1]).intValue(),
+                        switchInfo[1],
                         switchInfo.length > 2 ? switchInfo[2] : "",
                         switchInfo.length > 3 ? switchInfo[3].split(LIST_SEPARATOR) : new String[]{},
                         switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{}));
@@ -642,22 +648,22 @@ public class StoryLoader {
      */
     void loadLinkSwitches(final List<LinkSwitch> switches) {
         Section section;
-        int position;
+        String linkId;
         String nextSection;
         String[] commandIds;
         String[] itemIds;
         for (final LinkSwitch lSwitch : switches) {
             section = this.story.getSection(lSwitch.getSectionId());
-            position = lSwitch.getLinkIndex();
+            linkId = lSwitch.getLinkId();
             nextSection = lSwitch.getNextSection();
             commandIds = lSwitch.getCommandIds();
             itemIds = lSwitch.getItemIds();
             if (nextSection.isEmpty())
-                section.removeLink(position);
-            else if (position == -1)
+                section.removeLink(linkId);
+            else if (linkId.equals("-1"))
                 section.addLink(nextSection, commandIds, itemIds);
             else
-                section.updateLink(position, nextSection, commandIds, itemIds);
+                section.updateLink(linkId, nextSection, commandIds, itemIds);
         }
         this.linkSwitchesSoFar.addAll(switches);
     }
@@ -761,7 +767,7 @@ public class StoryLoader {
         if (!this.linkSwitchesSoFar.isEmpty()) {
             for (final LinkSwitch ls : this.linkSwitchesSoFar) {
                 sb.append(ls.getSectionId()).append(SEPARATOR);
-                sb.append(ls.getLinkIndex());
+                sb.append(ls.getLinkId());
                 if (!ls.getNextSection().isEmpty()) {
                     sb.append(SEPARATOR).append(ls.getNextSection());
 
@@ -821,7 +827,7 @@ public class StoryLoader {
             this.character.getNotes().add(item.getNote(), msg(item.getNote()));
     }
 
-    public Section createNotesSection(Section current) {
+    public Section createNotesSection() {
         List<String> text = new ArrayList<String>(1);
         final Collection<String> notes = this.character.getNotes().get();
         if (!notes.isEmpty())
@@ -829,7 +835,7 @@ public class StoryLoader {
                 text.add(note);
         else
             text.add(msg(Messages.EMPTY_NOTES));
-        return createTemporarySection(text, current);
+        return createTemporarySection(text);
     }
 
     ///////// GETTERS

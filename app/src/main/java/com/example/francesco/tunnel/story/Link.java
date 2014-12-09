@@ -8,6 +8,11 @@ import java.util.List;
 public class Link {
 
     /**
+     * id all'interno della sezione (Link di sezioni differenti possono anche avere lo stesso id)
+     */
+    private final String id;
+
+    /**
      * Sezione narrativa alla quale il link appartiene
      */
     private final Section section;
@@ -32,7 +37,8 @@ public class Link {
      */
     private String[] noItemIds;
 
-    Link(final Section section, final String nextSection) {
+    Link(final String id, final Section section, final String nextSection) {
+        this.id = id;
         this.section = section;
         this.nextSection = nextSection;
     }
@@ -152,5 +158,9 @@ public class Link {
         for(int i = 0; i < noItemIds.size(); i++) {
             this.noItemIds[i] = noItemIds.get(i);
         }
+    }
+
+    String getId() {
+        return id;
     }
 }

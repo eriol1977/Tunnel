@@ -69,12 +69,17 @@ public class Story {
             commandIds = link.getCommandIds();
             itemIds = link.getItemIds();
             if (commandIds.length > 0) { // è 0 con noItems, per non ripetere due volte lo stesso comando
-                if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE)) {
+                if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE) || commandIds[0].equals(Commands.JOIN)) {
                     if (itemIds != null && itemIds.length > 0) {
-                        item = StoryLoader.getInstance().item(itemIds[0]);
-                        if (commandIds[0].equals(Commands.GET) || this.character.hasItem(item)) {
-                            commandText = command(commandIds[0]).getCommandWords() + " " + item.getName();
+                        if (commandIds[0].equals(Commands.JOIN)) {
+                            commandText = command(commandIds[0]).getCommandWords() + " " + itemIds[0]; // in questo caso nel link c'è una parola (ex: "medaglioni") invece di un id
                             text.add(commandText);
+                        } else {
+                            item = StoryLoader.getInstance().item(itemIds[0]);
+                            if (commandIds[0].equals(Commands.GET) || this.character.hasItem(item)) {
+                                commandText = command(commandIds[0]).getCommandWords() + " " + item.getName();
+                                text.add(commandText);
+                            }
                         }
                     }
                 } else {
@@ -85,7 +90,7 @@ public class Story {
         }
         // comandi ricavati dalla presenza di "observables"
         List<Item> items = current.getObservableItems();
-        if(items != null) {
+        if (items != null) {
             for (final Item i : items) {
                 commandText = command(Commands.EXAMINE).getCommandWords() + " " + i.getName();
                 text.add(commandText);
@@ -93,7 +98,7 @@ public class Story {
         }
         // comandi ricavati dalla presenza di "usables"
         items = current.getUsableItems();
-        if(items != null) {
+        if (items != null) {
             for (final Item i : items) {
                 commandText = command(Commands.USE).getCommandWords() + " " + i.getName();
                 text.add(commandText);
@@ -150,14 +155,10 @@ public class Story {
         if (this.phase.equals(StoryPhase.ENDED))
             proceedToEnd();
         else {
-            // dopo aver salvato, torna allo stato normale
-            if (this.phase.equals(StoryPhase.SAVING))
-                setPhase(StoryPhase.STARTED);
-
             if (this.current.isTemporary())
                 restore();
             else {
-                final String nextSectionId = this.current.getLink(0).getNextSection();
+                final String nextSectionId = this.current.getFirstLink().getNextSection();
                 setCurrent(getSection(nextSectionId));
             }
         }
@@ -263,19 +264,12 @@ public class Story {
     }
 
     private void loadGame() {
-        stash();
-        final Section loadSection = StoryLoader.getInstance().createLoadSection(this.current);
-        if (this.phase.equals(StoryPhase.HOME))
-            setCurrent(loadSection);
-        else // prima di caricare un'altra partita, chiede conferma
-            setCurrent(StoryLoader.getInstance().createAreYouSureSection(loadSection, this.current));
+        setCurrent(getSection(Section.LOADING));
     }
 
     private void saveGame() {
         stash();
-        final Section saveSection = StoryLoader.getInstance().createSaveSection(this.current);
-        // prima di sovrascrivere il salvataggio, chiede conferma
-        setCurrent(StoryLoader.getInstance().createAreYouSureSection(saveSection, this.current));
+        setCurrent(getSection(Section.SAVING));
     }
 
     private void proceedToHome() {
@@ -294,7 +288,7 @@ public class Story {
 
     private void proceedToNotes() {
         stash();
-        setCurrent(StoryLoader.getInstance().createNotesSection(this.current));
+        setCurrent(StoryLoader.getInstance().createNotesSection());
     }
 
     private void proceedToAvailableActions() {
@@ -309,7 +303,7 @@ public class Story {
 
     private void proceedToJoin(final String input) {
         stash();
-        setCurrent(StoryLoader.getInstance().createJoinSection(this.current, input));
+        setCurrent(StoryLoader.getInstance().createJoinSection(input));
     }
 
     private void proceedToEnd() {
@@ -350,8 +344,13 @@ public class Story {
 
     private Section restore() {
         final Section last = this.stashed.removeLast();
-        setCurrent(last);
-        return last;
+        if (last.getId().equals(Section.INVENTORY))
+            // quando torno all'inventario da un'altra sezione, per esempio "unisco", l'inventario potrebbe
+            // essere cambiato, per cui devo aggiornare la sezione
+            setCurrent(StoryLoader.getInstance().createInventorySection(getSection(last.getFirstLink().getNextSection())));
+        else
+            setCurrent(last);
+        return this.current;
     }
 
     Section getSection(final String id) {
@@ -362,7 +361,7 @@ public class Story {
         return phase;
     }
 
-    void setPhase(StoryPhase phase) {
+    public void setPhase(StoryPhase phase) {
         this.phase = phase;
     }
 

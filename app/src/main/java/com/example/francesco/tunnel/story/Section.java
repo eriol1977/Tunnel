@@ -14,6 +14,8 @@ public class Section {
 
     private boolean ending;
 
+    private boolean temporary;
+
     private List<String> text = new ArrayList<String>();
 
     private List<Link> links = new ArrayList<Link>();
@@ -136,27 +138,36 @@ public class Section {
     //////// LINKS
 
     void addLink(final String nextSection, final String[] commandIds, final String[] itemIds) {
-        final Link link = new Link(this, nextSection);
+        int linkId = 1;
+        if (!this.links.isEmpty())
+            linkId = Integer.valueOf(this.links.get(this.links.size() - 1).getId()).intValue() + 1;
+        final Link link = new Link(String.valueOf(linkId), this, nextSection);
         link.setCommandIds(commandIds);
         link.setItemIds(itemIds);
         this.links.add(link);
     }
 
-    void removeLink(final int position) {
-        if (this.links.size() >= position)
-            this.links.remove(position - 1);
+    void removeLink(final String id) {
+        this.links.remove(getLink(id));
     }
 
-    void updateLink(final int position, final String nextSection, final String[] commandIds, final String[] itemIds) {
-        removeLink(position);
-        final Link link = new Link(this, nextSection);
+    void updateLink(final String id, final String nextSection, final String[] commandIds, final String[] itemIds) {
+        removeLink(id);
+        final Link link = new Link(id, this, nextSection);
         link.setCommandIds(commandIds);
         link.setItemIds(itemIds);
-        this.links.add(position - 1, link);
+        this.links.add(link);
     }
 
-    Link getLink(final int index) {
-        return this.links.get(index);
+    Link getFirstLink() {
+        return this.links.get(0);
+    }
+
+    Link getLink(final String id) {
+        for (final Link link : this.links)
+            if (link.getId().equals(id))
+                return link;
+        return null;
     }
 
     public List<Link> getLinks() {
@@ -171,6 +182,9 @@ public class Section {
         return this.links.size() == 1 || this.isTemporary() || this.isEnding();
     }
 
+    void clearLinks() {
+        this.links.clear();
+    }
     //////// ITEMS
 
     List<Item> getUsableItems() {
@@ -253,7 +267,12 @@ public class Section {
         this.ending = ending;
     }
 
-    boolean isTemporary() {
-        return this.id.equals(Section.HELP_SECTION) || this.id.equals(Section.UNAVAILABLE_SECTION) || this.id.equals(Section.LOADING) || this.id.equals(Section.SAVING) || this.id.equals(Section.TEMPORARY);
+    public boolean isTemporary() {
+        return temporary;
     }
+
+    public void setTemporary(boolean temporary) {
+        this.temporary = temporary;
+    }
+
 }

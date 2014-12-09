@@ -51,7 +51,19 @@ public class Join {
         return result;
     }
 
+    /**
+     * @param inventory
+     * @return True se nell'inventario ci sono tutti gli oggetti necessari all'unione
+     */
+    boolean check(final Inventory inventory) {
+        return inventory.checkItems(this.items);
+    }
+
     String getTargetSectionId() {
         return targetSectionId;
+    }
+
+    String getWords() {
+        return words;
     }
 }

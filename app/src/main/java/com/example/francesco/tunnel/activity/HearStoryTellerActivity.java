@@ -10,17 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
+import com.example.francesco.tunnel.story.StoryPhase;
 
 import java.util.List;
 import java.util.Locale;
 
 /**
  * TODOs
- * - "carica" e "salva" attivano un ulteriore comendo, credo il primo della lista comune della sezione
- * - spostare "unisco" nello stato "inventario" (all'inizio, usando semplicemente la parola fornita nella
- *   definizione del join)
- * - quando torno da una sezione temporanea, provare a non ripetere il testo...
- *
  * - aggiungere link in base alle osservazioni: per esempio, "prendo medaglione" e "guardo medaglione"
  * solo dopo aver guardato la scrivania:
  * --- la descrizione di un oggetto deve puntare a una sezione
@@ -75,14 +71,18 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         textView.setText("");
         textView.setVisibility(View.VISIBLE);
         for (final String s : text) {
-            textView.append(s);
-            textView.append("\n\n");
+            if(s != null) { // non dovrebbe mai succedere, ma...
+                textView.append(s);
+                textView.append("\n\n");
+            }
         }
 
         tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
         for (String paragraph : text) {
-            speak(paragraph);
-            tts.playSilence(750, TextToSpeech.QUEUE_ADD, null);
+            if(paragraph != null) { // non dovrebbe mai succedere, ma...
+                speak(paragraph);
+                tts.playSilence(750, TextToSpeech.QUEUE_ADD, null);
+            }
         }
     }
 
@@ -144,20 +144,22 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
     @Override
     protected void processInput() {
-        textView.setVisibility(View.INVISIBLE);
-        commandsView.setVisibility(View.VISIBLE);
+        if(!story.getPhase().equals(StoryPhase.QUIT)) { // per evitare che pronunci l'ultimo OK...
+            textView.setVisibility(View.INVISIBLE);
+            commandsView.setVisibility(View.VISIBLE);
 
-        this.commandInputs = story.getCommandInputs();
-        this.defaultCommandInputs = loader.getDefaultCommands();
-        this.commandIndex = 0;
-        this.defaultCommandIndex = 0;
+            this.commandInputs = story.getCommandInputs();
+            this.defaultCommandInputs = loader.getDefaultCommands();
+            this.commandIndex = 0;
+            this.defaultCommandIndex = 0;
 
-        if (!this.commandInputs.isEmpty()) {
-            this.selectedCommandInput = this.commandInputs.get(0);
-        } else if (!this.defaultCommandInputs.isEmpty()) {
-            this.selectedCommandInput = this.defaultCommandInputs.get(0);
+            if (!this.commandInputs.isEmpty()) {
+                this.selectedCommandInput = this.commandInputs.get(0);
+            } else if (!this.defaultCommandInputs.isEmpty()) {
+                this.selectedCommandInput = this.defaultCommandInputs.get(0);
+            }
+            displayCommand();
         }
-        displayCommand();
     }
 
     void displayCommand() {

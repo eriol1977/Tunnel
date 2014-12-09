@@ -1,5 +1,6 @@
 package com.example.francesco.tunnel.story;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,5 +20,13 @@ public class Joins {
                 return join.getTargetSectionId();
         }
         return null;
+    }
+
+    List<Join> getAvailableJoins(final Inventory inventory) {
+        List<Join> available = new ArrayList<Join>();
+        for (final Join join : this.joins)
+            if (join.check(inventory))
+                available.add(join);
+        return available;
     }
 }
