@@ -73,23 +73,23 @@ public class Link {
             itemFound = true;
         }
         /**
-         * se il comando è "prendo", il nome dell'oggetto deve comparire nella String informata
+         * se il comando è "prendo" o "uso", il nome dell'oggetto deve comparire nella String informata
          * (si suppone che l'oggetto da prendere sia uno solo, nella struttura del link)
          */
-        else if (this.commandIds.length == 1 && this.commandIds[0].equals(Commands.GET)) {
+        else if (this.commandIds.length == 1 && (this.commandIds[0].equals(Commands.GET) || this.commandIds[0].equals(Commands.USE) || this.commandIds[0].equals(Commands.OBSERVE))) {
             Item item = sl.item(this.itemIds[0]);
             itemFound = item.check(words);
         }
-        /**
-         * se il comando è "uso", l'oggetto deve far parte dell'inventario del giocatore, o essere
-         * presente nella sezione narrativa attuale, e il suo nome deve comparire nella String informata
-         * (si suppone che l'oggetto da usare sia uno solo, nella struttura del link)
-         */
-        else if (this.commandIds.length == 1 && this.commandIds[0].equals(Commands.USE)) {
-            final Inventory inventory = sl.getCharacter().getInventory();
-            Item item = sl.item(this.itemIds[0]);
-            itemFound = (inventory.checkItem(item) || section.checkUsableItem(item)) && item.check(words);
-        }
+//        /**
+//         * se il comando è "uso", l'oggetto deve far parte dell'inventario del giocatore, o essere
+//         * presente nella sezione narrativa attuale, e il suo nome deve comparire nella String informata
+//         * (si suppone che l'oggetto da usare sia uno solo, nella struttura del link)
+//         */
+//        else if (this.commandIds.length == 1 && this.commandIds[0].equals(Commands.USE)) {
+//            final Inventory inventory = sl.getCharacter().getInventory();
+//            Item item = sl.item(this.itemIds[0]);
+//            itemFound = (inventory.checkItem(item) || section.checkUsableItem(item)) && item.check(words);
+//        }
         /**
          * se il comando è un altro, si suppone che il giocatore debba possedere gli oggetti
          * elencati nel proprio inventario, o al contrario, che non li debba possedere.

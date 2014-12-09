@@ -15,17 +15,17 @@
     <item name="c_open_portal" type="string">apro portale</item>
 
     <!-- items -->
-    <item name="i_torch" type="string">torcia:La torcia è piuttosto consumata, non durerà molto</item>
-    <item name="i_key" type="string">chiave:La chiave sembra dorata, sotto le incrostazioni della rùggine:n_1</item>
-    <item name="i_lever" type="string">leva:La leva non è altro che un pezzo di legno incassato nel piedistallo roccioso.</item>
-    <item name="i_door" type="string">porta:La porta, di legno rinforzato con borchie di metallo, presenta chiazze di vecchia vernice dorata:n_2</item>
-    <item name="i_portal" type="string">portale:Il portale sembra inamovibile e privo di serratura, a parte un ìncavo di forma circolare:n_3</item>
-    <item name="i_arc" type="string">arco:Tra le numerose immagini scolpite con maestria sull\'arco di pietra, ti colpisce quella di un sole e una luna stretti in un tenero abbraccio:n_4</item>
-    <item name="i_desk" type="string">scrivania:La scrivania è sommersa di cianfrusaglie. L\'unico oggetto di interesse è un medaglione che raffigura un piccolo sole.:n_5</item>
-    <item name="i_shelf" type="string">scaffale:Adagiato tra i volumi ammuffiti e le ragnatele, noti un medaglione in forma di luna crescente.:n_6</item>
-    <item name="i_sun_medallion" type="string">medaglione sole:Il medaglione ha una forma vagamente semi circolare:n_7</item>
-    <item name="i_moon_medallion" type="string">medaglione luna:Il medaglione ha una forma vagamente semi circolare:n_8</item>
-    <item name="i_medallion" type="string">medaglione:Il sole e la luna sembrano abbracciarsi sulla superficie del medaglione:n_9</item>
+    <item name="i_torch" type="string">torcia:23</item>
+    <item name="i_key" type="string">chiave:22</item>
+    <item name="i_lever" type="string">leva:24</item>
+    <item name="i_door" type="string">porta:21</item>
+    <item name="i_portal" type="string">portale:26</item>
+    <item name="i_arc" type="string">arco:25</item>
+    <item name="i_desk" type="string">scrivania:27</item>
+    <item name="i_shelf" type="string">scaffale:28</item>
+    <item name="i_sun_medallion" type="string">medaglione sole:29</item>
+    <item name="i_moon_medallion" type="string">medaglione luna:30</item>
+    <item name="i_medallion" type="string">medaglione:31</item>
 
     <!-- notes -->
     <item name="n_1" type="string">La chiave sembra dorata</item>
@@ -42,26 +42,25 @@
     <item name="j_medallions" type="string">medaglioni:i_sun_medallion,i_moon_medallion:19</item>
 
     <!-- sections -->
-    <item name="sections" type="string">20</item>
+    <item name="sections" type="string">31</item>
     <item name="starting" type="string">15</item>
     <item name="ending" type="string">9,20</item>
 
     <item name="s_1_1" type="string">Ti trovi in una sala circolare.</item>
     <item name="s_1_2" type="string">Alla tua destra, la sala dà su un corridoio.</item>
     <item name="s_1_3" type="string">Davanti a te vi è una porta chiusa.</item>
-    <!-- elementi osservabili in questa sezione -->
-    <item name="s_1_observable" type="string">i_door</item>
     <!-- sezioni collegate e relativi comandi; per accedere alla 5, deve usare la chiave -->
     <item name="s_1_link_1" type="string">2:c_right,c_corridor</item>
     <item name="s_1_link_2" type="string">3:c_open_door</item>
     <item name="s_1_link_3" type="string">5:c_use:i_key</item>
+    <item name="s_1_link_4" type="string">21:c_observe:i_door</item>
 
     <item name="s_2_1" type="string">Il corridoio termina in un vicolo cieco.</item>
     <item name="s_2_2" type="string">Noti il luccichio di una chiave al suolo.</item>
-    <item name="s_2_observable" type="string">i_key</item>
     <!-- sezioni collegate e relativi comandi; per accedere alla 4, deve prendere la chiave -->
     <item name="s_2_link_1" type="string">1:c_go_back</item>
-    <item name="s_2_link_2" type="string">4:c_get:i_key</item>
+    <item name="s_2_link_2" type="string">22:c_observe:i_key</item>
+    <item name="s_2_link_3" type="string">4:c_get:i_key</item>
 
     <item name="s_3_1" type="string">La porta è chiusa: per quanto la strattoni, non riesci ad aprirla.</item>
     <!-- sezione collegata direttamente, senza bisogno di impartire comandi -->
@@ -81,7 +80,7 @@
     <!-- rimuove i link 2 e 3 della sezione 1, aggiunge un nuovo link 6:c_go_on -->
     <item name="s_5_switch_1" type="string">link:1:2</item>
     <item name="s_5_switch_2" type="string">link:1:3</item>
-    <item name="s_5_switch_3" type="string">link:1:-1:6:c_go_on,c_straight_on,c_proceed</item>
+    <item name="s_5_switch_3" type="string">link:1:5:6:c_go_on,c_straight_on,c_proceed</item>
     <item name="s_5_switch_4" type="string">par:1:3:Davanti a te vi è una porta aperta</item>
     <item name="s_5_drop" type="string">i_key</item>
     <item name="s_5_notes_drop" type="string">n_1,n_2</item>
@@ -90,12 +89,12 @@
     <item name="s_6_1" type="string">Raggiungi un\'ampia sala dalla volta di pietra.</item>
     <item name="s_6_2" type="string">Vi è una torcia appesa a un gancio nella parete.</item>
     <item name="s_6_3" type="string">In fondo alla sala si apre un corridoio buio.</item>
-    <item name="s_6_observable" type="string">i_torch</item>
     <!-- sezioni collegate e relativi comandi; accede alla 8 se non possiede la torcia, altrimenti alla 9 -->
     <item name="s_6_link_1" type="string">7:c_get:i_torch</item>
     <item name="s_6_link_2" type="string">8:c_corridor,c_across,c_go_on,c_straight_on,c_proceed:no_i_torch</item>
     <item name="s_6_link_3" type="string">10:c_corridor,c_across,c_go_on,c_straight_on,c_proceed:i_torch</item>
-    <item name="s_6_link_4" type="string">1:c_go_back</item>
+    <item name="s_6_link_4" type="string">23:c_observe:i_torch</item>
+    <item name="s_6_link_5" type="string">1:c_go_back</item>
 
     <item name="s_7_1" type="string">Afferri la torcia e la reggi dinanzi a te.</item>
     <item name="s_7_get" type="string">i_torch</item>
@@ -121,10 +120,9 @@
 
     <item name="s_11_1" type="string">La sala è del tutto spoglia, a parte il piedistallo di roccia scolpita che campeggia nel mezzo.</item>
     <item name="s_11_2" type="string">Sul piedistallo vi è una leva.</item>
-    <item name="s_11_usable" type="string">i_lever</item>
-    <item name="s_11_observable" type="string">i_lever</item>
     <item name="s_11_link_1" type="string">12:c_go_back</item>
     <item name="s_11_link_2" type="string">13:c_use:i_lever</item>
+    <item name="s_11_link_3" type="string">24:c_observe:i_lever</item>
 
     <item name="s_12_1" type="string">Senza una torcia, tornare indietro lungo il corridoio cosparso di fosse sarebbe troppo rischioso.</item>
     <item name="s_12_2" type="string">Decidi di restare nella sala.</item>
@@ -142,24 +140,24 @@
     <item name="s_15_1" type="string">L\'unica uscita visibile da questa sala è un massiccio portale di ferro battuto, sormontato da un arco di pietra istoriata.</item>
     <item name="s_15_2" type="string">Tra te e il portale vi è una scrivania carica di oggetti disposti alla rinfusa.</item>
     <item name="s_15_3" type="string">Alle tue spalle, contro la parete, vi è uno scaffale zeppo di libri polverosi.</item>
-    <item name="s_15_observable" type="string">i_arc,i_portal,i_desk,i_shelf,i_sun_medallion,i_moon_medallion</item>
-    <item name="s_15_link_1" type="string">16:c_get:i_sun_medallion</item>
-    <item name="s_15_link_2" type="string">17:c_get:i_moon_medallion</item>
-    <item name="s_15_link_3" type="string">18:c_open_door,c_open_portal</item>
+    <item name="s_15_link_1" type="string">18:c_open_door,c_open_portal</item>
+    <item name="s_15_link_2" type="string">25:c_observe:i_arc</item>
+    <item name="s_15_link_3" type="string">26:c_observe:i_portal</item>
+    <item name="s_15_link_4" type="string">27:c_observe:i_desk</item>
+    <item name="s_15_link_5" type="string">28:c_observe:i_shelf</item>
 
     <item name="s_16_1" type="string">Senza tanti complimenti, spazzi via il mucchio di cianfrusaglie dalla scrivania per impadronirti del medaglione.</item>
     <item name="s_16_get" type="string">i_sun_medallion</item>
+    <item name="s_16_switch_1" type="string">par:27:1:La scrivania è sgombra.</item>
+    <item name="s_16_switch_2" type="string">link:15:8</item>
     <item name="s_16_notes_drop" type="string">n_5</item>
-    <!-- cambia descrizione dell'oggetto i_desk e rimuove la nota ad esso associata -->
-    <item name="s_16_switch_1" type="string">item:i_desk:La scrivania è sgombra:""</item>
-    <item name="s_16_switch_2" type="string">link:15:1</item>
     <item name="s_16_link_1" type="string">15</item>
 
     <item name="s_17_1" type="string">Infilando le dita tra le ragnatele appiccicose, afferri il medaglione.</item>
     <item name="s_17_get" type="string">i_moon_medallion</item>
     <item name="s_17_notes_drop" type="string">n_6</item>
-    <item name="s_17_switch_1" type="string">item:i_shelf:Nient\'altro che tomi ammuffiti sullo scaffale:""</item>
-    <item name="s_17_switch_2" type="string">link:15:2</item>
+    <item name="s_17_switch_1" type="string">par:28:1:Nient\'altro che tomi ammuffiti sullo scaffale.</item>
+    <item name="s_17_switch_2" type="string">link:15:10</item>
     <item name="s_17_link_1" type="string">15</item>
 
     <item name="s_18_1" type="string">Il portale deve pesare parecchie tonnellate, tanto che al tuo tocco non si smuove di un millimetro.</item>
@@ -170,7 +168,7 @@
     <item name="s_19_get" type="string">i_medallion</item>
     <item name="s_19_drop" type="string">i_sun_medallion,i_moon_medallion</item>
     <item name="s_19_notes_drop" type="string">n_7,n_8</item>
-    <item name="s_19_switch_1" type="string">link:15:-1:20:c_use:i_medallion</item>
+    <item name="s_19_switch_1" type="string">link:15:6:20:c_use:i_medallion</item>
 
     <item name="s_20_1" type="string">Appoggi il medaglione nell\'ìncavo circolare al centro del portale, seguendo l\'indizio dei bassorilievi sull\'arco di pietra.</item>
     <item name="s_20_2" type="string">Con un raspare di metallo su pietra, l\'intero blocco di ferro del portale scorre lateralmente sino a scomparire nella parete rocciosa.</item>
@@ -180,5 +178,50 @@
     <item name="s_20_6" type="string">Non ti resta che proseguire nel misterioso dedalo, sempre più a fondo nel cuore della montagna...</item>
     <item name="s_20_drop" type="string">i_medallion</item>
     <item name="s_20_notes_drop" type="string">n_3,n_4</item>
+
+    <item name="s_21_1" type="string">La porta, di legno rinforzato con borchie di metallo, presenta chiazze di vecchia vernice dorata.</item>
+    <item name="s_21_notes_get" type="string">n_2</item>
+    <item name="s_21_link_1" type="string">1</item>
+
+    <item name="s_22_1" type="string">La chiave sembra dorata, sotto le incrostazioni della rùggine.</item>
+    <item name="s_22_notes_get" type="string">n_1</item>
+    <item name="s_22_link_1" type="string">2</item>
+
+    <item name="s_23_1" type="string">La torcia è piuttosto consumata, non durerà molto.</item>
+    <item name="s_23_link_1" type="string">6</item>
+
+    <item name="s_24_1" type="string">La leva non è altro che un pezzo di legno incassato nel piedistallo roccioso.</item>
+    <item name="s_24_link_1" type="string">11</item>
+
+    <item name="s_25_1" type="string">Tra le numerose immagini scolpite con maestria sull\'arco di pietra, ti colpisce quella di un sole e una luna stretti in un tenero abbraccio.</item>
+    <item name="s_25_notes_get" type="string">n_4</item>
+    <item name="s_25_link_1" type="string">15</item>
+
+    <item name="s_26_1" type="string">Il portale sembra inamovibile e privo di serratura, a parte un ìncavo di forma circolare.</item>
+    <item name="s_26_notes_get" type="string">n_3</item>
+    <item name="s_26_link_1" type="string">15</item>
+
+    <item name="s_27_1" type="string">La scrivania è sommersa di cianfrusaglie. L\'unico oggetto di interesse è un medaglione che raffigura un piccolo sole.</item>
+    <item name="s_27_notes_get" type="string">n_5</item>
+    <item name="s_27_switch_1" type="string">link:15:7:29:c_observe:i_sun_medallion</item>
+    <item name="s_27_switch_2" type="string">link:15:8:16:c_get:i_sun_medallion</item>
+    <item name="s_27_link_1" type="string">15</item>
+
+    <item name="s_28_1" type="string">Adagiato tra i volumi ammuffiti e le ragnatele, noti un medaglione in forma di luna crescente.</item>
+    <item name="s_28_notes_get" type="string">n_6</item>
+    <item name="s_28_switch_1" type="string">link:15:9:30:c_observe:i_moon_medallion</item>
+    <item name="s_28_switch_2" type="string">link:15:10:17:c_get:i_moon_medallion</item>
+    <item name="s_28_link_1" type="string">15</item>
+
+    <item name="s_29_1" type="string">Il medaglione ha una forma vagamente semi circolare.</item>
+    <item name="s_29_notes_get" type="string">n_7</item>
+    <item name="s_29_link_1" type="string">15</item>
+
+    <item name="s_30_1" type="string">Il medaglione ha una forma vagamente semi circolare.</item>
+    <item name="s_30_notes_get" type="string">n_8</item>
+    <item name="s_30_link_1" type="string">15</item>
+
+    <item name="s_31_1" type="string">Il sole e la luna sembrano abbracciarsi sulla superficie del medaglione.</item>
+    <item name="s_31_notes_get" type="string">n_9</item>
 
 </resources>

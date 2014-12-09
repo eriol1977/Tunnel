@@ -1,7 +1,9 @@
 package com.example.francesco.tunnel.story;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Francesco on 18/11/2014.
@@ -20,21 +22,21 @@ public class Section {
 
     private List<Link> links = new ArrayList<Link>();
 
-    private List<Item> usableItems;
-
-    private List<Item> observableItems;
-
     private List<ParagraphSwitch> paragraphSwitches;
 
     private List<LinkSwitch> linkSwitches;
-
-    private List<ItemSwitch> itemSwitches;
 
     private List<ItemGet> itemGets;
 
     private List<ItemDrop> itemDrops;
 
     private String[] noteDrops;
+
+    private String[] noteGets;
+
+    // evita che una nota già cancellata venga aggiunta nuovamente alla sezione quando
+    // osservo nuovamente un oggetto
+    private Set<String> droppedNotes = new HashSet<String>();
 
     /**
      * Default sections
@@ -93,6 +95,15 @@ public class Section {
         if (this.noteDrops != null) {
             for (final String noteId : this.noteDrops) {
                 sl.getCharacter().getNotes().remove(noteId);
+                this.droppedNotes.add(noteId);
+            }
+        }
+
+        // entrando nella sezione, una o più note vengono aggiunte all'elenco del personaggio
+        if (this.noteGets != null) {
+            for (final String noteId : this.noteGets) {
+                if (!droppedNotes.contains(noteId))
+                    sl.getCharacter().getNotes().add(noteId, sl.msg(noteId));
             }
         }
 
@@ -104,11 +115,6 @@ public class Section {
         // entrando nella sezione, alcuni link di altre sezioni vengono cambiati o rimossi
         if (this.linkSwitches != null) {
             sl.loadLinkSwitches(this.linkSwitches);
-        }
-
-        // entrando nella sezione, alcune descrizioni o note di oggetti vengono cambiate o rimosse
-        if (this.itemSwitches != null) {
-            sl.loadItemSwitches(this.itemSwitches);
         }
     }
 
@@ -137,26 +143,22 @@ public class Section {
 
     //////// LINKS
 
-    void addLink(final String nextSection, final String[] commandIds, final String[] itemIds) {
-        int linkId = 1;
-        if (!this.links.isEmpty())
-            linkId = Integer.valueOf(this.links.get(this.links.size() - 1).getId()).intValue() + 1;
-        final Link link = new Link(String.valueOf(linkId), this, nextSection);
+    void addLink(final String linkId, final String nextSection, final String[] commandIds, final String[] itemIds) {
+        final Link link = new Link(linkId, this, nextSection);
         link.setCommandIds(commandIds);
         link.setItemIds(itemIds);
         this.links.add(link);
     }
 
     void removeLink(final String id) {
-        this.links.remove(getLink(id));
+        final Link link = getLink(id);
+        if (link != null)
+            this.links.remove(link);
     }
 
     void updateLink(final String id, final String nextSection, final String[] commandIds, final String[] itemIds) {
         removeLink(id);
-        final Link link = new Link(id, this, nextSection);
-        link.setCommandIds(commandIds);
-        link.setItemIds(itemIds);
-        this.links.add(link);
+        addLink(id, nextSection, commandIds, itemIds);
     }
 
     Link getFirstLink() {
@@ -185,37 +187,8 @@ public class Section {
     void clearLinks() {
         this.links.clear();
     }
+
     //////// ITEMS
-
-    List<Item> getUsableItems() {
-        return usableItems;
-    }
-
-    void setUsableItems(List<Item> items) {
-        this.usableItems = items;
-    }
-
-    boolean checkUsableItem(final Item item) {
-        return this.usableItems.contains(item);
-    }
-
-    List<Item> getObservableItems() {
-        return observableItems;
-    }
-
-    void setObservableItems(List<Item> items) {
-        this.observableItems = items;
-    }
-
-    Item checkObservableItem(final String input) {
-        if (this.observableItems != null) {
-            for (final Item item : this.observableItems) {
-                if (item.check(input))
-                    return item;
-            }
-        }
-        return null;
-    }
 
     void setItemsGets(List<Item> items) {
         this.itemGets = new ArrayList<ItemGet>(items.size());
@@ -231,6 +204,10 @@ public class Section {
         }
     }
 
+    void setNoteGets(final String[] noteIds) {
+        this.noteGets = noteIds;
+    }
+
     void setNoteDrops(final String[] noteIds) {
         this.noteDrops = noteIds;
     }
@@ -243,10 +220,6 @@ public class Section {
 
     void setLinkSwitches(final List<LinkSwitch> linkSwitches) {
         this.linkSwitches = linkSwitches;
-    }
-
-    void setItemSwitches(final List<ItemSwitch> itemSwitches) {
-        this.itemSwitches = itemSwitches;
     }
 
     //////// OTHERS

@@ -69,14 +69,14 @@ public class Story {
             commandIds = link.getCommandIds();
             itemIds = link.getItemIds();
             if (commandIds.length > 0) { // è 0 con noItems, per non ripetere due volte lo stesso comando
-                if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE) || commandIds[0].equals(Commands.JOIN)) {
+                if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE) || commandIds[0].equals(Commands.OBSERVE) || commandIds[0].equals(Commands.JOIN)) {
                     if (itemIds != null && itemIds.length > 0) {
                         if (commandIds[0].equals(Commands.JOIN)) {
                             commandText = command(commandIds[0]).getCommandWords() + " " + itemIds[0]; // in questo caso nel link c'è una parola (ex: "medaglioni") invece di un id
                             text.add(commandText);
                         } else {
                             item = StoryLoader.getInstance().item(itemIds[0]);
-                            if (commandIds[0].equals(Commands.GET) || this.character.hasItem(item)) {
+                            if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.OBSERVE) || this.character.hasItem(item)) {
                                 commandText = command(commandIds[0]).getCommandWords() + " " + item.getName();
                                 text.add(commandText);
                             }
@@ -86,22 +86,6 @@ public class Story {
                     commandText = command(commandIds[0]).getCommandWords();
                     text.add(commandText);
                 }
-            }
-        }
-        // comandi ricavati dalla presenza di "observables"
-        List<Item> items = current.getObservableItems();
-        if (items != null) {
-            for (final Item i : items) {
-                commandText = command(Commands.EXAMINE).getCommandWords() + " " + i.getName();
-                text.add(commandText);
-            }
-        }
-        // comandi ricavati dalla presenza di "usables"
-        items = current.getUsableItems();
-        if (items != null) {
-            for (final Item i : items) {
-                commandText = command(Commands.USE).getCommandWords() + " " + i.getName();
-                text.add(commandText);
             }
         }
         return text;
@@ -205,9 +189,6 @@ public class Story {
                 } else if (command(Commands.INVENTORY).check(input)) {
                     proceedToInventory();
                     linkFound = true;
-                } else if (command(Commands.EXAMINE).check(input)) {
-                    proceedToExamine(input, false);
-                    linkFound = true;
                 } else if (command(Commands.LOAD_GAME).check(input)) {
                     loadGame();
                     linkFound = true;
@@ -230,7 +211,7 @@ public class Story {
                 break;
             case INVENTORY:
                 if (command(Commands.EXAMINE).check(input)) {
-                    proceedToExamine(input, true);
+                    proceedToExamine(input);
                     linkFound = true;
                 } else if (command(Commands.JOIN).check(input)) {
                     proceedToJoin(input);
@@ -296,9 +277,9 @@ public class Story {
         setCurrent(StoryLoader.getInstance().createAvailableActionsSection(this.current));
     }
 
-    private void proceedToExamine(final String input, final boolean inInventory) {
+    private void proceedToExamine(final String input) {
         stash();
-        setCurrent(StoryLoader.getInstance().createExamineSection(this.current, input, inInventory));
+        setCurrent(StoryLoader.getInstance().createExamineSection(this.current, input));
     }
 
     private void proceedToJoin(final String input) {

@@ -41,8 +41,6 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     private static final String SAVE_DATA_LINK_SWITCHES = "linkSwitches";
 
-    private static final String SAVE_DATA_ITEM_SWITCHES = "itemSwitches";
-
     private static final String TEMP_SAVE_DATA_SECTION = "temp_sectionId";
 
     private static final String TEMP_SAVE_DATA_INVENTORY = "temp_inventory";
@@ -52,8 +50,6 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     private static final String TEMP_SAVE_DATA_PARAGRAPH_SWITCHES = "temp_parSwitches";
 
     private static final String TEMP_SAVE_DATA_LINK_SWITCHES = "temp_linkSwitches";
-
-    private static final String TEMP_SAVE_DATA_ITEM_SWITCHES = "temp_itemSwitches";
 
     private static final String TEMP_DATA_SAVED = "tempDataSaved";
 
@@ -128,7 +124,6 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             final String notesIds = loader.stringifyNotes();
             final String paragraphSwitches = loader.stringifyParagraphSwitchesSoFar();
             final String linkSwitches = loader.stringifyLinkSwitchesSoFar();
-            final String itemSwitches = loader.stringifyItemSwitchesSoFar();
             final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
             final SharedPreferences.Editor editor = preferences.edit();
             if (temporary) {
@@ -137,14 +132,12 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
                 editor.putString(TEMP_SAVE_DATA_NOTES, notesIds);
                 editor.putString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
                 editor.putString(TEMP_SAVE_DATA_LINK_SWITCHES, linkSwitches);
-                editor.putString(TEMP_SAVE_DATA_ITEM_SWITCHES, itemSwitches);
             } else {
                 editor.putString(SAVE_DATA_SECTION, sectionId);
                 editor.putString(SAVE_DATA_INVENTORY, inventoryItemIds);
                 editor.putString(SAVE_DATA_NOTES, notesIds);
                 editor.putString(SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
                 editor.putString(SAVE_DATA_LINK_SWITCHES, linkSwitches);
-                editor.putString(SAVE_DATA_ITEM_SWITCHES, itemSwitches);
             }
             editor.commit();
             return true;
@@ -167,23 +160,20 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         String notesIds;
         String paragraphSwitches;
         String linkSwitches;
-        String itemSwitches;
         if (temporary) {
             sectionId = preferences.getString(TEMP_SAVE_DATA_SECTION, defaultValue);
             inventoryItemIds = preferences.getString(TEMP_SAVE_DATA_INVENTORY, emptyDefaultValue);
             notesIds = preferences.getString(TEMP_SAVE_DATA_NOTES, emptyDefaultValue);
             paragraphSwitches = preferences.getString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(TEMP_SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
-            itemSwitches = preferences.getString(TEMP_SAVE_DATA_ITEM_SWITCHES, emptyDefaultValue);
         } else {
             sectionId = preferences.getString(SAVE_DATA_SECTION, defaultValue);
             inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY, emptyDefaultValue);
             notesIds = preferences.getString(SAVE_DATA_NOTES, emptyDefaultValue);
             paragraphSwitches = preferences.getString(SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
-            itemSwitches = preferences.getString(SAVE_DATA_ITEM_SWITCHES, emptyDefaultValue);
         }
-        loader.load(sectionId, inventoryItemIds, notesIds, paragraphSwitches, linkSwitches, itemSwitches);
+        loader.load(sectionId, inventoryItemIds, notesIds, paragraphSwitches, linkSwitches);
     }
 
     @Override

@@ -33,8 +33,6 @@ public class StoryLoader {
 
     private final List<LinkSwitch> linkSwitchesSoFar = new ArrayList<LinkSwitch>();
 
-    private final List<ItemSwitch> itemSwitchesSoFar = new ArrayList<ItemSwitch>();
-
     private final static String COMMAND_PREFIX = "c_";
 
     private final static String ITEM_PREFIX = "i_";
@@ -49,15 +47,13 @@ public class StoryLoader {
 
     private final static String SECTION_PREFIX = "s_";
 
-    private final static String SECTION_USABLEITEM_SUFFIX = "_usable";
-
-    private final static String SECTION_OBSERVABLEITEM_SUFFIX = "_observable";
-
     private final static String SECTION_ITEMGET_SUFFIX = "_get";
 
     private final static String SECTION_ITEMDROP_SUFFIX = "_drop";
 
     private final static String SECTION_NOTES_DROP_SUFFIX = "_notes_drop";
+
+    private final static String SECTION_NOTES_GET_SUFFIX = "_notes_get";
 
     private final static String SECTION_LINK_SUFFIX = "_link";
 
@@ -101,7 +97,6 @@ public class StoryLoader {
         this.story.setSections(loadSections());
         this.paragraphSwitchesSoFar.clear();
         this.linkSwitchesSoFar.clear();
-        this.itemSwitchesSoFar.clear();
     }
 
     public static StoryLoader getInstance(final StoryTellerActivity activity) {
@@ -136,10 +131,10 @@ public class StoryLoader {
     private Items loadItems() {
         final Map<String, String> pairs = activity.getKeyValuePairsStartingWithPrefix(ITEM_PREFIX);
         final Map<String, Item> items = new HashMap<String, Item>(pairs.size());
-        String[] nameAndDescription;
+        String[] nameAndSection;
         for (String key : pairs.keySet()) {
-            nameAndDescription = pairs.get(key).split(SEPARATOR);
-            items.put(key, new Item(key, nameAndDescription[0], nameAndDescription[1], nameAndDescription.length > 2 ? nameAndDescription[2] : ""));
+            nameAndSection = pairs.get(key).split(SEPARATOR);
+            items.put(key, new Item(key, nameAndSection[0], nameAndSection[1]));
         }
         return new Items(items);
     }
@@ -241,14 +236,12 @@ public class StoryLoader {
                 section.setEnding(true);
             section.setText(loadSectionText(SECTION_PREFIX + id + "_"));
             section.setLinks(loadSectionLinks(section));
-            section.setUsableItems(loadSectionUsableItems(id));
-            section.setObservableItems(loadSectionObservableItems(id));
             section.setItemsGets(loadSectionItemGets(id));
             section.setItemDrops(loadSectionItemDrops(id));
+            section.setNoteGets(loadSectionNoteGets(id));
             section.setNoteDrops(loadSectionNoteDrops(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
             section.setLinkSwitches(loadSectionLinkSwitches(id));
-            section.setItemSwitches(loadSectionItemSwitches(id));
             sections.add(section);
         }
         return sections;
@@ -272,24 +265,6 @@ public class StoryLoader {
         return text;
     }
 
-    private List<Item> loadSectionUsableItems(String id) {
-        final String itemGroup = msg(SECTION_PREFIX + id + SECTION_USABLEITEM_SUFFIX); // es: s_6_usable
-        if (itemGroup != null) {
-            String[] ids = itemGroup.split(LIST_SEPARATOR);
-            return items(ids);
-        }
-        return new ArrayList<Item>();
-    }
-
-    private List<Item> loadSectionObservableItems(String id) {
-        final String itemGroup = msg(SECTION_PREFIX + id + SECTION_OBSERVABLEITEM_SUFFIX); // es: s_6_observable
-        if (itemGroup != null) {
-            String[] ids = itemGroup.split(LIST_SEPARATOR);
-            return items(ids);
-        }
-        return new ArrayList<Item>();
-    }
-
     private List<Item> loadSectionItemGets(String id) {
         final String itemGroup = msg(SECTION_PREFIX + id + SECTION_ITEMGET_SUFFIX); // es: s_4_get
         if (itemGroup != null) {
@@ -306,6 +281,14 @@ public class StoryLoader {
             return items(ids);
         }
         return new ArrayList<Item>();
+    }
+
+    private String[] loadSectionNoteGets(final String id) {
+        final String notesGroup = msg(SECTION_PREFIX + id + SECTION_NOTES_GET_SUFFIX); // es: s_5_notes_get
+        if (notesGroup != null) {
+            return notesGroup.split(LIST_SEPARATOR);
+        }
+        return new String[]{};
     }
 
     private String[] loadSectionNoteDrops(final String id) {
@@ -404,68 +387,44 @@ public class StoryLoader {
         return new ArrayList<LinkSwitch>();
     }
 
-    private List<ItemSwitch> loadSectionItemSwitches(final String id) {
-        final Map<String, String> sectionSwitches = activity.getKeyValuePairsStartingWithPrefix(SECTION_PREFIX + id + SECTION_SWITCH_SUFFIX);// es: s_4_switch
-        if (sectionSwitches != null) {
-            List<ItemSwitch> switches = new ArrayList<ItemSwitch>();
-            String sectionSwitch;
-            String[] switchInfo;
-            for (String switchId : sectionSwitches.keySet()) {
-                // ex: s_5_switch_2 --> item:i_desk:La scrivania è sgombra:n_5
-                sectionSwitch = sectionSwitches.get(switchId);
-                switchInfo = sectionSwitch.split(SEPARATOR);
-                if (switchInfo[0].equals(SECTION_SWITCH_KIND_ITEM)) {
-                    switches.add(new ItemSwitch(switchInfo[1], switchInfo[2], switchInfo.length == 3 ? switchInfo[2] : ""));
-                }
-            }
-            return switches;
-        }
-        return new ArrayList<ItemSwitch>();
-    }
-
     ///////// SPECIAL SECTIONS
 
     Section createInventorySection(final Section current) {
         Section inventorySection = story.getSection(Section.INVENTORY);
         inventorySection.clearLinks();
-        inventorySection.addLink(current.getId(), new String[]{Commands.GO_BACK}, null);
+        inventorySection.addLink("1", current.getId(), new String[]{Commands.GO_BACK}, null);
         final List<Item> items = this.character.getInventory().getItems();
         List<String> text = new ArrayList<String>(items.size() + 1);
         if (items.isEmpty())
             text.add(msg(Messages.EMPTY_INVENTORY));
         else {
             text.add(msg(Messages.INVENTORY));
+            int linkId = 1;
             // per ogni oggetto, aggiungo il nome alla lista e un link "guardo"
             for (Item item : items) {
                 text.add(item.getName());
-                inventorySection.addLink(null, new String[]{Commands.EXAMINE}, new String[]{item.getId()});
+                linkId++;
+                inventorySection.addLink(String.valueOf(linkId), null, new String[]{Commands.EXAMINE}, new String[]{item.getId()});
             }
             // per ogni unione di oggetti disponibile, aggiungo un link "unisco"
             final List<Join> availableJoins = this.joins.getAvailableJoins(this.character.getInventory());
             for (final Join join : availableJoins) {
-                inventorySection.addLink(join.getTargetSectionId(), new String[]{Commands.JOIN}, new String[]{join.getWords()});
+                linkId++;
+                inventorySection.addLink(String.valueOf(linkId), join.getTargetSectionId(), new String[]{Commands.JOIN}, new String[]{join.getWords()});
             }
         }
         inventorySection.setText(text);
         return inventorySection;
     }
 
-    Section createExamineSection(final Section current, final String input, final boolean inInventory) {
+    Section createExamineSection(final Section current, final String input) {
         List<String> text = new ArrayList<String>(1);
 
-        if (inInventory) {
-            List<Item> items = this.character.getInventory().getItems();
-            for (final Item item : items) {
-                if (item.check(input)) {
-                    text.add(item.getDescription());
-                    addNote(item);
-                }
-            }
-        } else {
-            Item item = current.checkObservableItem(input);
-            if (item != null) {
-                text.add(item.getDescription());
-                addNote(item);
+        List<Item> items = this.character.getInventory().getItems();
+        for (final Item item : items) {
+            if (item.check(input)) {
+                // come descrizione usa il paragrafo di testo della sezione che descrive l'oggetto
+                text.add(loadSectionText(item.getSectionId()).get(0));
             }
         }
 
@@ -506,8 +465,8 @@ public class StoryLoader {
         final List<String> text = new ArrayList<String>(1);
         text.add(msg(Messages.ARE_YOU_SURE));
         section.setText(text);
-        section.addLink(yesResult.getId(), new String[]{Commands.YES}, null);
-        section.addLink(noResult.getId(), new String[]{Commands.NO}, null);
+        section.addLink("1", yesResult.getId(), new String[]{Commands.YES}, null);
+        section.addLink("2", noResult.getId(), new String[]{Commands.NO}, null);
         return section;
     }
 
@@ -529,12 +488,12 @@ public class StoryLoader {
         this.story.home();
     }
 
-    public void load(final String sectionId, final String inventoryItemIds, final String notesIds, final String paragraphSwitches, final String linkSwitches, final String itemSwitches) {
+    public void load(final String sectionId, final String inventoryItemIds, final String notesIds, final String paragraphSwitches, final String linkSwitches) {
         resetStory();
         story.setCurrent(story.getSection(sectionId));
         loadInventory(inventoryItemIds);
         loadNotes(notesIds);
-        parseAndLoadSwitches(paragraphSwitches, linkSwitches, itemSwitches);
+        parseAndLoadSwitches(paragraphSwitches, linkSwitches);
         story.setPhase(StoryPhase.STARTED);
     }
 
@@ -569,14 +528,9 @@ public class StoryLoader {
      *                          - cancella il secondo link della sezione 1
      *                          - cancella il terzo link della sezione 1
      *                          - aggiungi un nuovo link alla sezione 1, che punti alla sezione 6
-     * @param itemSwitches      ex: i_shelf:Nient'altro che tomi ammuffiti sullo scaffale:"";i_desk:La scrivania è sgombra:n_9
-     *                          tradotto:
-     *                          - cambia la descrizione di i_shelf in "Nient'altro che tomi ammuffiti sullo scaffale"
-     *                          - rimuove la nota di i_shelf
-     *                          - cambia la descrizione di i_desk in "La scrivania è sgombra"
      *                          - cambia la nota di i_desk in n_9
      */
-    void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches, final String itemSwitches) {
+    void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches) {
 
         if (!paragraphSwitches.isEmpty()) {
             String[] switchInfo;
@@ -602,17 +556,6 @@ public class StoryLoader {
                         switchInfo.length > 4 ? switchInfo[4].split(LIST_SEPARATOR) : new String[]{}));
             }
             loadLinkSwitches(links);
-        }
-
-        if (!itemSwitches.isEmpty()) {
-            String[] switchInfo;
-            final String[] iss = itemSwitches.split(STRONG_SEPARATOR);
-            final List<ItemSwitch> its = new ArrayList<ItemSwitch>(iss.length);
-            for (final String is : iss) {
-                switchInfo = is.split(SEPARATOR);
-                its.add(new ItemSwitch(switchInfo[0], switchInfo[1], switchInfo.length == 3 ? switchInfo[2] : ""));
-            }
-            loadItemSwitches(its);
         }
     }
 
@@ -660,34 +603,12 @@ public class StoryLoader {
             itemIds = lSwitch.getItemIds();
             if (nextSection.isEmpty())
                 section.removeLink(linkId);
-            else if (linkId.equals("-1"))
-                section.addLink(nextSection, commandIds, itemIds);
+            else if (section.getLink(linkId) == null)
+                section.addLink(linkId, nextSection, commandIds, itemIds);
             else
                 section.updateLink(linkId, nextSection, commandIds, itemIds);
         }
         this.linkSwitchesSoFar.addAll(switches);
-    }
-
-    /**
-     * Carica gli ItemSwitch informati, applicando i loro effetti sulla storia, quindi li
-     * immagazzina in una lista locale.
-     *
-     * @param switches
-     */
-    void loadItemSwitches(final List<ItemSwitch> switches) {
-        String itemId;
-        String newDescription;
-        String newNoteId;
-        Item item;
-        for (final ItemSwitch iSwitch : switches) {
-            itemId = iSwitch.getItemId();
-            newDescription = iSwitch.getNewDescription();
-            newNoteId = iSwitch.getNewNoteId();
-            item = item(itemId);
-            item.setDescription(newDescription);
-            item.setNote(newNoteId);
-        }
-        this.itemSwitchesSoFar.addAll(switches);
     }
 
     /**
@@ -796,36 +717,7 @@ public class StoryLoader {
         return sb.toString();
     }
 
-    /**
-     * Trasforma gli ItemSwitch immagazzinati nel corso della storia nel formato String
-     * esemplificato qui sotto.
-     *
-     * @return ex: i_shelf:Nient'altro che tomi ammuffiti sullo scaffale:"";i_desk:La scrivania è sgombra:n_9
-     * tradotto:
-     * - cambia la descrizione di i_shelf in "Nient'altro che tomi ammuffiti sullo scaffale"
-     * - rimuove la nota di i_shelf
-     * - cambia la descrizione di i_desk in "La scrivania è sgombra"
-     * - cambia la nota di i_desk in n_9
-     */
-    public String stringifyItemSwitchesSoFar() {
-        final StringBuilder sb = new StringBuilder();
-        if (!this.itemSwitchesSoFar.isEmpty()) {
-            for (final ItemSwitch is : itemSwitchesSoFar) {
-                sb.append(is.getItemId()).append(SEPARATOR);
-                sb.append(is.getNewDescription()).append(SEPARATOR);
-                sb.append(is.getNewNoteId()).append(STRONG_SEPARATOR);
-            }
-            sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
-        }
-        return sb.toString();
-    }
-
     ///////// NOTES
-
-    void addNote(final Item item) {
-        if (!item.getNote().isEmpty())
-            this.character.getNotes().add(item.getNote(), msg(item.getNote()));
-    }
 
     public Section createNotesSection() {
         List<String> text = new ArrayList<String>(1);

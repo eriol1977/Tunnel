@@ -17,13 +17,8 @@ import java.util.Locale;
 
 /**
  * TODOs
- * - aggiungere link in base alle osservazioni: per esempio, "prendo medaglione" e "guardo medaglione"
- * solo dopo aver guardato la scrivania:
- * --- la descrizione di un oggetto deve puntare a una sezione
- * --- nella sezione si possono usare tutti gli switch necessari
- * --- aggiungere notes_get oltre a notes_drop
- * --- creare uno switch per aggiungere/rimuovere observables
- * --- creare uno switch per aggiungere/rimuovere usables
+ * - implementare notes_get, in modo che una nota marcata come "rimossa" dal notes_drop non
+ * venga mai più aggiunta al rientrare nella sezione che descrive un oggetto
  */
 public class HearStoryTellerActivity extends StoryTellerActivity {
 

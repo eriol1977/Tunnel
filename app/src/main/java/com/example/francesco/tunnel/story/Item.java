@@ -9,15 +9,12 @@ public class Item {
 
     final private String name;
 
-    private String description;
+    final private String sectionId;
 
-    private String note;
-
-    Item(final String id, final String name, final String description, final String note) {
+    Item(final String id, final String name, final String sectionId) {
         this.id = id;
         this.name = name;
-        this.description = description;
-        this.note = note;
+        this.sectionId = sectionId;
     }
 
     String getId() {
@@ -28,20 +25,8 @@ public class Item {
         return name;
     }
 
-    String getDescription() {
-        return description;
-    }
-
-    void setDescription(String description) {
-        this.description = description;
-    }
-
-    String getNote() {
-        return note;
-    }
-
-    void setNote(String note) {
-        this.note = note;
+    String getSectionId() {
+        return sectionId;
     }
 
     /**

@@ -38,6 +38,8 @@ public class Commands {
 
     public final static String EXAMINE = "c_examine";
 
+    public final static String OBSERVE = "c_observe";
+
     public final static String GO_BACK = "c_go_back";
 
     public final static String ACTIONS = "c_actions";

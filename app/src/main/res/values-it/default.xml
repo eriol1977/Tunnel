@@ -29,7 +29,8 @@
     <item name="c_load_game" type="string">carica</item>
     <item name="c_quit" type="string">fine</item>
     <item name="c_inventory" type="string">inventario</item>
-    <item name="c_examine" type="string">guardo</item>
+    <item name="c_examine" type="string">esamino</item>
+    <item name="c_observe" type="string">osservo</item>
     <item name="c_go_back" type="string">indietro</item>
     <item name="c_actions" type="string">azioni</item>
     <item name="c_commands" type="string">comandi</item>
