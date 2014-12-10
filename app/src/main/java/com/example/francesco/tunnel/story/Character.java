@@ -10,24 +10,16 @@ public class Character {
 
     private final Inventory inventory;
 
-    private final Notes notes;
-
     public Character() {
         this.inventory = new Inventory();
-        this.notes = new Notes();
     }
 
     public Inventory getInventory() {
         return inventory;
     }
 
-    public Notes getNotes() {
-        return notes;
-    }
-
     void reset() {
         this.inventory.reset();
-        this.notes.reset();
     }
 
     boolean hasItem(final Item item) {

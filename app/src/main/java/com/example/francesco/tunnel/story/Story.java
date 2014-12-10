@@ -102,10 +102,11 @@ public class Story {
         this.starting = null;
         this.stashed.clear();
         this.current = null;
-        this.restartCommandIssued = true;
+
     }
 
     void start() {
+        this.restartCommandIssued = true;
         if (this.phase.equals(StoryPhase.HOME))
             setCurrent(starting);
         else // chiede conferma prima di reiniziare la storia
@@ -113,22 +114,28 @@ public class Story {
     }
 
     void setCurrent(final Section section) {
-        if (section.isEnding()) {
-            setPhase(StoryPhase.ENDED);
-        } else if (section.getId().equals(Section.QUIT_SECTION)) {
-            setPhase(StoryPhase.QUIT);
-        } else if (restartCommandIssued && section.getId().equals(this.starting.getId())) {
+        // se siamo arrivati alla sezione iniziale in seguito a un comando di "nuova partita"
+        // (visto che potremmo capitarci per altre ragioni in base al flusso della narrazione,
+        // senza che questo significhi che dobbiamo reiniziare la partita)
+        if (restartCommandIssued && section.getId().equals(this.starting.getId())) {
             StoryLoader.getInstance().resetStory();
             setPhase(StoryPhase.STARTED);
+            this.current = this.starting;
             restartCommandIssued = false;
-        } else if (section.getId().equals(Section.LOADING)) {
-            setPhase(StoryPhase.LOADING);
-        } else if (section.getId().equals(Section.SAVING)) {
-            setPhase(StoryPhase.SAVING);
-        } else if (section.getId().equals(Section.INVENTORY)) {
-            setPhase(StoryPhase.INVENTORY);
+        } else {
+            if (section.isEnding()) {
+                setPhase(StoryPhase.ENDED);
+            } else if (section.getId().equals(Section.QUIT_SECTION)) {
+                setPhase(StoryPhase.QUIT);
+            } else if (section.getId().equals(Section.LOADING)) {
+                setPhase(StoryPhase.LOADING);
+            } else if (section.getId().equals(Section.SAVING)) {
+                setPhase(StoryPhase.SAVING);
+            } else if (section.getId().equals(Section.INVENTORY)) {
+                setPhase(StoryPhase.INVENTORY);
+            }
+            this.current = section;
         }
-        this.current = section;
         this.current.activate();
     }
 
@@ -204,9 +211,6 @@ public class Story {
                 } else if (command(Commands.ACTIONS).check(input) || command(Commands.COMMANDS).check(input)) {
                     proceedToAvailableActions();
                     linkFound = true;
-                } else if (command(Commands.NOTES).check(input)) {
-                    proceedToNotes();
-                    linkFound = true;
                 }
                 break;
             case INVENTORY:
@@ -265,11 +269,6 @@ public class Story {
     private void proceedToInventory() {
         stash();
         setCurrent(StoryLoader.getInstance().createInventorySection(this.current));
-    }
-
-    private void proceedToNotes() {
-        stash();
-        setCurrent(StoryLoader.getInstance().createNotesSection());
     }
 
     private void proceedToAvailableActions() {

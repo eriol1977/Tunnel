@@ -23,8 +23,6 @@ public class Messages {
 
     public final static String GAME_SAVED = "m_game_saved";
 
-    public final static String EMPTY_NOTES = "m_empty_notes";
-
     public final static String CANT_JOIN = "m_cant_join";
 
     public final static String ARE_YOU_SURE = "m_are_you_sure";

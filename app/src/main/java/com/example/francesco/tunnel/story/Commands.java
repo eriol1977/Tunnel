@@ -46,8 +46,6 @@ public class Commands {
 
     public final static String COMMANDS = "c_commands";
 
-    public final static String NOTES = "c_notes";
-
     public final static String JOIN = "c_join";
 
     public final static String YES = "c_yes";
@@ -82,9 +80,7 @@ public class Commands {
             commands.add(get(QUIT).getCommandWords());
             commands.add(get(REPEAT).getCommandWords());
         } else if (storyPhase.equals(StoryPhase.STARTED)) {
-            // TODO EXAMINE e JOIN ??
             commands.add(get(INVENTORY).getCommandWords());
-            commands.add(get(NOTES).getCommandWords());
             commands.add(get(SAVE_GAME).getCommandWords());
             commands.add(get(NEW_GAME).getCommandWords());
             commands.add(get(LOAD_GAME).getCommandWords());

@@ -51,10 +51,6 @@ public class StoryLoader {
 
     private final static String SECTION_ITEMDROP_SUFFIX = "_drop";
 
-    private final static String SECTION_NOTES_DROP_SUFFIX = "_notes_drop";
-
-    private final static String SECTION_NOTES_GET_SUFFIX = "_notes_get";
-
     private final static String SECTION_LINK_SUFFIX = "_link";
 
     private final static String SECTION_SWITCH_SUFFIX = "_switch";
@@ -238,8 +234,6 @@ public class StoryLoader {
             section.setLinks(loadSectionLinks(section));
             section.setItemsGets(loadSectionItemGets(id));
             section.setItemDrops(loadSectionItemDrops(id));
-            section.setNoteGets(loadSectionNoteGets(id));
-            section.setNoteDrops(loadSectionNoteDrops(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
             section.setLinkSwitches(loadSectionLinkSwitches(id));
             sections.add(section);
@@ -281,22 +275,6 @@ public class StoryLoader {
             return items(ids);
         }
         return new ArrayList<Item>();
-    }
-
-    private String[] loadSectionNoteGets(final String id) {
-        final String notesGroup = msg(SECTION_PREFIX + id + SECTION_NOTES_GET_SUFFIX); // es: s_5_notes_get
-        if (notesGroup != null) {
-            return notesGroup.split(LIST_SEPARATOR);
-        }
-        return new String[]{};
-    }
-
-    private String[] loadSectionNoteDrops(final String id) {
-        final String notesGroup = msg(SECTION_PREFIX + id + SECTION_NOTES_DROP_SUFFIX); // es: s_5_notes_drop
-        if (notesGroup != null) {
-            return notesGroup.split(LIST_SEPARATOR);
-        }
-        return new String[]{};
     }
 
     private List<Link> loadSectionLinks(final Section section) {
@@ -424,7 +402,7 @@ public class StoryLoader {
         for (final Item item : items) {
             if (item.check(input)) {
                 // come descrizione usa il paragrafo di testo della sezione che descrive l'oggetto
-                text.add(loadSectionText(item.getSectionId()).get(0));
+                text.add(loadSectionText(SECTION_PREFIX + item.getSectionId() + "_").get(0));
             }
         }
 
@@ -488,11 +466,10 @@ public class StoryLoader {
         this.story.home();
     }
 
-    public void load(final String sectionId, final String inventoryItemIds, final String notesIds, final String paragraphSwitches, final String linkSwitches) {
+    public void load(final String sectionId, final String inventoryItemIds, final String paragraphSwitches, final String linkSwitches) {
         resetStory();
         story.setCurrent(story.getSection(sectionId));
         loadInventory(inventoryItemIds);
-        loadNotes(notesIds);
         parseAndLoadSwitches(paragraphSwitches, linkSwitches);
         story.setPhase(StoryPhase.STARTED);
     }
@@ -504,13 +481,6 @@ public class StoryLoader {
      */
     void loadInventory(final String inventoryItemIds) {
         this.character.getInventory().setItems(items(inventoryItemIds.split(StoryLoader.LIST_SEPARATOR)));
-    }
-
-    private void loadNotes(final String notesIds) {
-        final String[] ids = notesIds.split(StoryLoader.LIST_SEPARATOR);
-        for (final String id : ids) {
-            this.character.getNotes().add(id, msg(id));
-        }
     }
 
     /**
@@ -528,7 +498,6 @@ public class StoryLoader {
      *                          - cancella il secondo link della sezione 1
      *                          - cancella il terzo link della sezione 1
      *                          - aggiungi un nuovo link alla sezione 1, che punti alla sezione 6
-     *                          - cambia la nota di i_desk in n_9
      */
     void parseAndLoadSwitches(final String paragraphSwitches, final String linkSwitches) {
 
@@ -629,23 +598,6 @@ public class StoryLoader {
     }
 
     /**
-     * Trasforma le note del giocatore nel formato String esemplificato qui sotto.
-     *
-     * @return ex: "n_1,n_4,n_8"
-     */
-    public String stringifyNotes() {
-        final StringBuilder sb = new StringBuilder();
-        final Collection<String> notesIds = this.character.getNotes().getIds();
-        if (!notesIds.isEmpty()) {
-            for (final String noteId : notesIds) {
-                sb.append(noteId).append(StoryLoader.LIST_SEPARATOR);
-            }
-            sb.delete(sb.length() - StoryLoader.LIST_SEPARATOR.length(), sb.length());
-        }
-        return sb.toString();
-    }
-
-    /**
      * Trasforma i ParagraphSwitch immagazzinati nel corso della storia nel formato String
      * esemplificato qui sotto.
      *
@@ -715,19 +667,6 @@ public class StoryLoader {
             sb.delete(sb.length() - STRONG_SEPARATOR.length(), sb.length());
         }
         return sb.toString();
-    }
-
-    ///////// NOTES
-
-    public Section createNotesSection() {
-        List<String> text = new ArrayList<String>(1);
-        final Collection<String> notes = this.character.getNotes().get();
-        if (!notes.isEmpty())
-            for (final String note : notes)
-                text.add(note);
-        else
-            text.add(msg(Messages.EMPTY_NOTES));
-        return createTemporarySection(text);
     }
 
     ///////// GETTERS

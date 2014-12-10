@@ -30,14 +30,6 @@ public class Section {
 
     private List<ItemDrop> itemDrops;
 
-    private String[] noteDrops;
-
-    private String[] noteGets;
-
-    // evita che una nota già cancellata venga aggiunta nuovamente alla sezione quando
-    // osservo nuovamente un oggetto
-    private Set<String> droppedNotes = new HashSet<String>();
-
     /**
      * Default sections
      */
@@ -88,22 +80,6 @@ public class Section {
         if (this.itemDrops != null) {
             for (final ItemDrop itemDrop : this.itemDrops) {
                 sl.getCharacter().getInventory().removeItem(sl.item(itemDrop.getItemId()));
-            }
-        }
-
-        // entrando nella sezione, una o più note vengono rimosse dall'elenco del personaggio
-        if (this.noteDrops != null) {
-            for (final String noteId : this.noteDrops) {
-                sl.getCharacter().getNotes().remove(noteId);
-                this.droppedNotes.add(noteId);
-            }
-        }
-
-        // entrando nella sezione, una o più note vengono aggiunte all'elenco del personaggio
-        if (this.noteGets != null) {
-            for (final String noteId : this.noteGets) {
-                if (!droppedNotes.contains(noteId))
-                    sl.getCharacter().getNotes().add(noteId, sl.msg(noteId));
             }
         }
 
@@ -202,14 +178,6 @@ public class Section {
         for (final Item item : items) {
             this.itemDrops.add(new ItemDrop(item.getId()));
         }
-    }
-
-    void setNoteGets(final String[] noteIds) {
-        this.noteGets = noteIds;
-    }
-
-    void setNoteDrops(final String[] noteIds) {
-        this.noteDrops = noteIds;
     }
 
     //////// SWITCHES
