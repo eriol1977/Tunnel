@@ -11,10 +11,10 @@
     <item name="m_cant_get" type="string">non si può prendere</item>
     <item name="m_cant_use" type="string">non si può usare qui</item>
     <item name="m_cant_examine" type="string">non puoi esaminare questo oggetto</item>
-    <item name="m_game_loaded" type="string">tocca per caricare la partita</item>
-    <item name="m_game_saved" type="string">tocca per salvare la partita</item>
+    <item name="m_game_loaded" type="string">tocca lo schermo per caricare la partita</item>
+    <item name="m_game_saved" type="string">tocca lo schermo per salvare la partita</item>
     <item name="m_cant_join" type="string">non puoi unire questi oggetti, o non li possiedi ancora</item>
-    <item name="m_are_you_sure" type="string">OK per confermare, No per cancellare l\'operazione</item>
+    <item name="m_are_you_sure" type="string">Sei sicuro?</item>
 
     <!-- commands -->
     <item name="c_get" type="string">prendo</item>
@@ -26,7 +26,7 @@
     <item name="c_new_game" type="string">nuova partita</item>
     <item name="c_save_game" type="string">salva</item>
     <item name="c_load_game" type="string">carica</item>
-    <item name="c_quit" type="string">fine</item>
+    <item name="c_quit" type="string">esci dal gioco</item>
     <item name="c_inventory" type="string">inventario</item>
     <item name="c_examine" type="string">esamino</item>
     <item name="c_observe" type="string">osservo</item>
@@ -34,30 +34,23 @@
     <item name="c_actions" type="string">azioni</item>
     <item name="c_commands" type="string">comandi</item>
     <item name="c_join" type="string">unisco</item>
-    <item name="c_yes" type="string">OK</item>
+    <item name="c_yes" type="string">sì</item>
     <item name="c_no" type="string">no</item>
 
     <!-- sections -->
-    <item name="home_1" type="string">Benvenuto, sarò la tua guida lungo il percorso.</item>
-    <item name="home_2" type="string">Per interagire, premi una qualsiasi parte dello schermo e attendi il bip sonoro, quindi pronuncia il tuo comando in base al contesto.</item>
-    <item name="home_3" type="string">Puoi interròmpermi in qualsiasi momento premendo lo schermo per impartire un comando.</item>
-    <item name="home_4" type="string">Vuoi iniziare una nuova partita o ascoltare le istruzioni complete?</item>
+    <item name="home_1" type="string">Benvenuto!</item>
+    <item name="home_2" type="string">Tocca lo schermo, poi scòrrilo in verticale per conoscere le azioni disponibili.</item>
+    <item name="home_3" type="string">Con un doppio tocco sullo schermo, potrai cominciare una nuova partita, caricare una partita salvata in precedenza, o ascoltare le istruzioni del gioco.</item>
 
-    <item name="help_1" type="string">Oltre alle azioni dipendenti dal contesto della sezione narrativa (ad esempio, Apro Porta, o Vado a Destra, o anche solo Destra), puoi sempre usare i seguenti comandi:</item>
-    <item name="help_2" type="string">Inizio, o Nuova Partita, per iniziare una nuova partita.</item>
-    <item name="help_3" type="string">Aiuto, o Istruzioni, per tornare qui.</item>
-    <item name="help_4" type="string">Ripeti, per farti ripetere l\'ultima parte della narrazione.</item>
-    <item name="help_5" type="string">Indietro, per tornare alla precedente sezione narrativa, quando consentito.</item>
-    <item name="help_6" type="string">Prendo, seguìto dal nome di un oggetto, per prelevare un oggetto disponibile nella sezione narrativa.</item>
-    <item name="help_7" type="string">Uso, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per utilizzare l\'oggetto.</item>
-    <item name="help_8" type="string">Unisco, seguito dai nomi di più oggetti presenti nell\'inventario, per creare un nuovo oggetto a partire dai singoli.</item>
-    <item name="help_9" type="string">Inventario, per sapere quali oggetti ti porti appresso.</item>
-    <item name="help_10" type="string">Guardo, seguìto dal nome di un oggetto presente nell\'inventario o nella sezione narrativa, per esaminarlo più a fondo.</item>
-    <item name="help_11" type="string">Note, per riepilogare le scoperte fatte mediante l\'osservazione degli ambienti e degli oggetti.</item>
-    <item name="help_12" type="string">Comandi, o Azioni, per scoprire tutte le azioni disponibili nella sezione narrativa.</item>
-    <item name="help_13" type="string">Salva, per salvare la tua posizione nel gioco.</item>
-    <item name="help_14" type="string">Carica, per riprendere il gioco dalla posizione salvata.</item>
-    <item name="help_15" type="string">Fine, per uscire dal gioco.</item>
+    <item name="help_1" type="string">Il gioco è un racconto interattivo ricco di esplorazioni, enigmi e avventura, diviso in piccole parti che ti narrerò una alla volta, descrivendo l\'ambiente che ti circonda, nonché le opportunità e i pericoli del momento.</item>
+    <item name="help_2" type="string">Al termine di ogni parte della narrazione (o anche durante le stesse, se non avrai voglia di ascoltare tutto quanto) potrai toccare lo schermo per proseguire.</item>
+    <item name="help_3" type="string">A questo punto, ti narrerò la prossima sezione del gioco, oppure ti permetterò di scegliere un\'azione tra quelle disponibili.</item>
+    <item name="help_4" type="string">Scòprile scorrendo lo schermo in orizzontale, poi scegli quale eseguire con un doppio tocco sullo schermo.</item>
+    <item name="help_5" type="string">Avrai sempre a disposizione una serie di azioni comuni, come Nuova Partita, o Istruzioni, a cui accedere scorrendo lo schermo in verticale.</item>
+    <item name="help_6" type="string">Durante la storia potrai raccogliere numerosi oggetti utili a risolvere enigmi e quindi avanzare nel gioco.</item>
+    <item name="help_7" type="string">Per questo, tra le azioni comuni, troverai anche l\'accesso al tuo Inventario.</item>
+    <item name="help_8" type="string">Ùsalo per sapere quali oggetti ti porti appresso, per esaminarli o anche per unirli a formare nuovi oggetti.</item>
+    <item name="help_9" type="string">In bocca al lupo, e buon divertimento!</item>
 
     <item name="end_1" type="string">La partita è giunta al termine.</item>
     <item name="end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>
