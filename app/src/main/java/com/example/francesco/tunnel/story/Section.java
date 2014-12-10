@@ -74,6 +74,7 @@ public class Section {
             for (final ItemGet itemGet : this.itemGets) {
                 sl.getCharacter().getInventory().addItem(sl.item(itemGet.getItemId()));
             }
+            this.itemGets.clear();
         }
 
         // entrando nella sezione, l'inventario perde oggetti
@@ -81,16 +82,19 @@ public class Section {
             for (final ItemDrop itemDrop : this.itemDrops) {
                 sl.getCharacter().getInventory().removeItem(sl.item(itemDrop.getItemId()));
             }
+            this.itemDrops.clear();
         }
 
         // entrando nella sezione, alcuni paragrafi di altre sezioni vengono cambiati o rimossi
         if (this.paragraphSwitches != null) {
             sl.loadParagraphSwitches(this.paragraphSwitches);
+            this.paragraphSwitches.clear();
         }
 
         // entrando nella sezione, alcuni link di altre sezioni vengono cambiati o rimossi
         if (this.linkSwitches != null) {
             sl.loadLinkSwitches(this.linkSwitches);
+            this.linkSwitches.clear();
         }
     }
 
@@ -157,7 +161,7 @@ public class Section {
     }
 
     boolean hasDirectOutcome() {
-        return this.links.size() == 1 || this.isTemporary() || this.isEnding();
+        return this.links.size() == 1;
     }
 
     void clearLinks() {
@@ -208,7 +212,7 @@ public class Section {
         this.ending = ending;
     }
 
-    public boolean isTemporary() {
+    boolean isTemporary() {
         return temporary;
     }
 

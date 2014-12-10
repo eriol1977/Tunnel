@@ -66,7 +66,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         textView.setText("");
         textView.setVisibility(View.VISIBLE);
         for (final String s : text) {
-            if(s != null) { // non dovrebbe mai succedere, ma...
+            if (s != null) { // non dovrebbe mai succedere, ma...
                 textView.append(s);
                 textView.append("\n\n");
             }
@@ -74,7 +74,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
         tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
         for (String paragraph : text) {
-            if(paragraph != null) { // non dovrebbe mai succedere, ma...
+            if (paragraph != null) { // non dovrebbe mai succedere, ma...
                 speak(paragraph);
                 tts.playSilence(750, TextToSpeech.QUEUE_ADD, null);
             }
@@ -139,7 +139,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
     @Override
     protected void processInput() {
-        if(!story.getPhase().equals(StoryPhase.QUIT)) { // per evitare che pronunci l'ultimo OK...
+        if (!story.getPhase().equals(StoryPhase.QUIT)) { // per evitare che pronunci l'ultimo OK...
             textView.setVisibility(View.INVISIBLE);
             commandsView.setVisibility(View.VISIBLE);
 

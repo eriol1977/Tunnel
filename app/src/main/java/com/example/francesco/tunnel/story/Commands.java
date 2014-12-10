@@ -90,4 +90,12 @@ public class Commands {
         }
         return commands;
     }
+
+    static boolean isItemRelatedCommand(final String commandId) {
+        return commandId.equals(Commands.GET) ||
+                commandId.equals(Commands.USE) ||
+                commandId.equals(Commands.EXAMINE) ||
+                commandId.equals(Commands.OBSERVE) ||
+                commandId.equals(Commands.JOIN);
+    }
 }

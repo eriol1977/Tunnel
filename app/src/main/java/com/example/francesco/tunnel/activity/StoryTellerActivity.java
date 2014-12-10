@@ -95,12 +95,32 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             return;
         }
 
-        if (story.hasDirectOutcome()) {
+        // se la storia è appena terminata, si passa alla sezione "La partita è giunta al termine..."
+        // in modo che il giocatore possa premere lo schermo e scegliere se reiniziare, caricare, ecc.
+        if(story.hasJustEnded()) {
             story.proceed();
-            if (story.getPhase().equals(StoryPhase.STARTED))
+            displayText(story.getCurrentText());
+            return;
+        }
+
+        final boolean doesntNeedToRepeatText = story.doesntNeedToRepeatText();
+        // se c'è un unico collegamento possibile, oppure se si tratta di una sezione temporanea, che
+        // deve per forza tornare alla sezione chiamante, si procede direttamente alla prossima
+        // sezione
+        if (story.hasDirectOutcome() || doesntNeedToRepeatText) {
+            story.proceed();
+            // nel caso di una sezione temporanea (es: esamino, istruzioni...) non vogliamo
+            // ripetere il testo della sezione chiamante, per cui passiamo direttamente alla verifica
+            // degli input
+            // se la storia è finita, bisogna mostrare il testo finale
+            if (doesntNeedToRepeatText)
                 processInput();
+                // altrimenti vuol dire che siamo giunti in una nuova sezione, per cui ne mostriamo
+                // il testo
             else
                 displayText(story.getCurrentText());
+            // altrimenti, si verificano tutti i possibili input per poter stabilire quale sia la
+            // prossima sezione
         } else {
             processInput();
         }

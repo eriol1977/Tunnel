@@ -17,6 +17,8 @@ public class Story {
 
     private Section current;
 
+    private Section previous;
+
     private LinkedList<Section> stashed = new LinkedList<Section>();
 
     private final Character character;
@@ -45,12 +47,24 @@ public class Story {
         return this.current.hasDirectOutcome();
     }
 
-    public boolean unavailableCommand() {
-        return this.current.getId().equals(Section.UNAVAILABLE_SECTION);
+    /**
+     * @return True se non è necessario ripetere il testo una volta che si proceda dalla sezione
+     * attuale alla prossima, ossia se la sezione attuale è temporanea o se ha per destinazione
+     * la stessa sezione da cui proviene
+     */
+    public boolean doesntNeedToRepeatText() {
+        return  this.current.isTemporary() ||
+                (this.current.hasDirectOutcome() &&
+                this.previous != null &&
+                this.current.getFirstLink().getNextSection().equals(this.previous.getId()));
     }
 
-    public boolean isTemporarySection() {
-        return this.current.isTemporary();
+    public boolean hasJustEnded() {
+        return this.current.isEnding() && !this.previous.isEnding();
+    }
+
+    public boolean unavailableCommand() {
+        return this.current.getId().equals(Section.UNAVAILABLE_SECTION);
     }
 
     /**
@@ -68,19 +82,18 @@ public class Story {
         for (final Link link : links) {
             commandIds = link.getCommandIds();
             itemIds = link.getItemIds();
-            if (commandIds.length > 0) { // è 0 con noItems, per non ripetere due volte lo stesso comando
-                if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.USE) || commandIds[0].equals(Commands.EXAMINE) || commandIds[0].equals(Commands.OBSERVE) || commandIds[0].equals(Commands.JOIN)) {
-                    if (itemIds != null && itemIds.length > 0) {
-                        if (commandIds[0].equals(Commands.JOIN)) {
-                            commandText = command(commandIds[0]).getCommandWords() + " " + itemIds[0]; // in questo caso nel link c'è una parola (ex: "medaglioni") invece di un id
-                            text.add(commandText);
-                        } else {
-                            item = StoryLoader.getInstance().item(itemIds[0]);
-                            if (commandIds[0].equals(Commands.GET) || commandIds[0].equals(Commands.OBSERVE) || this.character.hasItem(item)) {
-                                commandText = command(commandIds[0]).getCommandWords() + " " + item.getName();
-                                text.add(commandText);
-                            }
-                        }
+            if (commandIds != null && commandIds.length > 0) { // è 0 con noItems, per non ripetere due volte lo stesso comando
+                if (itemIds != null && itemIds.length > 0) {
+                    if (commandIds[0].equals(Commands.JOIN)) {
+                        commandText = command(commandIds[0]).getCommandWords() + " " + itemIds[0]; // in questo caso nel link c'è una parola (ex: "medaglioni") invece di un id
+                        text.add(commandText);
+                    } else if (Commands.isItemRelatedCommand(commandIds[0])) {
+                        item = StoryLoader.getInstance().item(itemIds[0]);
+                        commandText = command(commandIds[0]).getCommandWords() + " " + item.getName();
+                        text.add(commandText);
+                    } else {
+                        commandText = command(commandIds[0]).getCommandWords();
+                        text.add(commandText);
                     }
                 } else {
                     commandText = command(commandIds[0]).getCommandWords();
@@ -114,6 +127,7 @@ public class Story {
     }
 
     void setCurrent(final Section section) {
+        this.previous = this.current;
         // se siamo arrivati alla sezione iniziale in seguito a un comando di "nuova partita"
         // (visto che potremmo capitarci per altre ragioni in base al flusso della narrazione,
         // senza che questo significhi che dobbiamo reiniziare la partita)
