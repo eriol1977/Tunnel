@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.view.GestureDetectorCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +31,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
     private static final int CHECK_TTS = 2222;
 
+    private static final String STOP_EARCON = "[stop]";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,9 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
         textView = (TextView) findViewById(R.id.textView);
         textView.setTextSize(24);
-        textView.setVerticalScrollBarEnabled(true);
         textView.setOnClickListener(this);
+        //textView.setVerticalScrollBarEnabled(true);
+        //textView.setMovementMethod(new ScrollingMovementMethod());
 
         commandsView = (TextView) findViewById(R.id.commandsView);
         commandsView.setTextSize(24);
@@ -61,13 +64,14 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
     }
 
     @Override
-    protected void displayText(List<String> text) {
+    protected void displayText(final List<String> text) {
         commandsView.setVisibility(View.INVISIBLE);
         textView.setText("");
+        //textView.scrollTo(0, 0);
         textView.setVisibility(View.VISIBLE);
-        for (final String s : text) {
-            if (s != null) { // non dovrebbe mai succedere, ma...
-                textView.append(s);
+        for (final String paragraph : text) {
+            if (paragraph != null) { // non dovrebbe mai succedere, ma...
+                textView.append(paragraph);
                 textView.append("\n\n");
             }
         }
@@ -79,10 +83,15 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                 tts.playSilence(750, TextToSpeech.QUEUE_ADD, null);
             }
         }
+
     }
 
     private void speak(final String text) {
         tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+    }
+
+    private void playStopSound() {
+        tts.playEarcon(STOP_EARCON, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
@@ -102,6 +111,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                         if (status == TextToSpeech.SUCCESS) {
                             if (tts.isLanguageAvailable(Locale.ITALIAN) == TextToSpeech.LANG_AVAILABLE) {
                                 tts.setLanguage(Locale.ITALIAN);
+                                tts.addEarcon(STOP_EARCON, "com.example.francesco.tunnel", R.raw.beep);
                                 displayText(story.getCurrentText()); // testo home
                             } else {
                                 finish();
@@ -145,15 +155,10 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
             this.commandInputs = story.getCommandInputs();
             this.defaultCommandInputs = loader.getDefaultCommands();
-            this.commandIndex = 0;
-            this.defaultCommandIndex = 0;
-
-            if (!this.commandInputs.isEmpty()) {
-                this.selectedCommandInput = this.commandInputs.get(0);
-            } else if (!this.defaultCommandInputs.isEmpty()) {
-                this.selectedCommandInput = this.defaultCommandInputs.get(0);
-            }
-            displayCommand();
+            this.commandIndex = -1;
+            this.defaultCommandIndex = -1;
+            this.selectedCommandInput = null;
+            clearCommand();
         }
     }
 
@@ -163,6 +168,10 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
             tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
             speak(selectedCommandInput);
         }
+    }
+
+    void clearCommand() {
+        commandsView.setText("");
     }
 
     class MyOnTouchListener implements View.OnTouchListener {
@@ -187,9 +196,11 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         }
 
         @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            story.proceed(selectedCommandInput);
-            displayText(story.getCurrentText());
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            if (selectedCommandInput != null) {
+                story.proceed(selectedCommandInput);
+                displayText(story.getCurrentText());
+            }
             return true;
         }
 
@@ -211,6 +222,10 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                             commandIndex = 0;
                     }
                     selectedCommandInput = commandInputs.get(commandIndex);
+                    defaultCommandIndex = -1;
+                    displayCommand();
+                } else {
+                    playStopSound();
                 }
                 // fling verticale
             } else {
@@ -227,9 +242,12 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                             defaultCommandIndex = defaultCommandInputs.size() - 1;
                     }
                     selectedCommandInput = defaultCommandInputs.get(defaultCommandIndex);
+                    commandIndex = -1;
+                    displayCommand();
+                } else {
+                    playStopSound();
                 }
             }
-            displayCommand();
             return true;
         }
     }

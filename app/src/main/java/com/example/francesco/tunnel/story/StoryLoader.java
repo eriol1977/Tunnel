@@ -700,6 +700,10 @@ public class StoryLoader {
     }
 
     public List<String> getDefaultCommands() {
+        // quando il gioco chiede "Sei sicuro?" vogliamo che il giocatore possa soltanto
+        // rispondere sì o no, senza avere a disposizione nessun comando standard
+        if (this.story.isAskingAreYouSure())
+            return new ArrayList<String>();
         return this.commands.getDefaultCommands(this.story.getPhase());
     }
 }

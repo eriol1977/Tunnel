@@ -59,6 +59,11 @@ public class Story {
                 this.current.getFirstLink().getNextSection().equals(this.previous.getId()));
     }
 
+    boolean isAskingAreYouSure()
+    {
+        return this.current.getId().equals(Section.ARE_YOU_SURE);
+    }
+
     public boolean hasJustEnded() {
         return this.current.isEnding() && !this.previous.isEnding();
     }
