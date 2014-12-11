@@ -9,13 +9,20 @@ public class Command {
 
     private final String[] commandWords;
 
-    Command(final String id, final String[] commandWords) {
+    private final String fullName;
+
+    Command(final String id, final String[] commandWords, final String fullName) {
         this.id = id;
         this.commandWords = commandWords;
+        this.fullName = fullName;
     }
 
     String getId() {
         return id;
+    }
+
+    String getFullName() {
+        return fullName;
     }
 
     /**

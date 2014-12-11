@@ -116,10 +116,12 @@ public class StoryLoader {
     private Commands loadCommands() {
         final Map<String, String> pairs = activity.getKeyValuePairsStartingWithPrefix(COMMAND_PREFIX);
         final Map<String, Command> commands = new HashMap<String, Command>(pairs.size());
+        String[] commandInfo;
         String[] words;
         for (String key : pairs.keySet()) {
-            words = pairs.get(key).split("\\s+");
-            commands.put(key, new Command(key, words));
+            commandInfo = pairs.get(key).split(SEPARATOR);
+            words = commandInfo[0].split("\\s+");
+            commands.put(key, new Command(key, words, commandInfo[1]));
         }
         return new Commands(commands);
     }
@@ -127,10 +129,10 @@ public class StoryLoader {
     private Items loadItems() {
         final Map<String, String> pairs = activity.getKeyValuePairsStartingWithPrefix(ITEM_PREFIX);
         final Map<String, Item> items = new HashMap<String, Item>(pairs.size());
-        String[] nameAndSection;
+        String[] itemInfo;
         for (String key : pairs.keySet()) {
-            nameAndSection = pairs.get(key).split(SEPARATOR);
-            items.put(key, new Item(key, nameAndSection[0], nameAndSection[1]));
+            itemInfo = pairs.get(key).split(SEPARATOR);
+            items.put(key, new Item(key, itemInfo[0], itemInfo[1], itemInfo[2]));
         }
         return new Items(items);
     }
@@ -370,7 +372,7 @@ public class StoryLoader {
     Section createInventorySection(final Section current) {
         Section inventorySection = story.getSection(Section.INVENTORY);
         inventorySection.clearLinks();
-        inventorySection.addLink("1", current.getId(), new String[]{Commands.GO_BACK}, null);
+        inventorySection.addLink("1", current.getId(), new String[]{Commands.BACK_TO_NARRATIVE}, null);
         final List<Item> items = this.character.getInventory().getItems();
         List<String> text = new ArrayList<String>(items.size() + 1);
         if (items.isEmpty())
@@ -378,9 +380,9 @@ public class StoryLoader {
         else {
             text.add(msg(Messages.INVENTORY));
             int linkId = 1;
-            // per ogni oggetto, aggiungo il nome alla lista e un link "guardo"
+            // per ogni oggetto, aggiungo il nome alla lista e un link "esamino"
             for (Item item : items) {
-                text.add(item.getName());
+                text.add(item.getFullNameWithoutArticle());
                 linkId++;
                 inventorySection.addLink(String.valueOf(linkId), null, new String[]{Commands.EXAMINE}, new String[]{item.getId()});
             }

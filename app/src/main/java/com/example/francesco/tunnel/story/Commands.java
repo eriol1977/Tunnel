@@ -52,6 +52,8 @@ public class Commands {
 
     public final static String NO = "c_no";
 
+    public final static String BACK_TO_NARRATIVE = "c_back_to_narrative";
+
     public Commands(Map<String, Command> commands) {
         this.commands = commands;
     }
@@ -74,19 +76,19 @@ public class Commands {
     public List<String> getDefaultCommands(final StoryPhase storyPhase) {
         List<String> commands = new ArrayList<String>();
         if (storyPhase.equals(StoryPhase.HOME) || storyPhase.equals(StoryPhase.ENDED)) {
-            commands.add(get(NEW_GAME).getCommandWords());
-            commands.add(get(LOAD_GAME).getCommandWords());
-            commands.add(get(INSTRUCTIONS).getCommandWords());
-            commands.add(get(QUIT).getCommandWords());
-            commands.add(get(REPEAT).getCommandWords());
+            commands.add(get(NEW_GAME).getFullName());
+            commands.add(get(LOAD_GAME).getFullName());
+            commands.add(get(INSTRUCTIONS).getFullName());
+            commands.add(get(QUIT).getFullName());
+            commands.add(get(REPEAT).getFullName());
         } else if (storyPhase.equals(StoryPhase.STARTED)) {
-            commands.add(get(INVENTORY).getCommandWords());
-            commands.add(get(SAVE_GAME).getCommandWords());
-            commands.add(get(NEW_GAME).getCommandWords());
-            commands.add(get(LOAD_GAME).getCommandWords());
-            commands.add(get(INSTRUCTIONS).getCommandWords());
-            commands.add(get(QUIT).getCommandWords());
-            commands.add(get(REPEAT).getCommandWords());
+            commands.add(get(INVENTORY).getFullName());
+            commands.add(get(SAVE_GAME).getFullName());
+            commands.add(get(NEW_GAME).getFullName());
+            commands.add(get(LOAD_GAME).getFullName());
+            commands.add(get(INSTRUCTIONS).getFullName());
+            commands.add(get(QUIT).getFullName());
+            commands.add(get(REPEAT).getFullName());
         }
         return commands;
     }

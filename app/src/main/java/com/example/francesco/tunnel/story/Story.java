@@ -90,18 +90,18 @@ public class Story {
             if (commandIds != null && commandIds.length > 0) { // è 0 con noItems, per non ripetere due volte lo stesso comando
                 if (itemIds != null && itemIds.length > 0) {
                     if (commandIds[0].equals(Commands.JOIN)) {
-                        commandText = command(commandIds[0]).getCommandWords() + " " + itemIds[0]; // in questo caso nel link c'è una parola (ex: "medaglioni") invece di un id
+                        commandText = command(commandIds[0]).getFullName() + " " + itemIds[0]; // in questo caso nel link c'è una parola (ex: "medaglioni") invece di un id
                         text.add(commandText);
                     } else if (Commands.isItemRelatedCommand(commandIds[0])) {
                         item = StoryLoader.getInstance().item(itemIds[0]);
-                        commandText = command(commandIds[0]).getCommandWords() + " " + item.getName();
+                        commandText = command(commandIds[0]).getFullName() + " " + item.getFullName();
                         text.add(commandText);
                     } else {
-                        commandText = command(commandIds[0]).getCommandWords();
+                        commandText = command(commandIds[0]).getFullName();
                         text.add(commandText);
                     }
                 } else {
-                    commandText = command(commandIds[0]).getCommandWords();
+                    commandText = command(commandIds[0]).getFullName();
                     text.add(commandText);
                 }
             }

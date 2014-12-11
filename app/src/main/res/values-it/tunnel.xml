@@ -5,30 +5,30 @@
     <item name="l_title" type="string">Tunnel</item>
 
     <!-- commands -->
-    <item name="c_right" type="string">destra</item>
-    <item name="c_corridor" type="string">corridoio</item>
-    <item name="c_open_door" type="string">apro porta</item>
-    <item name="c_across" type="string">fondo</item>
-    <item name="c_go_on" type="string">avanti</item>
-    <item name="c_straight_on" type="string">dritto</item>
-    <item name="c_proceed" type="string">proseguo</item>
-    <item name="c_open_portal" type="string">apro portale</item>
+    <item name="c_right" type="string">destra:Vado a destra</item>
+    <item name="c_corridor" type="string">corridoio:Entro nel corridoio</item>
+    <item name="c_open_door" type="string">apro porta:Apro la porta</item>
+    <item name="c_across" type="string">fondo:Vado in fondo</item>
+    <item name="c_go_on" type="string">avanti:Vado avanti</item>
+    <item name="c_straight_on" type="string">dritto:Vado dritto</item>
+    <item name="c_proceed" type="string">proseguo:Proseguo</item>
+    <item name="c_open_portal" type="string">apro portale:Apro il portale</item>
 
     <!-- items -->
-    <item name="i_torch" type="string">torcia:23</item>
-    <item name="i_key" type="string">chiave:22</item>
-    <item name="i_lever" type="string">leva:24</item>
-    <item name="i_door" type="string">porta:21</item>
-    <item name="i_portal" type="string">portale:26</item>
-    <item name="i_arc" type="string">arco:25</item>
-    <item name="i_desk" type="string">scrivania:27</item>
-    <item name="i_shelf" type="string">scaffale:28</item>
-    <item name="i_sun_medallion" type="string">medaglione sole:29</item>
-    <item name="i_moon_medallion" type="string">medaglione luna:30</item>
-    <item name="i_medallion" type="string">medaglione:31</item>
+    <item name="i_torch" type="string">torcia:la torcia:23</item>
+    <item name="i_key" type="string">chiave:la chiave:22</item>
+    <item name="i_lever" type="string">leva:la leva:24</item>
+    <item name="i_door" type="string">porta:la porta:21</item>
+    <item name="i_portal" type="string">portale:il portale:26</item>
+    <item name="i_arc" type="string">arco:l\'arco:25</item>
+    <item name="i_desk" type="string">scrivania:la scrivania:27</item>
+    <item name="i_shelf" type="string">scaffale:lo scaffale:28</item>
+    <item name="i_sun_medallion" type="string">medaglione sole:il medaglione del sole:29</item>
+    <item name="i_moon_medallion" type="string">medaglione luna:il medaglione della luna:30</item>
+    <item name="i_medallion" type="string">medaglione:il medaglione:31</item>
 
     <!-- joins -->
-    <item name="j_medallions" type="string">medaglioni:i_sun_medallion,i_moon_medallion:19</item>
+    <item name="j_medallions" type="string">i medaglioni:i_sun_medallion,i_moon_medallion:19</item>
 
     <!-- sections -->
     <item name="sections" type="string">31</item>

@@ -9,11 +9,14 @@ public class Item {
 
     final private String name;
 
+    final private String fullName;
+
     final private String sectionId;
 
-    Item(final String id, final String name, final String sectionId) {
+    Item(final String id, final String name, final String fullName, final String sectionId) {
         this.id = id;
         this.name = name;
+        this.fullName = fullName;
         this.sectionId = sectionId;
     }
 
@@ -23,6 +26,19 @@ public class Item {
 
     String getName() {
         return name;
+    }
+
+    String getFullName() {
+        return fullName;
+    }
+
+    String getFullNameWithoutArticle()
+    {
+        final StringBuilder sb = new StringBuilder();
+        final String[] words = this.fullName.split("\\s+");
+        for(int i=1; i<words.length; i++)
+            sb.append(words[i]).append(" ");
+        return sb.toString();
     }
 
     String getSectionId() {
