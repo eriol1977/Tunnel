@@ -48,9 +48,8 @@
     <item name="help_4" type="string">Scòprile scorrendo lo schermo a destra e a sinistra, poi scegli quale eseguire con un tocco sullo schermo.</item>
     <item name="help_5" type="string">Avrai sempre a disposizione una serie di azioni comuni, come Nuova Partita, o Istruzioni, a cui accedere scorrendo lo schermo in verticale.</item>
     <item name="help_6" type="string">Durante la storia potrai raccogliere numerosi oggetti utili a risolvere enigmi e quindi avanzare nel gioco.</item>
-    <item name="help_7" type="string">Per questo, tra le azioni comuni, troverai anche l\'accesso al tuo Inventario.</item>
-    <item name="help_8" type="string">Ùsalo per sapere quali oggetti ti porti appresso, per esaminarli o anche per unirli a formare nuovi oggetti.</item>
-    <item name="help_9" type="string">In bocca al lupo, e buon divertimento!</item>
+    <item name="help_7" type="string">Per questo, tra le azioni comuni, troverai anche l\'accesso al tuo Inventario: ùsalo per sapere quali oggetti ti porti appresso, per esaminarli o anche per unirli a formare nuovi oggetti.</item>
+    <item name="help_8" type="string">In bocca al lupo, e buon divertimento!</item>
 
     <item name="end_1" type="string">La partita è giunta al termine.</item>
     <item name="end_2" type="string">Vuoi iniziare una nuova partita, caricare una partita salvata, o uscire dal gioco?</item>

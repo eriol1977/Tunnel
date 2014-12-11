@@ -1,10 +1,11 @@
 package com.example.francesco.tunnel.activity;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.view.GestureDetectorCompat;
-import android.text.method.ScrollingMovementMethod;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.story.StoryPhase;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,6 +30,8 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
     private TextView textView;
 
     private TextView commandsView;
+
+    private HashMap<String, String> webConnectedVoice;
 
     private static final int CHECK_TTS = 2222;
 
@@ -48,6 +52,9 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         commandsView.setTextSize(24);
         commandsView.setOnTouchListener(new MyOnTouchListener());
 
+        webConnectedVoice = new HashMap<String, String>();
+        webConnectedVoice.put(TextToSpeech.Engine.KEY_FEATURE_NETWORK_SYNTHESIS, "true");
+
         checkTts();
     }
 
@@ -63,6 +70,34 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         startActivityForResult(checkIntent, CHECK_TTS);
     }
 
+    /**
+     * "Pulisce" il testo in italiano dagli accenti collocati per aiutare il
+     * TextToSpeech con la pronuncia.
+     *
+     * @param text
+     */
+    private String cleanItalianText(final String text) {
+        StringBuilder cleanText = new StringBuilder();
+        final String[] words = text.split("\\s+");
+        String cleanWord;
+        for (final String word : words) {
+            if (word.contains("è") && !word.endsWith("è"))
+                cleanWord = word.replaceAll("è", "e");
+            else if (word.contains("ò") && !word.endsWith("ò"))
+                cleanWord = word.replaceAll("ò", "o");
+            else if (word.contains("ì") && !word.endsWith("ì"))
+                cleanWord = word.replaceAll("ì", "i");
+            else if (word.contains("ù") && !word.endsWith("ù"))
+                cleanWord = word.replaceAll("ù", "u");
+            else if (word.contains("à") && !word.endsWith("à"))
+                cleanWord = word.replaceAll("à", "a");
+            else
+                cleanWord = word;
+            cleanText.append(cleanWord).append(" ");
+        }
+        return cleanText.toString();
+    }
+
     @Override
     protected void displayText(final List<String> text) {
         commandsView.setVisibility(View.INVISIBLE);
@@ -71,7 +106,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         textView.setVisibility(View.VISIBLE);
         for (final String paragraph : text) {
             if (paragraph != null) { // non dovrebbe mai succedere, ma...
-                textView.append(paragraph);
+                textView.append(cleanItalianText(paragraph)); // FIXME altre lingue
                 textView.append("\n\n");
             }
         }
@@ -87,7 +122,10 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
     }
 
     private void speak(final String text) {
-        tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+        if (webConnectionActive())
+            tts.speak(text, TextToSpeech.QUEUE_ADD, webConnectedVoice);
+        else
+            tts.speak(text, TextToSpeech.QUEUE_ADD, null);
     }
 
     private void playStopSound() {
@@ -128,6 +166,12 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private boolean webConnectionActive() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 
     @Override
