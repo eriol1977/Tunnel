@@ -45,8 +45,6 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         textView = (TextView) findViewById(R.id.textView);
         textView.setTextSize(24);
         textView.setOnClickListener(this);
-        //textView.setVerticalScrollBarEnabled(true);
-        //textView.setMovementMethod(new ScrollingMovementMethod());
 
         commandsView = (TextView) findViewById(R.id.commandsView);
         commandsView.setTextSize(24);
@@ -102,7 +100,6 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
     protected void displayText(final List<String> text) {
         commandsView.setVisibility(View.INVISIBLE);
         textView.setText("");
-        //textView.scrollTo(0, 0);
         textView.setVisibility(View.VISIBLE);
         for (final String paragraph : text) {
             if (paragraph != null) { // non dovrebbe mai succedere, ma...

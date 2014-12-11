@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- joins -->
+    <item name="j_medallions" type="string">i medaglioni:i_sun_medallion,i_moon_medallion:19</item>
+
+    <!-- sections -->
+    <item name="sections" type="string">31</item>
+    <item name="starting" type="string">1</item>
+    <item name="ending" type="string">9,20</item>
+
+    <!-- sezioni collegate e relativi comandi; per accedere alla 21, deve osservare la porta -->
+    <!-- per accedere alla 2, entrambi i comandi elencati vanno bene -->
+    <item name="s_1_link_1" type="string">21:c_observe:i_door</item>
+    <item name="s_1_link_2" type="string">3:c_open_door</item>
+    <item name="s_1_link_3" type="string">2:c_corridor,c_right</item>
+
+    <item name="s_2_link_1" type="string">22:c_observe:i_key</item>
+    <item name="s_2_link_2" type="string">4:c_get:i_key</item>
+    <item name="s_2_link_3" type="string">1:c_go_back</item>
+
+    <!-- sezione collegata direttamente alla 1, senza bisogno di impartire comandi -->
+    <item name="s_3_link_1" type="string">1</item>
+
+    <!-- aggiunge la chiave all'inventario -->
+    <item name="s_4_get" type="string">i_key</item>
+    <!-- rimuove il paragrafo 2 della sezione 2 -->
+    <item name="s_4_switch_2" type="string">par:2:2</item>
+    <!-- rimuove il link 1 della sezione 2 -->
+    <item name="s_4_switch_3" type="string">link:2:1</item>
+    <item name="s_4_switch_4" type="string">link:2:2</item>
+    <!-- aggiunge alla sezione 1 un link con id 4 (che punta alla sezione 5 quando si usa la chiave) -->
+    <item name="s_4_switch_5" type="string">link:1:4:5:c_use:i_key</item>
+    <item name="s_4_link_1" type="string">2</item>
+
+    <item name="s_5_switch_1" type="string">link:1:1</item>
+    <item name="s_5_switch_2" type="string">link:1:2</item>
+    <item name="s_5_switch_3" type="string">link:1:4</item>
+    <item name="s_5_switch_4" type="string">link:1:5:6:c_go_on,c_straight_on,c_proceed</item>
+    <!-- rimuove la chiave dall'inventario -->
+    <item name="s_5_drop" type="string">i_key</item>
+    <item name="s_5_link_1" type="string">6</item>
+
+    <item name="s_6_link_1" type="string">23:c_observe:i_torch</item>
+    <item name="s_6_link_2" type="string">7:c_get:i_torch</item>
+    <!-- in base a un'identica lista di comandi, accede alla 8 se non possiede la torcia, altrimenti alla 10 -->
+    <item name="s_6_link_3" type="string">8:c_corridor,c_across,c_go_on,c_straight_on,c_proceed:no_i_torch</item>
+    <item name="s_6_link_4" type="string">10:c_corridor,c_across,c_go_on,c_straight_on,c_proceed:i_torch</item>
+    <item name="s_6_link_5" type="string">1:c_go_back</item>
+
+    <item name="s_7_get" type="string">i_torch</item>
+    <item name="s_7_switch_1" type="string">par:6:2</item>
+    <item name="s_7_switch_2" type="string">link:6:1</item>
+    <item name="s_7_switch_3" type="string">link:6:2</item>
+    <item name="s_7_link_1" type="string">6</item>
+
+    <item name="s_8_link_1" type="string">6:c_go_back</item>
+    <item name="s_8_link_2" type="string">9:c_go_on</item>
+
+    <item name="s_10_drop" type="string">i_torch</item>
+    <item name="s_10_link_1" type="string">11</item>
+
+    <item name="s_11_link_1" type="string">24:c_observe:i_lever</item>
+    <item name="s_11_link_2" type="string">13:c_use:i_lever</item>
+    <item name="s_11_link_3" type="string">12:c_go_back</item>
+
+    <item name="s_12_link_1" type="string">11</item>
+
+    <item name="s_13_link_1" type="string">14</item>
+
+    <item name="s_14_link_1" type="string">15</item>
+
+    <item name="s_15_link_1" type="string">25:c_observe:i_arc</item>
+    <item name="s_15_link_2" type="string">26:c_observe:i_portal</item>
+    <item name="s_15_link_3" type="string">27:c_observe:i_desk</item>
+    <item name="s_15_link_4" type="string">28:c_observe:i_shelf</item>
+    <item name="s_15_link_5" type="string">18:c_open_portal,c_open_door</item>
+
+    <item name="s_16_get" type="string">i_sun_medallion</item>
+    <item name="s_16_switch_2" type="string">link:15:6</item>
+    <item name="s_16_switch_3" type="string">link:15:7</item>
+    <item name="s_16_link_1" type="string">15</item>
+
+    <item name="s_17_get" type="string">i_moon_medallion</item>
+    <item name="s_17_switch_2" type="string">link:15:8</item>
+    <item name="s_17_switch_3" type="string">link:15:9</item>
+    <item name="s_17_link_1" type="string">15</item>
+
+    <item name="s_18_link_1" type="string">15</item>
+
+    <item name="s_19_get" type="string">i_medallion</item>
+    <item name="s_19_drop" type="string">i_sun_medallion,i_moon_medallion</item>
+    <item name="s_19_switch_1" type="string">link:15:10:20:c_use:i_medallion</item>
+
+    <item name="s_20_drop" type="string">i_medallion</item>
+
+    <item name="s_21_link_1" type="string">1</item>
+
+    <item name="s_22_link_1" type="string">2</item>
+
+    <item name="s_23_link_1" type="string">6</item>
+
+    <item name="s_24_link_1" type="string">11</item>
+
+    <item name="s_25_link_1" type="string">15</item>
+
+    <item name="s_26_link_1" type="string">15</item>
+
+    <item name="s_27_switch_1" type="string">link:15:6:29:c_observe:i_sun_medallion</item>
+    <item name="s_27_switch_2" type="string">link:15:7:16:c_get:i_sun_medallion</item>
+    <item name="s_27_link_1" type="string">15</item>
+
+    <item name="s_28_switch_1" type="string">link:15:8:30:c_observe:i_moon_medallion</item>
+    <item name="s_28_switch_2" type="string">link:15:9:17:c_get:i_moon_medallion</item>
+    <item name="s_28_link_1" type="string">15</item>
+
+    <item name="s_29_link_1" type="string">15</item>
+
+    <item name="s_30_link_1" type="string">15</item>
+
+</resources>
