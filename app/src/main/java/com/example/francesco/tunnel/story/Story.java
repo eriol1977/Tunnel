@@ -53,14 +53,13 @@ public class Story {
      * la stessa sezione da cui proviene
      */
     public boolean doesntNeedToRepeatText() {
-        return  this.current.isTemporary() ||
+        return this.current.isTemporary() ||
                 (this.current.hasDirectOutcome() &&
-                this.previous != null &&
-                this.current.getFirstLink().getNextSection().equals(this.previous.getId()));
+                        this.previous != null &&
+                        this.current.getFirstLink().getNextSection().equals(this.previous.getId()));
     }
 
-    boolean isAskingAreYouSure()
-    {
+    boolean isAskingAreYouSure() {
         return this.current.getId().equals(Section.ARE_YOU_SURE);
     }
 
@@ -152,6 +151,8 @@ public class Story {
                 setPhase(StoryPhase.SAVING);
             } else if (section.getId().equals(Section.INVENTORY)) {
                 setPhase(StoryPhase.INVENTORY);
+            } else if(section.getId().equals(Section.HOME_SECTION)){
+                setPhase(StoryPhase.HOME);
             }
             this.current = section;
         }
@@ -240,8 +241,7 @@ public class Story {
                     proceedToJoin(input);
                     linkFound = true;
                 } else if (command(Commands.GO_BACK).check(input)) {
-                    setPhase(StoryPhase.STARTED);
-                    restore();
+                    backToGame();
                     linkFound = true;
                 }
                 break;
@@ -267,7 +267,17 @@ public class Story {
         return linkFound;
     }
 
+    public void backToGame() {
+        setPhase(StoryPhase.STARTED);
+        restore();
+    }
+
+    public void backToHome() {
+        setCurrent(StoryLoader.getInstance().createAreYouSureSection(getSection(Section.HOME_SECTION), this.current));
+    }
+
     private void loadGame() {
+        stash();
         setCurrent(getSection(Section.LOADING));
     }
 
@@ -366,6 +376,10 @@ public class Story {
 
     private Command command(final String key) {
         return StoryLoader.getInstance().command(key);
+    }
+
+    public Section getCurrent() {
+        return current;
     }
 
     public List<String> getCurrentText() {

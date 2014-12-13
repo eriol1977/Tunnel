@@ -70,7 +70,14 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     @Override
     public void onBackPressed() {
-        this.story.proceedToQuit();
+        if (this.story.getPhase().equals(StoryPhase.INVENTORY)) {
+            this.story.backToGame();
+        } else if (this.story.getPhase().equals(StoryPhase.STARTED)) {
+            this.story.backToHome();
+        } else if (!this.story.getPhase().equals(StoryPhase.LOADING) &&
+                !this.story.getPhase().equals(StoryPhase.SAVING)) {
+            this.story.proceedToQuit();
+        }
         displayText(story.getCurrentText());
     }
 
@@ -97,7 +104,7 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
         // se la storia è appena terminata, si passa alla sezione "La partita è giunta al termine..."
         // in modo che il giocatore possa premere lo schermo e scegliere se reiniziare, caricare, ecc.
-        if(story.hasJustEnded()) {
+        if (story.hasJustEnded()) {
             story.proceed();
             displayText(story.getCurrentText());
             return;
@@ -166,24 +173,29 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
      */
     private void loadGame(final boolean temporary) {
         final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        final String defaultValue = Section.HOME_SECTION;
         final String emptyDefaultValue = "";
         String sectionId;
         String inventoryItemIds;
         String paragraphSwitches;
         String linkSwitches;
         if (temporary) {
-            sectionId = preferences.getString(TEMP_SAVE_DATA_SECTION, defaultValue);
+            sectionId = preferences.getString(TEMP_SAVE_DATA_SECTION, emptyDefaultValue);
             inventoryItemIds = preferences.getString(TEMP_SAVE_DATA_INVENTORY, emptyDefaultValue);
             paragraphSwitches = preferences.getString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(TEMP_SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
         } else {
-            sectionId = preferences.getString(SAVE_DATA_SECTION, defaultValue);
+            sectionId = preferences.getString(SAVE_DATA_SECTION, emptyDefaultValue);
             inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY, emptyDefaultValue);
             paragraphSwitches = preferences.getString(SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
         }
         loader.load(sectionId, inventoryItemIds, paragraphSwitches, linkSwitches);
+    }
+
+    protected boolean thereAreSavedGames() {
+        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        final String savedSectionId = preferences.getString(SAVE_DATA_SECTION, "");
+        return !savedSectionId.isEmpty();
     }
 
     @Override

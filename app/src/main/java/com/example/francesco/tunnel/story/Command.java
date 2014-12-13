@@ -21,7 +21,7 @@ public class Command {
         return id;
     }
 
-    String getFullName() {
+    public String getFullName() {
         return fullName;
     }
 

@@ -36,7 +36,7 @@ public class Section {
 
     public final static String HOME_SECTION = "home";
 
-    final static String HELP_SECTION = "help";
+    public final static String HELP_SECTION = "help";
 
     final static String END_SECTION = "end";
 
@@ -58,7 +58,7 @@ public class Section {
         this.id = id;
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
 
@@ -219,5 +219,4 @@ public class Section {
     public void setTemporary(boolean temporary) {
         this.temporary = temporary;
     }
-
 }

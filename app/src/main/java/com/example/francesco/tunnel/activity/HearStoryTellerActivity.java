@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
+import com.example.francesco.tunnel.story.Command;
+import com.example.francesco.tunnel.story.Commands;
 import com.example.francesco.tunnel.story.StoryPhase;
 
 import java.util.HashMap;
@@ -103,7 +105,8 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         textView.setVisibility(View.VISIBLE);
         for (final String paragraph : text) {
             if (paragraph != null) { // non dovrebbe mai succedere, ma...
-                textView.append(cleanItalianText(paragraph)); // FIXME altre lingue
+                textView.append(cleanItalianText(paragraph));
+                //textView.append(Locale.getDefault().equals(Locale.ITALY) ? cleanItalianText(paragraph) : paragraph); // FIXME altre lingue
                 textView.append("\n\n");
             }
         }
@@ -144,21 +147,30 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                     @Override
                     public void onInit(int status) {
                         if (status == TextToSpeech.SUCCESS) {
-                            if (tts.isLanguageAvailable(Locale.ITALIAN) == TextToSpeech.LANG_AVAILABLE) {
-                                tts.setLanguage(Locale.ITALIAN);
-                                tts.addEarcon(STOP_EARCON, "com.example.francesco.tunnel", R.raw.beep);
-                                displayText(story.getCurrentText()); // testo home
-                            } else {
-                                finish();
-                            }
+//                            final Locale defaultLocale = Locale.getDefault();
+//                            if (defaultLocale.equals(Locale.ITALY) || defaultLocale.toString().equals("pt_BR")) {
+//                                final int languageAvailable = tts.isLanguageAvailable(defaultLocale);
+//                                if (languageAvailable == TextToSpeech.LANG_AVAILABLE
+//                                        || languageAvailable == TextToSpeech.LANG_COUNTRY_AVAILABLE
+//                                        || languageAvailable == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE) {
+                            tts.setLanguage(Locale.ITALIAN);
+                            tts.addEarcon(STOP_EARCON, "com.example.francesco.tunnel", R.raw.beep);
+                            displayText(story.getCurrentText()); // testo home
+//                                } else {
+//                                    finish(); // FIXME messaggio errore scritto?
+//                                }
+//                            } else {
+//                                finish(); // FIXME messaggio errore scritto?
+//                            }
+                        } else {
+                            finish(); // FIXME messaggio errore scritto?
                         }
                     }
                 });
             } else {
                 // missing data, install it
                 Intent installIntent = new Intent();
-                installIntent.setAction(
-                        TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
                 startActivity(installIntent);
             }
         }
@@ -182,25 +194,71 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
 
     private List<String> defaultCommandInputs;
 
-    private int commandIndex;
+    private int commandIndex = -1;
 
-    private int defaultCommandIndex;
+    private int defaultCommandIndex = -1;
 
     private String selectedCommandInput;
+
+    private String previousCommandInput;
+
+    private String previousSectionId;
 
     @Override
     protected void processInput() {
         if (!story.getPhase().equals(StoryPhase.QUIT)) { // per evitare che pronunci l'ultimo OK...
             textView.setVisibility(View.INVISIBLE);
             commandsView.setVisibility(View.VISIBLE);
-
-            this.commandInputs = story.getCommandInputs();
-            this.defaultCommandInputs = loader.getDefaultCommands();
-            this.commandIndex = -1;
-            this.defaultCommandIndex = -1;
-            this.selectedCommandInput = null;
-            clearCommand();
+            loadCommands();
+            selectStartingCommand();
+            displayCommand();
         }
+    }
+
+    private void loadCommands() {
+        this.commandInputs = story.getCommandInputs();
+
+        this.defaultCommandInputs = loader.getDefaultCommands();
+        if (!thereAreSavedGames())
+            this.defaultCommandInputs.remove(loader.command(Commands.LOAD_GAME).getFullName());
+    }
+
+    /**
+     * Seleziona il comando iniziale quando il giocatore entra nella sezione.
+     * <p/>
+     * Se esistono comandi propri della sezione, il comando iniziale viene scelto tra di essi.
+     * Se in precedenza non esisteva alcun comando di sezione, o se l'indice di tale comando non
+     * è compatibile con la lista di comandi della nuova sezione, viene scelto il primo comando
+     * della lista.
+     * Se il giocatore è tornato alla stessa sezione di prima, riseleziona l'ultimo comando usato, se
+     * ancora disponibile.
+     * <p/>
+     * Se non esistono comandi propri della sezione, il comando scelto è il primo di quelli standard.
+     */
+    private void selectStartingCommand() {
+        if (this.commandInputs != null && !this.commandInputs.isEmpty()) {
+            if (this.commandIndex == -1 || this.commandIndex > this.commandInputs.size() - 1)
+                this.commandIndex = 0;
+            else if (previousSectionId != null && previousSectionId.equals(story.getCurrent().getId())
+                    && previousCommandInput != null && this.commandInputs.contains(previousCommandInput))
+                this.commandIndex = this.commandInputs.indexOf(previousCommandInput);
+            else
+                this.commandIndex = 0;
+            this.selectedCommandInput = this.commandInputs.get(this.commandIndex);
+            return;
+        } else {
+            this.commandIndex = -1;
+        }
+
+        if (this.defaultCommandInputs != null && !this.defaultCommandInputs.isEmpty()) {
+            this.defaultCommandIndex = 0;
+            this.selectedCommandInput = this.defaultCommandInputs.get(this.defaultCommandIndex);
+            return;
+        } else {
+            this.defaultCommandIndex = -1;
+        }
+
+        this.selectedCommandInput = null;
     }
 
     void displayCommand() {
@@ -239,6 +297,9 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             if (selectedCommandInput != null) {
+                previousCommandInput = selectedCommandInput;
+                if (story.getCurrent() != null)
+                    previousSectionId = story.getCurrent().getId();
                 story.proceed(selectedCommandInput);
                 displayText(story.getCurrentText());
             }
@@ -263,7 +324,6 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                             commandIndex = 0;
                     }
                     selectedCommandInput = commandInputs.get(commandIndex);
-                    defaultCommandIndex = -1;
                     displayCommand();
                 } else {
                     playStopSound();
@@ -283,7 +343,6 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
                             defaultCommandIndex = defaultCommandInputs.size() - 1;
                     }
                     selectedCommandInput = defaultCommandInputs.get(defaultCommandIndex);
-                    commandIndex = -1;
                     displayCommand();
                 } else {
                     playStopSound();

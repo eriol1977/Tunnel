@@ -4,16 +4,16 @@
     <item name="l_prompt" type="string">Comando?</item>
 
     <!-- messages -->
-    <item name="m_unavailable" type="string">Azione invalida</item>
-    <item name="m_inventory" type="string">Possiedi i seguenti oggetti:</item>
-    <item name="m_empty_inventory" type="string">Non possiedi oggetti</item>
-    <item name="m_no_object" type="string">Quest\'oggetto non c\'è!</item>
-    <item name="m_cant_get" type="string">Non si può prendere</item>
-    <item name="m_cant_use" type="string">Non si può usare qui</item>
-    <item name="m_cant_examine" type="string">Non puoi esaminare questo oggetto</item>
-    <item name="m_game_loaded" type="string">Tocca lo schermo per caricare la partita</item>
-    <item name="m_game_saved" type="string">Tocca lo schermo per salvare la partita</item>
-    <item name="m_cant_join" type="string">Non puoi unire questi oggetti, o non li possiedi ancora</item>
+    <item name="m_unavailable" type="string">azione invalida</item>
+    <item name="m_inventory" type="string">possiedi i seguenti oggetti:</item>
+    <item name="m_empty_inventory" type="string">non possiedi oggetti</item>
+    <item name="m_no_object" type="string">quest\'oggetto non c\'è!</item>
+    <item name="m_cant_get" type="string">non si può prendere</item>
+    <item name="m_cant_use" type="string">non si può usare qui</item>
+    <item name="m_cant_examine" type="string">non puoi esaminare questo oggetto</item>
+    <item name="m_game_loaded" type="string">tocca lo schermo per caricare la partita</item>
+    <item name="m_game_saved" type="string">tocca lo schermo per salvare la partita</item>
+    <item name="m_cant_join" type="string">non puoi unire questi oggetti, o non li possiedi ancora</item>
     <item name="m_are_you_sure" type="string">Sei sicuro?</item>
 
     <!-- commands -->
