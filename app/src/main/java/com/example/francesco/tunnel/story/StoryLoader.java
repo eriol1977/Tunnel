@@ -132,7 +132,7 @@ public class StoryLoader {
         String[] itemInfo;
         for (String key : pairs.keySet()) {
             itemInfo = pairs.get(key).split(SEPARATOR);
-            items.put(key, new Item(key, itemInfo[0], itemInfo[1], itemInfo[2]));
+            items.put(key, new Item(key, itemInfo[0], itemInfo[1], itemInfo.length > 2 ? itemInfo[2] : ""));
         }
         return new Items(items);
     }
