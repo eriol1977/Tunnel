@@ -13,6 +13,8 @@
     <item name="c_leave_it_alone" type="string">lascio:Lascio stare</item>
     <item name="c_refuse_to_talk" type="string">rifiuto:Mi rifiuto di parlare</item>
     <item name="c_tell_everything_I_know" type="string">rispondo:Rispondo tutto quel che so</item>
+    <item name="c_agree" type="string">concordo:Concordo</item>
+    <item name="c_disagree" type="string">discordo:Discordo</item>
 
     <!-- items -->
     <item name="i_cell_door" type="string">porta:la porta</item>
@@ -22,13 +24,15 @@
     <item name="i_cell_bed" type="string">branda:la branda</item>
     <item name="i_cell_wc" type="string">vaso:il vaso</item>
     <item name="i_splice" type="string">giunto:il giunto:17</item>
+    <item name="i_lockpick" type="string">grimaldello:il grimaldello:32</item>
 
     <item name="s_17_1" type="string">Il giunto è un vecchio pezzo di ferro piegato ad angolo retto.</item>
+    <item name="s_32_1" type="string">Di certo dovrai imparare a usare questi affari, se speri di potertela cavare nella vita.</item>
 
     <!-- sections -->
-    <item name="sections" type="string">25</item>
+    <item name="sections" type="string">32</item>
     <item name="starting" type="string">1</item>
-    <item name="ending" type="string">15,19,25</item>
+    <item name="ending" type="string">15,19,20,31</item>
 
     <item name="s_1_1" type="string">Ti sei appena destato da un sonno pesantissimo, e provi una gran fitta di dolore al capo.</item>
     <item name="s_1_2" type="string">Esploràndoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</item>
@@ -219,6 +223,54 @@
     <item name="s_25_6" type="string">Alcuni imbarazzanti minuti di silenzio più tardi, siccome anche tu sei a corto di passatempi, decidi di spiattellargli quel poco che sai.</item>
     <item name="s_25_link_1" type="string">26</item>
 
-    
+    <item name="s_26_1" type="string">Gli spieghi di soffrire di un inspiegabile vuoto di memoria. Tutto ciò che ricordi del passato è il tuo stupido nome.</item>
+    <item name="s_26_2" type="string">Pulcioso si sofferma a riflettere, o forse ha spento il cervello, a giudicare dall\'espressione demente stampata sul suo volto.</item>
+    <item name="s_26_3" type="string">Alla fine, contro ogni previsione, ti rivela qualcosa di davvero interessante:</item>
+    <item name="s_26_4" type="string">Devi essere un pezzo grosso, sai?</item>
+    <item name="s_26_5" type="string">Un super criminale, o qualcosa del genere.</item>
+    <item name="s_26_6" type="string">È stato quel maledetto Lord Sfìgas, a trascinarti qui ieri, insieme a un nutrito drappello di guardie, e lui non si scomoda per uno qualsiasi.</item>
+    <item name="s_26_7" type="string">Ho visto tutto dalla porta della mia cella.</item>
+    <item name="s_26_8" type="string">- conclude Pulcioso, sputacchiando nel buco e sulla tua faccia.</item>
+    <item name="s_26_9" type="string">Intrigato dalla scoperta, rafforzi la ferma decisione di fuggire da quel loculo per scoprire la verità su te stesso.</item>
+    <item name="s_26_link_1" type="string">27</item>
+
+    <item name="s_27_1" type="string">Pulcioso sembra lèggerti nel pensiero.</item>
+    <item name="s_27_2" type="string">Posso aiutarti a fuggire</item>
+    <item name="s_27_3" type="string">- afferma baldanzosamente-</item>
+    <item name="s_27_4" type="string">se prima prometti di liberare anche me, una volta fuori.</item>
+    <item name="s_27_link_1" type="string">28:c_agree</item>
+    <item name="s_27_link_2" type="string">29:c_disagree</item>
+
+    <item name="s_28_1" type="string">Fai un cenno affermativo con il capo.</item>
+    <item name="s_28_2" type="string">Lo sapevo, in fondo sei una brava persona!</item>
+    <item name="s_28_3" type="string">- esulta Pulcioso, prima di allungare una mano tremante dentro al buco.</item>
+    <item name="s_28_4" type="string">In essa vedi luccicare un oggetto lungo e sottile, dai riflessi metallici.</item>
+    <item name="s_28_5" type="string">È un grimaldello</item>
+    <item name="s_28_6" type="string">- sbuffa Pulcioso, cercando di tenere sotto controllo il tremore devastante della propria mano.</item>
+    <item name="s_28_7" type="string">Come vedi, io non saprei più che farmene. Queste maledette mani si rifiutano di obbedirmi, forse ho esagerato con l\'ultima fumata.</item>
+    <item name="s_28_8" type="string">Non è colpa mia, se l\'erba dei Saggi dalle Lunghe Trecce è così deliziosa.</item>
+    <item name="s_28_9" type="string">Pur di non doverti sorbire un secondo di più di quello sproloquio insensato, distendi un braccio nel buco e arraffi il grimaldello.</item>
+    <item name="s_28_link_1" type="string">31</item>
+
+    <item name="s_29_1" type="string">Sei proprio un maledetto asino scorbutico, lo sai?</item>
+    <item name="s_29_2" type="string">- sbotta Pulcioso, oltremodo irritato dalla tua insolenza.</item>
+    <item name="s_29_3" type="string">Cosa ti costa farmi un piacere, se io ne faccio prima uno a te?</item>
+    <item name="s_29_4" type="string">Dai, vienimi incontro!</item>
+    <item name="s_29_link_1" type="string">28:c_agree</item>
+    <item name="s_29_link_2" type="string">30:c_disagree</item>
+
+    <item name="s_30_1" type="string">Al tuo ennesimo rifiuto di collaborare, le ultime tracce di giovialità scompaiono dal volto di Pulcioso.</item>
+    <item name="s_30_2" type="string">Fa\' pure come ti pare, allora.</item>
+    <item name="s_30_3" type="string">- ti dice -</item>
+    <item name="s_30_4" type="string">Divèrtiti ad aspettare il boia.</item>
+    <item name="s_30_5" type="string">Per qualche motivo, quella parola ti fa correre i brividi lungo la spina dorsale.</item>
+    <item name="s_30_6" type="string">Chiedi a Pulcioso cosa glielo fa pensare, ma l\'uomo si è già discostato dal buco.</item>
+    <item name="s_30_7" type="string">Per quanto lo richiami, non si fa più né vedere, né sentire.</item>
+    <item name="s_30_8" type="string">Infastidito e turbato al tempo stesso, ti metti a sedere al centro della cella e attendi che qualcuno venga a farti visita.</item>
+    <item name="s_30_9" type="string">Prima o poi qualche autorità dovrà farsi viva, giusto?</item>
+    <item name="s_30_link_1" type="string">20</item>
+
+    <item name="s_31_1" type="string">Per adesso la storia s\'interrompe qui, abbi pazienza.</item>
+    <item name="s_31_2" type="string">Complimenti e grazie per aver giocato!</item>
 
 </resources>
