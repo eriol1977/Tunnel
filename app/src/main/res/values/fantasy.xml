@@ -11,6 +11,8 @@
     <item name="c_wait" type="string">aspetto:Aspetto</item>
     <item name="c_pull_handle" type="string">tiro:Tiro la maniglia</item>
     <item name="c_leave_it_alone" type="string">lascio:Lascio stare</item>
+    <item name="c_refuse_to_talk" type="string">rifiuto:Mi rifiuto di parlare</item>
+    <item name="c_tell_everything_I_know" type="string">rispondo:Rispondo tutto quel che so</item>
 
     <!-- items -->
     <item name="i_cell_door" type="string">porta:la porta</item>
@@ -24,9 +26,9 @@
     <item name="s_17_1" type="string">Il giunto è un vecchio pezzo di ferro piegato ad angolo retto.</item>
 
     <!-- sections -->
-    <item name="sections" type="string">21</item>
+    <item name="sections" type="string">25</item>
     <item name="starting" type="string">1</item>
-    <item name="ending" type="string">15,19,20,21</item>
+    <item name="ending" type="string">15,19,25</item>
 
     <item name="s_1_1" type="string">Ti sei appena destato da un sonno pesantissimo, e provi una gran fitta di dolore al capo.</item>
     <item name="s_1_2" type="string">Esploràndoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</item>
@@ -177,5 +179,46 @@
     <item name="s_21_3" type="string">Hai appena portato alla luce un bel buco tondo nella parete, da cui proviene un soffio d\'aria fresca.</item>
     <item name="s_21_4" type="string">Appoggi la testa sul pavimento per guardarci dentro.</item>
     <item name="s_21_drop" type="string">i_splice</item>
+    <item name="s_21_link_1" type="string">22</item>
+
+    <item name="s_22_1" type="string">Sulle prime, in fondo al buco, scorgi soltanto un pavimento identico a quello della tua cella.</item>
+    <item name="s_22_2" type="string">Poi, con tuo gran spavento, un facciòne barbuto cala a occupare l\'intero angolo di visuale.</item>
+    <item name="s_22_3" type="string">Ben fatto!</item>
+    <item name="s_22_4" type="string">- biascica l\'uomo, con voce zoppicante.</item>
+    <item name="s_22_5" type="string">Quando spalanca la bocca in un sorriso a scacchiera, anche da quella distanza avverti una zaffata di alito pesante.</item>
+    <item name="s_22_6" type="string">Combatti l\'istinto di ritrarti, pur di capire chi sia quest\'uomo e come possa aiutarti nella tua infelice situazione.</item>
+    <item name="s_22_link_1" type="string">23</item>
+
+    <item name="s_23_1" type="string">Mi chiamo Pulcioso</item>
+    <item name="s_23_2" type="string">- afferma lo strano personaggio, anticipando la tua domanda.</item>
+    <item name="s_23_3" type="string">O meglio, così mi chiamano gli altri. Ma io lo trovo un nomignolo proprio simpatico, non trovi?</item>
+    <item name="s_23_4" type="string">La sua risata gracchiante ti colma di pietà e ribrezzo al tempo stesso.</item>
+    <item name="s_23_5" type="string">Ti presenti a tua volta.</item>
+    <item name="s_23_6" type="string">Bob, dunque</item>
+    <item name="s_23_7" type="string">- ridacchia Pulcioso -</item>
+    <item name="s_23_8" type="string">Beh, non tutti hanno fortuna coi nomi.</item>
+    <item name="s_23_link_1" type="string">24</item>
+
+    <item name="s_24_1" type="string">Dal tuo sguardo torvo, Pulcioso capisce di aver esagerato e ti chiede scusa.</item>
+    <item name="s_24_2" type="string">Una volta rotto il gelo, conversate a lungo in quella terribile posizione.</item>
+    <item name="s_24_3" type="string">A costo di beccarti un tremendo torcicollo, riesci a carpire qualche informazione interessante dal povero disgraziato.</item>
+    <item name="s_24_4" type="string">Per esempio, che effettivamente vi trovate in prigione.</item>
+    <item name="s_24_5" type="string">Pulcioso afferma di essere un ladro di professione, addirittura uno dei migliori della regione, prima che l\'abuso di pozioni magiche ed erbe varie lo riducesse al fantasma di se stesso.</item>
+    <item name="s_24_6" type="string">Ma parlami di te, Bob</item>
+    <item name="s_24_7" type="string">Chi sei?</item>
+    <item name="s_24_8" type="string">Cos\'hai fatto per meritarti questo castigo?</item>
+    <item name="s_24_9" type="string">- ti interroga l\'uomo.</item>
+    <item name="s_24_link_1" type="string">25:c_refuse_to_talk</item>
+    <item name="s_24_link_2" type="string">26:c_tell_everything_I_know</item>
+
+    <item name="s_25_1" type="string">Perché diavolo dovresti entrare in confidenza con un tipo che si fa chiamare Pulcioso?</item>
+    <item name="s_25_2" type="string">Ti chiudi in un mutismo ostinato, ma Pulcioso continua a fissarti coi suoi occhietti strabici.</item>
+    <item name="s_25_3" type="string">Non ho molti impegni, sai</item>
+    <item name="s_25_4" type="string">- rivela -</item>
+    <item name="s_25_5" type="string">Mettici pure quanto vuoi a rispondere.</item>
+    <item name="s_25_6" type="string">Alcuni imbarazzanti minuti di silenzio più tardi, siccome anche tu sei a corto di passatempi, decidi di spiattellargli quel poco che sai.</item>
+    <item name="s_25_link_1" type="string">26</item>
+
+    
 
 </resources>
