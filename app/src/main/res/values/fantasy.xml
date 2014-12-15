@@ -26,21 +26,21 @@
     <!-- sections -->
     <item name="sections" type="string">21</item>
     <item name="starting" type="string">1</item>
-    <item name="ending" type="string">15,19,20</item>
+    <item name="ending" type="string">15,19,20,21</item>
 
     <item name="s_1_1" type="string">Ti sei appena destato da un sonno pesantissimo, e provi una gran fitta di dolore al capo.</item>
-    <item name="s_1_2" type="string">Esplorandoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</item>
+    <item name="s_1_2" type="string">Esploràndoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</item>
     <item name="s_1_3" type="string">Sotto la tua schiena nuda, senti la superficie ruvida di un pavimento di pietra.</item>
     <item name="s_1_4" type="string">Dove diamine ti trovi?</item>
     <item name="s_1_5" type="string">Come ci sei finito?</item>
     <item name="s_1_6" type="string">Ma soprattutto...</item>
     <item name="s_1_7" type="string">Chi diavolo sei?</item>
-    <item name="s_1_8" type="string">Alzati da terra e scoprilo, se credi di potercela fare.</item>
+    <item name="s_1_8" type="string">àlzati da terra e scòprilo, se credi di potercela fare.</item>
     <item name="s_1_link_1" type="string">2:c_get_up</item>
     <item name="s_1_link_2" type="string">3:c_lay_still</item>
 
-    <item name="s_2_1" type="string">A quanto pare, ti trovi in una lurida stanza che ha tutta l'aria di essere una cella, a giudicare dalle inferriate infisse davanti all'uscio e alla finestra.</item>
-    <item name="s_2_2" type="string">Resti imbambolato per un pezzo a spremerti le meningi, ma per quanto tu faccia, non riesci a rammentarti nulla del tuo passato, né tantomento le ragioni che ti hanno condotto in questa sottospecie di spelonca.</item>
+    <item name="s_2_1" type="string">A quanto pare, ti trovi in una lurida stanza che ha tutta l\'aria di essere una cella, a giudicare dalle inferriate infisse davanti all\'uscio e alla finestra.</item>
+    <item name="s_2_2" type="string">Resti imbambolato per un pezzo a sprèmerti le meningi, ma per quanto tu faccia, non riesci a rammentarti nulla del tuo passato, né tantomeno le ragioni che ti hanno condotto in questa sottospecie di spelonca.</item>
     <item name="s_2_3" type="string">A dirla tutta, un nome finisci per cavarlo fuori dal buco nero della tua memoria.</item>
     <item name="s_2_4" type="string">Bob!</item>
     <item name="s_2_5" type="string">Ti chiami Bob!</item>
@@ -49,19 +49,19 @@
     <item name="s_2_8" type="string">È soltanto il primo frammento di memoria che hai recuperato, ed è già una cocente delusione...</item>
     <item name="s_2_link_1" type="string">4</item>
 
-    <item name="s_3_1" type="string">Dopo un po', ti rendi conto che restartene sdraiato su un gelido pavimento di pietra non ti aiuterà a migliorare le cose.</item>
-    <item name="s_3_2" type="string">Anzi, ti senti piuttosto infreddolito e idiota.</item>
+    <item name="s_3_1" type="string">Dopo un po\', ti rendi conto che restartene sdraiato su un gelido pavimento di pietra non ti aiuterà a migliorare le cose.</item>
+    <item name="s_3_2" type="string">Anzi, ti senti piuttosto intirizzito e idiota.</item>
     <item name="s_3_3" type="string">Con un pietoso sospiro di autocommiserazione, ti alzi in piedi.</item>
     <item name="s_3_link_1" type="string">2</item>
 
     <item name="s_4_1" type="string">Ti guardi attorno in cerca di risposte.</item>
     <item name="s_4_2" type="string">La cella, se di questo davvero si tratta, è una topaia quadrata di dieci passi per dieci.</item>
-    <item name="s_4_3" type="string">La via d'uscita più ovvia è preclusa da una porta di sbarre di ferro.</item>
-    <item name="s_4_4" type="string">Dall'unica finestrella posta in alto su una parete, anch'essa sbarrata, filtra la luce di una torcia.</item>
-    <item name="s_4_5" type="string">Alla tua destra, appoggiato contro la parete, vi è un enorme armadio dalle ante mezzo sfasciate.</item>
-    <item name="s_4_6" type="string">Alla tua sinistra, l'unico dettaglio degno di interesse è un'asse di legno inchiodato alla parete all'altezza del pavimento.</item>
-    <item name="s_4_7" type="string">Infine noti una squallida branda di legno alle tue spalle e un curioso vaso coperto da un'asse circolare, nell'angolo opposto della spelonca.</item>
-    <item name="s_4_8" type="string">Ti gratti la testa mentre rifletti sulla prossima mossa.</item>
+    <item name="s_4_3" type="string">La via d\'uscita più òvvia è preclusa da una porta di sbarre di ferro.</item>
+    <item name="s_4_4" type="string">Dall\'unica finestrella posta in alto su una parete, anch\'essa sbarrata, filtra la luce di una torcia.</item>
+    <item name="s_4_5" type="string">Alla tua destra, appoggiato contro la parete, vi è un enorme armadio dalle ànte quasi sfasciate.</item>
+    <item name="s_4_6" type="string">Alla tua sinistra, l\'unico dettaglio degno di interesse è un asse di legno inchiodato alla parete all\'altezza del pavimento.</item>
+    <item name="s_4_7" type="string">Infine noti una squallida branda di legno alle tue spalle e un curioso vaso coperto da un\'asse circolare, nell\'angolo opposto della spelonca.</item>
+    <item name="s_4_8" type="string">Ti gratti la testa, mentre rifletti sulla prossima mossa.</item>
     <item name="s_4_link_1" type="string">5:c_observe:i_cell_door</item>
     <item name="s_4_link_2" type="string">6:c_observe:i_cell_window</item>
     <item name="s_4_link_3" type="string">7:c_observe:i_cell_closet</item>
@@ -76,73 +76,72 @@
     <item name="s_5_switch_1" type="string">link:4:1</item>
     <item name="s_5_link_1" type="string">4</item>
 
-    <item name="s_6_1" type="string">La finestra è troppo in alto, e troppo stretta, per poter essere di alcuna utilità.</item>
+    <item name="s_6_1" type="string">La finestra è troppo in alto, e troppo stretta, per poter essere di alcuna utilità</item>
     <item name="s_6_2" type="string">Se non altro costituisce una scarsa fonte di luce, in aggiunta a quella che proviene dalla porta a sbarre.</item>
     <item name="s_6_switch_1" type="string">link:4:2</item>
     <item name="s_6_link_1" type="string">4</item>
 
-    <item name="s_7_1" type="string">L'armadio, un vero monumento all'incapacità del suo costruttore, occupa buona parte della parete con la sua mole scura e sbilenca.</item>
-    <item name="s_7_2" type="string">Provi a forzare la maniglia, ma l'anta non cede.</item>
-    <item name="s_7_3" type="string">Ti chiedi se al di là di questo mostruoso aborto di falegnameria non si celi un'uscita.</item>
+    <item name="s_7_1" type="string">L\'armadio, un vero monumento all\'incapacità del suo costruttore, occupa buona parte della parete con la sua mole scura e sbilenca.</item>
+    <item name="s_7_2" type="string">Provi a forzare la maniglia, ma l\'anta non cede.</item>
+    <item name="s_7_3" type="string">Ti chiedi se al di là di questo mostruoso aborto di falegnameria non si celi un\'uscita.</item>
     <item name="s_7_switch_1" type="string">link:4:3</item>
     <item name="s_7_link_1" type="string">13:c_pull_handle</item>
     <item name="s_7_link_2" type="string">14:c_leave_it_alone</item>
 
-    <item name="s_8_1" type="string">Ti chini faccia a terra per esaminare l'asse.</item>
-    <item name="s_8_2" type="string">Pare che qualcuno l'abbia inchiodato alla parete alla bell'e meglio per chiudere un buco, dal quale senti provenire un flebile alito d'aria.</item>
-    <item name="s_8_3" type="string">Provi a smuoverlo e lo senti cedere un po' sotto le tue dita.</item>
-    <item name="s_8_4" type="string">Se avessi uno strumento appropriato, potresti certamente sradicarlo dal muro e vedere cosa c'è dietro.</item>
+    <item name="s_8_1" type="string">Ti chini faccia a terra per esaminare l\'asse.</item>
+    <item name="s_8_2" type="string">Pare che qualcuno l\'abbia inchiodato alla parete alla bell\'e meglio per chiudere un buco, dal quale senti provenire un flebile alito d\'aria.</item>
+    <item name="s_8_3" type="string">Provi a smuoverlo e lo senti cedere un po\' sotto le tue dita.</item>
+    <item name="s_8_4" type="string">Se avessi uno strumento appropriato, potresti certamente sradicarlo dal muro e vedere cosa c\'è dietro.</item>
     <item name="s_8_switch_1" type="string">link:4:4</item>
     <item name="s_8_link_1" type="string">4</item>
 
     <item name="s_9_1" type="string">Una branda pulciosa, che bellezza.</item>
     <item name="s_9_2" type="string">Ti ispira di più il pavimento, piuttosto che quel sudicio covo di blatte.</item>
-    <item name="s_9_3" type="string">Tra l'altro, uno dei giunti di ferro arrugginito che tengono in piedi la branda è sul punto di staccarsi.</item>
+    <item name="s_9_3" type="string">Tra l\'altro, uno dei giunti di ferro arrugginito che tengono in piedi la branda è sul punto di staccarsi.</item>
     <item name="s_9_switch_1" type="string">link:4:5</item>
     <item name="s_9_switch_2" type="string">link:4:13:16:c_get:i_splice</item>
     <item name="s_9_link_1" type="string">4</item>
 
-    <item name="s_10_1" type="string">Ti avvicini al vaso e sollevi l'asse che lo copre, speranzoso di fare una brillante scoperta.</item>
-    <item name="s_10_2" type="string">Purtroppo per te, hai appena scoperchiato un'immondo vespasiano zeppo di escrementi, alcuni quasi fossilizzati, altri freschi di giornata.</item>
-    <item name="s_10_3" type="string">Fai appena in tempo a tappare l'orrendo vaso partorito dall'inferno, prima che il puzzo ti faccia vomitare l'anima.</item>
-    <item name="s_10_4" type="string">Meglio andarci con i piedi di piombo la prossima volta, Bob.</item>
-    <item name="s_10_5" type="string">Il Male aleggia in questo luogo.</item>
+    <item name="s_10_1" type="string">Ti avvicini al vaso e sollevi l\'asse che lo copre, speranzoso di fare una brillante scoperta.</item>
+    <item name="s_10_2" type="string">Purtroppo hai appena scoperchiato un immondo vespasiano zeppo di escrementi, alcuni quasi fossilizzati, altri freschi di giornata.</item>
+    <item name="s_10_3" type="string">Fai appena in tempo a tappare l\'orrendo vaso partorito dall\'inferno, prima che il puzzo ti faccia vomitare l\'anima.</item>
+    <item name="s_10_4" type="string">Meglio andarci con i piedi di piombo la prossima volta: il Male aleggia in questo luogo.</item>
     <item name="s_10_switch_1" type="string">link:4:6</item>
     <item name="s_10_link_1" type="string">4</item>
 
     <item name="s_11_1" type="string">Urli e starnazzi come un ossesso, ma nessuno accorre a prestarti aiuto.</item>
-    <item name="s_11_2" type="string">Anzi, un vocione adirato dall'esterno della cella ti intima di smetterla all'istante.</item>
+    <item name="s_11_2" type="string">Anzi, un vocione adirato dall\'esterno della cella ti intima di smetterla all\'istante.</item>
     <item name="s_11_switch_1" type="string">link:4:7</item>
     <item name="s_11_switch_2" type="string">link:4:14:18:c_shout</item>
     <item name="s_11_link_1" type="string">4</item>
 
-    <item name="s_12_1" type="string">Nel dubbio, preferisci aspettare.</item>
+    <item name="s_12_1" type="string">Nel dubbio, preferisci attendere.</item>
     <item name="s_12_2" type="string">Del resto non hai alcuna idea del perché ti abbiano rinchiuso in questa cella.</item>
-    <item name="s_12_3" type="string">Forse l'hanno fatto per il tuo stesso bene.</item>
+    <item name="s_12_3" type="string">Forse l\'hanno fatto per il tuo stesso bene.</item>
     <item name="s_12_4" type="string">Di certo qualcuno verrà a spiegarti tutto, prima o poi.</item>
     <item name="s_12_5" type="string">Ti siedi sul pavimento a gambe incrociate e aspetti.</item>
     <item name="s_12_6" type="string">Ore dopo, nessuno si è ancora fatto vivo.</item>
-    <item name="s_12_7" type="string">Il sedere ti fa un male cane, e cominci a sentirti un po' stupido.</item>
+    <item name="s_12_7" type="string">Il sedere ti fa un male cane, e cominci a sentirti un po\' stupido.</item>
     <item name="s_12_switch_1" type="string">link:4:8</item>
     <item name="s_12_switch_2" type="string">link:4:16:20:c_wait</item>
     <item name="s_12_link_1" type="string">4</item>
 
-    <item name="s_13_1" type="string">Tiri con tutte le tue forze, ma l'anta non vuole saperne di aprirsi.</item>
-    <item name="s_13_2" type="string">Odi piuttosto un tremendo scricchiolio, e hai l'impressione che l'intero obbrobrio incomba minaccioso su di te.</item>
+    <item name="s_13_1" type="string">Tiri con tutte le tue forze, ma l\'anta non vuole saperne di aprirsi.</item>
+    <item name="s_13_2" type="string">Odi piuttosto un tremendo scricchiolio, e hai l\'impressione che l\'intero obbrobrio incomba minaccioso su di te.</item>
     <item name="s_13_link_1" type="string">15:c_pull_handle</item>
     <item name="s_13_link_2" type="string">14:c_leave_it_alone</item>
 
     <item name="s_14_1" type="string">Ti allontani da quella parodia di armadio, prima che decida di crollarti addosso.</item>
     <item name="s_14_link_1" type="string">4</item>
 
-    <item name="s_15_1" type="string">Proprio una brillante idea, Bob.</item>
-    <item name="s_15_2" type="string">Quando insisti a tirare, l'intero armadio ti crolla addosso e ti seppellisce sotto una valanga di legname scadente.</item>
-    <item name="s_15_3" type="string">Una fine davvero ingloriosa, rifletti, mentre l'ultima boccata ossigeno ti sfugge dai polmoni.</item>
+    <item name="s_15_1" type="string">Proprio una brillante idea!</item>
+    <item name="s_15_2" type="string">Quando insisti a tirare, l\'intero armadio ti crolla addosso e ti seppellisce sotto una valanga di legname scadente.</item>
+    <item name="s_15_3" type="string">Una fine davvero ingloriosa, rifletti, mentre l\'ultima boccata di ossigeno ti sfugge dai polmoni.</item>
 
-    <item name="s_16_1" type="string">Facendo attenzione a non spezzarti un'unghia, strappi il giunto dalla struttura traballante della branda, che a quel punto si piega su se stessa come un somaro azzoppato.</item>
+    <item name="s_16_1" type="string">Facendo attenzione a non spezzarti un\'unghia, strappi il giunto dalla struttura traballante della branda, che a quel punto si piega su se stessa come un somaro azzoppato.</item>
     <item name="s_16_2" type="string">Ben fatto, un bel pezzo di ferro arrugginito potrebbe sempre venirti utile.</item>
     <item name="s_16_3" type="string">Lo infili nel tuo Inventario, il primo di molti, utilissimi strumenti.</item>
-    <item name="s_16_4" type="string">E non azzardarti a chiedermi cosa sia esattamente questo fantomatico Inventario, Bob.</item>
+    <item name="s_16_4" type="string">E non azzardarti a chiedermi cosa sia esattamente questo fantomatico Inventario.</item>
     <item name="s_16_5" type="string">Una borsa, uno zaino, forse le tue capienti tasche...</item>
     <item name="s_16_6" type="string">Insomma, usa la fantasia!</item>
     <item name="s_16_switch_1" type="string">link:4:13</item>
@@ -152,32 +151,31 @@
 
     <item name="s_18_1" type="string">Continui imperterrito a urlare come una gallina strozzata, pretendendo che qualcuno venga ad aiutarti.</item>
     <item name="s_18_2" type="string">Senti dei passi pesanti avvicinarsi alla porta, accompagnati da grugniti indisposti.</item>
-    <item name="s_18_3" type="string">Ti do un'ultima possibilità di tacere, disgraziato! ti minaccia la voce.</item>
+    <item name="s_18_3" type="string">Ti do un\'ultima possibilità di tacere, disgraziato! - ti minaccia la voce.</item>
     <item name="s_18_switch_1" type="string">link:4:14</item>
     <item name="s_18_switch_2" type="string">link:4:15:19:c_shout</item>
     <item name="s_18_link_1" type="string">4</item>
 
-    <item name="s_19_1" type="string">Va bene, l'hai voluto tu! ruggisce la voce.</item>
+    <item name="s_19_1" type="string">Va bene, l\'hai voluto tu! - ruggisce la voce.</item>
     <item name="s_19_2" type="string">Un istante dopo, una creatura ripugnante si presenta davanti alla porta e armeggia con le chiavi per entrare.</item>
-    <item name="s_19_3" type="string">Si tratta di un ributtante incrocio tra uomo e porco, bardato di una corta armatura di cuoio che non lascia alcuno spazio all'immaginazione.</item>
-    <item name="s_19_4" type="string">Hai ancora la bocca distorta in un'espressione di supremo disgusto, quando l'Uomo Maiale ti si avventa contro e ti massacra a colpi di clava.</item>
-    <item name="s_19_5" type="string">Così impari a tenere la bocca chiusa quando te lo chiedono, Bob.</item>
+    <item name="s_19_3" type="string">Si tratta di un ributtante incrocio tra uomo e porco, bardato di una corta armatura di cuoio che non lascia alcuno spazio all\'immaginazione.</item>
+    <item name="s_19_4" type="string">Hai ancora la bocca distorta in un\'espressione di supremo disgusto, quando l\'Uomo Maiale ti aggredisce e ti massacra a colpi di clava.</item>
+    <item name="s_19_5" type="string">Così magari impari a tenere la bocca chiusa quando te lo chiedono.</item>
 
     <item name="s_20_1" type="string">Cocciuto come un mulo, continui ad attendere anche quando perdi la sensibilità nelle gambe.</item>
     <item name="s_20_2" type="string">Come per miracolo, quando ormai stai per svenire dal tedio, la visita tanto attesa giunge alla tua porta.</item>
     <item name="s_20_3" type="string">Purtroppo non si tratta di esseri umani come te: sono tre ripugnanti creature nate da incroci proibiti tra uomini e porci.</item>
-    <item name="s_20_4" type="string">Non hanno affatto un'aria amichevole, Bob, questo te lo devo proprio dire.</item>
+    <item name="s_20_4" type="string">Non hanno affatto un\'aria amichevole, te lo devo proprio dire.</item>
     <item name="s_20_5" type="string">Quando te ne accorgi, è comunque troppo tardi.</item>
     <item name="s_20_6" type="string">A nulla valgono le tue proteste e le tue petulanti richieste di spiegazioni: due di quegli abomini ti bloccano faccia a terra mentre il terzo ti accosta una lama arrugginita alla gola.</item>
     <item name="s_20_7" type="string">A quanto pare hanno deciso di condannarti a morte senza processo.</item>
-    <item name="s_20_8" type="string">O forse il processo c'è già stato, soltanto che non te ne ricordi.</item>
-    <item name="s_20_9" type="string">In ogni caso, caro Bob, per citare il Maestro, la tua vita e la tua avventura finiscono qui, in questa lurida cella.</item>
+    <item name="s_20_8" type="string">O forse il processo c\'è già stato, soltanto che non te ne ricordi.</item>
+    <item name="s_20_9" type="string">In ogni caso, per citare il Maestro, la tua vita e la tua avventura finiscono qui, in questa lurida cella.</item>
 
-    <item name="s_21_1" type="string">Ti inginocchi a terra e cominci a lavorarti l'asse con il giunto di ferro.</item>
-    <item name="s_21_2" type="string">Dopo una pletora di sforzi, sudato come un maiale, riesci a divellere l'asse e lo getti via insieme al giunto ormai inutile.</item>
-    <item name="s_21_3" type="string">Complimenti, Bob, hai appena portato alla luce un bel buco tondo nella parete, da cui proviene un soffio d'aria fresca (si fa per dire).</item>
+    <item name="s_21_1" type="string">Ti inginocchi a terra e cominci a far leva sull\'asse con il giunto di ferro.</item>
+    <item name="s_21_2" type="string">Dopo una pletora di sforzi, sudato come un maiale, riesci a divellere l\'asse e lo getti via insieme al giunto ormai inutile.</item>
+    <item name="s_21_3" type="string">Hai appena portato alla luce un bel buco tondo nella parete, da cui proviene un soffio d\'aria fresca.</item>
     <item name="s_21_4" type="string">Appoggi la testa sul pavimento per guardarci dentro.</item>
     <item name="s_21_drop" type="string">i_splice</item>
-    <item name="s_21_link_1" type="string">22</item>
 
 </resources>
