@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- labels -->
+    <item name="l_title" type="string">Fantasy</item>
+
+    <!-- commands -->
+    <item name="c_get_up" type="string">alzo:Mi alzo</item>
+    <item name="c_lay_still" type="string">resto:Resto sdraiato</item>
+    <item name="c_shout" type="string">urlo:Urlo</item>
+    <item name="c_wait" type="string">aspetto:Aspetto</item>
+    <item name="c_pull_handle" type="string">tiro:Tiro la maniglia</item>
+    <item name="c_leave_it_alone" type="string">lascio:Lascio stare</item>
+
+    <!-- items -->
+    <item name="i_cell_door" type="string">porta:la porta:13</item>
+    <item name="i_cell_window" type="string">finestra:la finestra:14</item>
+    <item name="i_cell_closet" type="string">armadio:armadio:15</item>
+    <item name="i_cell_board" type="string">asse:asse:16</item>
+    <item name="i_cell_bed" type="string">branda:la branda:17</item>
+    <item name="i_cell_wc" type="string">vaso:il vaso:18</item>
+
+    <!-- sections -->
+    <item name="sections" type="string">21</item>
+    <item name="starting" type="string">1</item>
+    <item name="ending" type="string">21</item>
+
+    <item name="s_1_1" type="string">Al tuo risveglio, provi una gran fitta di dolore al capo.</item>
+    <item name="s_1_2" type="string">Esplorandoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</item>
+    <item name="s_1_3" type="string">Sotto la tua schiena nuda, senti la superficie ruvida di un pavimento di pietra.</item>
+    <item name="s_1_4" type="string">Dove diamine ti trovi?</item>
+    <item name="s_1_5" type="string">Come ci sei finito?</item>
+    <item name="s_1_6" type="string">Ma soprattutto...</item>
+    <item name="s_1_7" type="string">Chi diavolo sei?</item>
+    <item name="s_1_8" type="string">Alzati da terra e scoprilo, se credi di potercela fare.</item>
+    <item name="s_1_link_1" type="string">2:c_get_up</item>
+    <item name="s_1_link_2" type="string">3:c_lay_still</item>
+
+    <item name="s_2_1" type="string">A quanto pare, ti trovi in una lurida stanza che ha tutta l'aria di essere una cella, a giudicare, dalle inferriate infisse nella parete davanti all'uscio e alla finestra.</item>
+    <item name="s_2_2" type="string">Resti imbambolato per un pezzo a spremerti le meningi,  ma per quanto tu faccia, non riesci a ricordarti nulla del tuo passato, né tantomento le ragioni che ti hanno condotto in questa sottospecie di spelonca.</item>
+    <item name="s_2_3" type="string">A dirla tutta, un nome finisci per cavarlo fuori dal buco nero della tua memoria.</item>
+    <item name="s_2_4" type="string">Bob!</item>
+    <item name="s_2_5" type="string">Ti chiami Bob!</item>
+    <item name="s_2_6" type="string">Imprechi ad alta voce.</item>
+    <item name="s_2_7" type="string">Questo è soltanto il primo frammento di memoria che hai recuperato, ed è già una totale delusione.</item>
+    <item name="s_2_link_1" type="string">4</item>
+
+    <item name="s_3_1" type="string">Dopo un po', ti rendi conto che restartene sdraiato su un gelido pavimento di pietra non ti aiuterà a migliorare le cose.</item>
+    <item name="s_3_2" type="string">Anzi, ti senti piuttosto infreddolito e idiota.</item>
+    <item name="s_3_3" type="string">Con un pietoso sospiro di autocommiserazione, ti alzi in piedi.</item>
+    <item name="s_3_link_1" type="string">2</item>
+
+    <item name="s_4_1" type="string">Ti guardi attorno in cerca di risposte.</item>
+    <item name="s_4_2" type="string">La cella, se di questo davvero si tratta, è una topaia rettangolare di dieci passi per dieci.</item>
+    <item name="s_4_3" type="string">La via d'uscita più ovvia è preclusa da una porta di sbarre di ferro.</item>
+    <item name="s_4_4" type="string">Dall'unica finestrella posta in alto su una parete, anch'essa sbarrata, filtra la luce di una torcia.</item>
+    <item name="s_4_5" type="string">Alla tua destra, appoggiato contro la parete, vi è un enorme armadio dalle ante mezzo sfasciate.</item>
+    <item name="s_4_6" type="string">Alla tua sinistra, l'unico dettaglio degno di interesse è un'asse di legno inchiodato alla parete all'altezza del pavimento.</item>
+    <item name="s_4_7" type="string">Infine noti una squallida branda di legno alle tue spalle e un curioso vaso coperto da un'asse circolare, nell'angolo opposto della spelonca.</item>
+    <item name="s_4_8" type="string">Ti gratti la testa mentre rifletti sulla prossima mossa.</item>
+    <item name="s_4_link_1" type="string">5:c_observe:i_cell_door</item>
+    <item name="s_4_link_2" type="string">6:c_observe:i_cell_window</item>
+    <item name="s_4_link_3" type="string">7:c_observe:i_cell_closet</item>
+    <item name="s_4_link_4" type="string">8:c_observe:i_cell_board</item>
+    <item name="s_4_link_5" type="string">9:c_observe:i_cell_bed</item>
+    <item name="s_4_link_6" type="string">10:c_observe:i_cell_wc</item>
+    <item name="s_4_link_7" type="string">11:c_shout</item>
+    <item name="s_4_link_8" type="string">12:c_wait</item>
+
+    <item name="s_5_1" type="string">La porta è piuttosto robusta, come temevi.</item>
+    <item name="s_5_2" type="string">Afferri le sbarre e provi a scuoterla, ma non fai che guadagnarti gli improperi di una guardia di ronda nelle vicinanze.</item>
+    <item name="s_5_switch_1" type="string">link:4:1</item>
+    <item name="s_5_link_1" type="string">4</item>
+
+    <item name="s_6_1" type="string">La finestra è troppo in alto, e troppo stretta, per poter essere di alcuna utilità.</item>
+    <item name="s_6_2" type="string">Se non altro costituisce una scarsa fonte di luce, in aggiunta a quella che proviene dalla porta a sbarre.</item>
+    <item name="s_6_switch_1" type="string">link:4:2</item>
+    <item name="s_6_link_1" type="string">4</item>
+
+    <item name="s_7_1" type="string">L'armadio è davvero colossale: occupa buona parte della parete con la sua mole scura e sbilenca.</item>
+    <item name="s_7_2" type="string">Provi a forzare la maniglia, ma l'anta non cede.</item>
+    <item name="s_7_3" type="string">Ti chiedi se al di là di questo mostruoso aborto di falegnameria non si celi un'uscita.</item>
+    <item name="s_7_switch_1" type="string">link:4:3</item>
+    <item name="s_7_link_1" type="string">19:c_pull_handle</item>
+    <item name="s_7_link_2" type="string">20:c_leave_it_alone</item>
+
+    <item name="s_10_1" type="string">Ti avvicini al vaso e sollevi l'asse che lo copre, speranzoso di fare una brillante scoperta.</item>
+    <item name="s_10_2" type="string">Purtroppo per te, hai appena scoperchiato un'immondo vespasiano zeppo di escrementi, alcuni quasi fossilizzati, altri freschi di giornata.</item>
+    <item name="s_10_3" type="string">Fai appena in tempo a tappare l'orrendo vaso partorito dall'inferno, prima che il puzzo ti faccia vomitare l'anima.</item>
+    <item name="s_10_4" type="string">Meglio andarci con i piedi di piombo la prossima volta, Bob.</item>
+    <item name="s_10_5" type="string">Il Male aleggia in questo luogo.</item>
+    <item name="s_10_switch_1" type="string">link:4:6</item>
+    <item name="s_10_link_1" type="string">4</item>
+
+    <item name="s_19_1" type="string">Tiri con tutte le tue forze, ma l'anta non vuole saperne di aprirsi.</item>
+    <item name="s_19_2" type="string">Odi piuttosto un tremendo scricchiolio, e hai l'impressione che l'intero obbrobrio sia più storto più di prima.</item>
+    <item name="s_19_link_1" type="string">21:c_pull_handle</item>
+    <item name="s_19_link_2" type="string">20:c_leave_it_alone</item>
+
+    <item name="s_20_1" type="string">Ti allontani da quella parodia<item name="s_21_1" type="string">Proprio una brillante idea, Bob.</item> di armadio, prima che decida di crollarti addosso.</item>
+    <item name="s_20_link_1" type="string">4</item>
+
+
+    <item name="s_21_2" type="string">Quando insisti a tirare, l'intero armadio ti crolla addosso e ti seppellisce sotto una valanga di legno.</item>
+    <item name="s_21_3" type="string">Una fine davvero ingloriosa, pensi, mentre l'ultima boccata ossigeno ti sfugge dai polmoni.</item>
+
+</resources>
