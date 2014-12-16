@@ -32,9 +32,9 @@
     <item name="s_33_1" type="string">Di certo dovrai imparare a usare questi affari, se speri di potertela cavare nella vita.</item>
 
     <!-- sections -->
-    <item name="sections" type="string">38</item>
+    <item name="sections" type="string">39</item>
     <item name="starting" type="string">1</item>
-    <item name="ending" type="string">15,19,20,37,38</item>
+    <item name="ending" type="string">15,19,20,37,39</item>
 
     <item name="s_1_1" type="string">Ti sei appena destato da un sonno pesantissimo, e provi una gran fitta di dolore al capo.</item>
     <item name="s_1_2" type="string">Esploràndoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</item>
@@ -309,7 +309,16 @@
     <item name="s_37_1" type="string">Per adesso la storia s\'interrompe qui. Abbi pazienza.</item>
     <item name="s_37_2" type="string">Complimenti e grazie per aver giocato!</item>
 
-    <item name="s_38_1" type="string">Per adesso la storia s\'interrompe qui. Abbi pazienza.</item>
-    <item name="s_38_2" type="string">Complimenti e grazie per aver giocato!</item>
+    <item name="s_38_1" type="string">Me lo immaginavo, che delusione...</item>
+    <item name="s_38_2" type="string">Comunque, la Ruota del Destino funziona così:</item>
+    <item name="s_38_3" type="string">a seconda della difficoltà del compito che hai deciso di schivare, dovrai ottenere dalla Ruota un numero maggiore o uguale a quello che ti indicherò</item>
+    <item name="s_38_4" type="string">Insomma, giri la ruota, incroci le dita, preghi sottovoce, e attendi il risultato.</item>
+    <item name="s_38_5" type="string">Se la sorte ti sorride, avrai superato la prova senza alzare un dito, da vero scansafatiche.</item>
+    <item name="s_38_6" type="string">In caso contrario, avrai fallito e ne pagherai le conseguenze.</item>
+    <item name="s_38_7" type="string">Bando alle ciance, è tempo di girare la ruota!</item>
+    <item name="s_38_link_1" type="string">39</item>
+
+    <item name="s_39_1" type="string">Per adesso la storia s\'interrompe qui. Abbi pazienza.</item>
+    <item name="s_39_2" type="string">Complimenti e grazie per aver giocato!</item>
 
 </resources>

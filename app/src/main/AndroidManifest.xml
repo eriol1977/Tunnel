@@ -10,22 +10,30 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.francesco.tunnel.TunnelActivity"
+            android:name=".TunnelActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.example.francesco.tunnel.activity.HearStoryTellerActivity"
+            android:name=".activity.HearStoryTellerActivity"
             android:label="@string/title_activity_hear_story_teller" >
         </activity>
         <activity
-            android:name="com.example.francesco.tunnel.TunnelHearActivity"
+            android:name=".TunnelHearActivity"
             android:label="@string/title_activity_tunnel_hear"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+
+        </activity>
+        <activity
+            android:name=".activity.DestinyWheel"
+            android:label="@string/title_activity_destiny_wheel"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
