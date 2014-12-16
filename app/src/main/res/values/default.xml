@@ -3,10 +3,7 @@
     <!-- labels -->
     <item name="l_prompt" type="string">Comando?</item>
     <item name="l_dw_welcome" type="string">Tocca lo schermo per girare la Ruota del Destino</item>
-    <item name="l_dw_greater_then" type="string">Devi ottenere un numero maggiore o uguale a </item>
-    <item name="l_dw_extraction" type="string">Hai estratto il numero </item>
-    <item name="l_dw_win" type="string">Hai vinto!</item>
-    <item name="l_dw_lose" type="string">Hai perso!</item>
+    <item name="l_dw_greater_then" type="string">Devi ottenere un numero maggiore di </item>
 
     <!-- messages -->
     <item name="m_unavailable" type="string">azione invalida</item>

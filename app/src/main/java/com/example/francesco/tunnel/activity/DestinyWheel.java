@@ -1,16 +1,15 @@
 package com.example.francesco.tunnel.activity;
 
-import android.app.Activity;
+import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
 
-import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
 
 public class DestinyWheel extends TTSBasedActivity implements View.OnClickListener {
@@ -19,9 +18,15 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
 
     private TextView textView;
 
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer wheelSound;
 
-    private int treshold;
+    private MediaPlayer winSound;
+
+    private MediaPlayer loseSound;
+
+    private int threshold;
+
+    private boolean started = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,113 +37,103 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         textView.setText("!");
         textView.setOnClickListener(this);
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.wheel);
+        wheelSound = MediaPlayer.create(this, R.raw.wheel);
+        winSound = MediaPlayer.create(this, R.raw.win);
+        loseSound = MediaPlayer.create(this, R.raw.lose);
 
-        treshold = 5;
+        threshold = 4;
     }
 
     @Override
     public void onInit(int status) {
         super.onInit(status);
+        speak(getResources().getString(R.string.l_dw_greater_then) + threshold);
         speak(getResources().getString(R.string.l_dw_welcome));
-        speak(getResources().getString(R.string.l_dw_greater_then) + treshold);
     }
 
     @Override
     public void onClick(View v) {
-        tts.stop();
-        spinWheel(1, 10);
+        if (!started) {
+            tts.stop();
+            started = true;
+            spinWheel(1, 10);
+        }
     }
 
     private void spinWheel(final int min, final int max) {
-        WheelSpinner spinner = new WheelSpinner(min, max, treshold, 35, 100, 5);
-        spinner.start();
+        new WheelSpinnerTask().execute(min, max, threshold, 35, 100, 5);
     }
 
-    class WheelSpinner extends Thread {
-
-        private final int min;
-
-        private final int max;
-
-        private final int treshold;
-
-        private final int spinCycles;
-
-        private final int firstSleep;
-
-        private final int sleepIncrement;
-
-        WheelSpinner(final int min, final int max, final int treshold, final int spinCycles, final int firstSleep, final int sleepIncrement) {
-            this.min = min;
-            this.max = max;
-            this.treshold = treshold;
-            this.spinCycles = spinCycles;
-            this.firstSleep = firstSleep;
-            this.sleepIncrement = sleepIncrement;
+    private void showResult(final int result) {
+        speak(String.valueOf(result));
+        if (result > threshold) {
+            textView.setTextColor(Color.GREEN);
+            winSound.start();
+        } else {
+            textView.setTextColor(Color.RED);
+            loseSound.start();
         }
+    }
 
-        @Override
-        public void run() {
+    private int randomInt(int min, int max) {
+        // add 1 to make it inclusive
+        return random.nextInt((max - min) + 1) + min;
+    }
+
+    private class WheelSpinnerTask extends AsyncTask<Integer, Integer, Integer> {
+
+        protected Integer doInBackground(Integer... params) {
+            // inizializza i valori interni
+            int min = params[0];
+            int max = params[1];
+            int threshold = params[2];
+            int spinCycles = params[3];
+            int firstSleep = params[4];
+            int sleepIncrement = params[5];
+            int sleep = firstSleep;
+            int i = 0;
             int previousNumber = -1;
-            try {
-                int i = 0;
-                WheelSpin wheelSpin;
-                int sleep = firstSleep;
-                mediaPlayer.start();
-                while (i < spinCycles) {
+            int number = -1;
+
+            // gira la ruota
+            wheelSound.start();
+            while (i < spinCycles) {
+                try {
                     Thread.sleep(sleep);
-                    wheelSpin = new WheelSpin(min, max, previousNumber);
-                    runOnUiThread(wheelSpin);
-                    previousNumber = wheelSpin.getNumber();
-                    i++;
-                    sleep += sleepIncrement;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
+                // sceglie sempre un numero differente dal precedente
+                do {
+                    number = randomInt(1, 10);
+                } while (number == previousNumber);
+                publishProgress(number);
+
+                // aggiorna i valori interni
+                previousNumber = number;
+                i++;
+                sleep += sleepIncrement;
             }
-            speak(getResources().getString(R.string.l_dw_extraction) + previousNumber);
-            if (previousNumber >= treshold)
-                speak(getResources().getString(R.string.l_dw_win));
-            else
-                speak(getResources().getString(R.string.l_dw_lose));
-        }
-    }
-
-    class WheelSpin implements Runnable {
-
-        private final int min;
-
-        private final int max;
-
-        private int number = -1;
-
-        WheelSpin(final int min, final int max, final int previousNumber) {
-            this.min = min;
-            this.max = max;
-            do {
-                number = randomInt(1, 10);
-            } while (number == previousNumber);
+            return previousNumber;
         }
 
-        @Override
-        public void run() {
-            textView.setText(String.valueOf(number));
+        protected void onProgressUpdate(Integer... progress) {
+            textView.setText(String.valueOf(progress[0]));
         }
 
-        private int randomInt(int min, int max) {
-            // add 1 to make it inclusive
-            return random.nextInt((max - min) + 1) + min;
-        }
-
-        int getNumber() {
-            return number;
+        protected void onPostExecute(Integer result) {
+            showResult(result.intValue());
         }
     }
 
     @Override
     protected void onStop() {
-        mediaPlayer.release();
-        mediaPlayer = null;
+        wheelSound.release();
+        winSound.release();
+        loseSound.release();
+        wheelSound = null;
+        winSound = null;
+        loseSound = null;
         super.onStop();
     }
 }
