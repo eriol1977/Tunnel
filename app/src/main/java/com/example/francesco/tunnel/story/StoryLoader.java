@@ -374,7 +374,7 @@ public class StoryLoader {
         final Map<String, String> minigamePair = activity.getKeyValuePairsStartingWithPrefix(SECTION_PREFIX + id + SECTION_MINIGAME_SUFFIX);// es: s_4_minigame
         if (minigamePair != null & !minigamePair.isEmpty()) {
             final String[] miniGameParameters = minigamePair.values().iterator().next().split(SEPARATOR); // ex: m_wheel:39:40:1:10:4
-            final String[] minigameClassInfo = msg(miniGameParameters[0]).split(SEPARATOR); // ex: com.example.francesco.tunnel.activity.DestinyWheel:min:max:threshold
+            final String[] minigameClassInfo = msg(miniGameParameters[0]).split(SEPARATOR); // ex: com.example.francesco.tunnel.minigame.wheel.DestinyWheel:min:max:threshold
             final Minigame minigame = new Minigame(minigameClassInfo[0], miniGameParameters[1], miniGameParameters[2]); // i primi due params sono sempre la sezione di vittoria e sconfitta (39,40)
             for(int i = 1; i < minigameClassInfo.length; i++)
                 minigame.addParameter(minigameClassInfo[i], miniGameParameters[i + 2]);

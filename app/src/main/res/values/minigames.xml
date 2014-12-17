@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="m_wheel">com.example.francesco.tunnel.activity.DestinyWheel:min:max:threshold</string>
+    <string name="m_wheel">com.example.francesco.tunnel.minigame.wheel.DestinyWheel:min:max:threshold</string>
 </resources>

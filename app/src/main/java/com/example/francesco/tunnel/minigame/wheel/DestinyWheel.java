@@ -1,4 +1,4 @@
-package com.example.francesco.tunnel.activity;
+package com.example.francesco.tunnel.minigame.wheel;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -73,15 +73,19 @@ public class DestinyWheel extends Activity implements View.OnClickListener, TTSB
         textView.setText("!");
         textView.setOnClickListener(this);
 
+        initParams();
+
+        initSounds();
+
+        ttsUtil = new TTSUtil(this, this);
+    }
+
+    private void initParams() {
         this.min = getIntent().getIntExtra(MIN, DEFAULT_MIN);
         this.max = getIntent().getIntExtra(MAX, DEFAULT_MAX);
         this.threshold = getIntent().getIntExtra(THRESHOLD, DEFAULT_THRESHOLD);
         this.winNextSection = getIntent().getStringExtra(Minigame.PARAM_WIN_NEXT_SECTION);
         this.loseNextSection = getIntent().getStringExtra(Minigame.PARAM_LOSE_NEXT_SECTION);
-
-        initSounds();
-
-        ttsUtil = new TTSUtil(this, this);
     }
 
     @Override
