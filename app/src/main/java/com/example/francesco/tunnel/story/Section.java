@@ -1,5 +1,7 @@
 package com.example.francesco.tunnel.story;
 
+import com.example.francesco.tunnel.minigame.Minigame;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +31,8 @@ public class Section {
     private List<ItemGet> itemGets;
 
     private List<ItemDrop> itemDrops;
+
+    private Minigame minigame;
 
     /**
      * Default sections
@@ -193,6 +197,21 @@ public class Section {
     void setLinkSwitches(final List<LinkSwitch> linkSwitches) {
         this.linkSwitches = linkSwitches;
     }
+
+    //////// MINIGAME
+
+    boolean hasMinigame() {
+        return minigame != null;
+    }
+
+    Minigame getMinigame() {
+        return minigame;
+    }
+
+    void setMinigame(Minigame minigame) {
+        this.minigame = minigame;
+    }
+
 
     //////// OTHERS
 

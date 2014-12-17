@@ -1,6 +1,7 @@
 package com.example.francesco.tunnel.story;
 
 import com.example.francesco.tunnel.activity.StoryTellerActivity;
+import com.example.francesco.tunnel.minigame.Minigame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,8 @@ public class StoryLoader {
     private final static String SECTION_SWITCH_KIND_PARAGRAPH = "par";
 
     private final static String SECTION_SWITCH_KIND_LINK = "link";
+
+    private final static String SECTION_MINIGAME_SUFFIX = "_minigame";
 
     private final static String SECTION_SWITCH_KIND_ITEM = "item";
 
@@ -238,11 +241,11 @@ public class StoryLoader {
             section.setItemDrops(loadSectionItemDrops(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
             section.setLinkSwitches(loadSectionLinkSwitches(id));
+            section.setMinigame(loadSectionMinigame(id));
             sections.add(section);
         }
         return sections;
     }
-
 
     private List<String> loadSectionText(final String prefix) {
         boolean finish = false;
@@ -365,6 +368,19 @@ public class StoryLoader {
             return switches;
         }
         return new ArrayList<LinkSwitch>();
+    }
+
+    private Minigame loadSectionMinigame(final String id) {
+        final Map<String, String> minigamePair = activity.getKeyValuePairsStartingWithPrefix(SECTION_PREFIX + id + SECTION_MINIGAME_SUFFIX);// es: s_4_minigame
+        if (minigamePair != null & !minigamePair.isEmpty()) {
+            final String[] miniGameParameters = minigamePair.values().iterator().next().split(SEPARATOR); // ex: m_wheel:39:40:1:10:4
+            final String[] minigameClassInfo = msg(miniGameParameters[0]).split(SEPARATOR); // ex: com.example.francesco.tunnel.activity.DestinyWheel:min:max:threshold
+            final Minigame minigame = new Minigame(minigameClassInfo[0], miniGameParameters[0], miniGameParameters[1]); // i primi due params sono sempre la sezione di vittoria e sconfitta (39,40)
+            for(int i = 1; i < minigameClassInfo.length; i++)
+                minigame.addParameter(minigameClassInfo[i], miniGameParameters[i + 2]);
+            return minigame;
+        }
+        return null;
     }
 
     ///////// SPECIAL SECTIONS

@@ -7,17 +7,14 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
+import com.example.francesco.tunnel.minigame.Minigame;
 
-import java.net.URL;
 import java.util.Random;
 
 public class DestinyWheel extends TTSBasedActivity implements View.OnClickListener {
-
-    public final static String RESULT = "result";
 
     public final static String MIN = "min";
 
@@ -57,7 +54,11 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
 
     private boolean finished = false;
 
-    private int result;
+    private String result;
+
+    private String winNextSection;
+
+    private String loseNextSection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,8 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         this.min = getIntent().getIntExtra(MIN, DEFAULT_MIN);
         this.max = getIntent().getIntExtra(MAX, DEFAULT_MAX);
         this.threshold = getIntent().getIntExtra(THRESHOLD, DEFAULT_THRESHOLD);
+        this.winNextSection = getIntent().getStringExtra(Minigame.PARAM_WIN_NEXT_SECTION);
+        this.loseNextSection = getIntent().getStringExtra(Minigame.PARAM_LOSE_NEXT_SECTION);
     }
 
     private void initSounds() {
@@ -115,14 +118,15 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         new WheelSpinnerTask().execute(SPIN_CYCLES, FIRST_SLEEP, SLEEP_INCREMENT);
     }
 
-    private void showResult(final int result) {
-        this.result = result;
+    private void setOutcome(final int result) {
         this.finished = true;
         speak(String.valueOf(result));
         if (result > threshold) {
+            this.result = winNextSection;
             textView.setTextColor(Color.GREEN);
             winSound.start();
         } else {
+            this.result = loseNextSection;
             textView.setTextColor(Color.RED);
             loseSound.start();
         }
@@ -130,7 +134,7 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
 
     private void sendBackResult() {
         Intent resultIntent = new Intent("com.example.RESULT_ACTION");
-        resultIntent.putExtra(RESULT, this.result);
+        resultIntent.putExtra(Minigame.RESULT_NEXT_SECTION, this.result);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
@@ -174,7 +178,7 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         }
 
         protected void onPostExecute(Integer result) {
-            showResult(result.intValue());
+            setOutcome(result.intValue());
         }
 
         private int randomInt(int min, int max) {

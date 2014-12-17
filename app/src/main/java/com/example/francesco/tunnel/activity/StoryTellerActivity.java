@@ -1,11 +1,13 @@
 package com.example.francesco.tunnel.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.francesco.tunnel.R;
+import com.example.francesco.tunnel.minigame.Minigame;
 import com.example.francesco.tunnel.story.Section;
 import com.example.francesco.tunnel.story.Story;
 import com.example.francesco.tunnel.story.StoryLoader;
@@ -49,6 +51,8 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     private static final String TEMP_DATA_SAVED = "tempDataSaved";
 
+    static final int MINIGAME = 111;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +89,39 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     protected abstract void processInput();
 
+    private void callMinigame(final Minigame minigame) {
+        try {
+            Class<?> activityClass = Class.forName(minigame.getActivityClass());
+            final Map<String, String> parameters = minigame.getParameters();
+            Intent minigameIntent = new Intent(this, activityClass);
+            for (final String key : parameters.keySet())
+                minigameIntent.putExtra(key, parameters.get(key));
+            startActivityForResult(minigameIntent, MINIGAME);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == MINIGAME) {
+                // processa qui i possibili risultati secondari, tipo rimuovere oggetti dall'inventario, ecc.
+                // ogni possibile chiave dev'essere definita come costante RESULT_X nella classe Minigame
+
+                story.proceedToSection(data.getStringExtra(Minigame.RESULT_NEXT_SECTION));
+            }
+        }
+    }
+
     @Override
     public void onClick(View v) {
+
+        if (story.hasMinigame()) {
+            callMinigame(story.getMinigame());
+            return;
+        }
 
         if (story.getPhase().equals(StoryPhase.QUIT)) {
             finish();

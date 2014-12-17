@@ -1,5 +1,7 @@
 package com.example.francesco.tunnel.story;
 
+import com.example.francesco.tunnel.minigame.Minigame;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -65,6 +67,14 @@ public class Story {
 
     public boolean hasJustEnded() {
         return this.current.isEnding() && !this.previous.isEnding();
+    }
+
+    public boolean hasMinigame() {
+        return this.current != null && this.current.hasMinigame();
+    }
+
+    public Minigame getMinigame() {
+        return this.current.getMinigame();
     }
 
     public boolean unavailableCommand() {
@@ -151,7 +161,7 @@ public class Story {
                 setPhase(StoryPhase.SAVING);
             } else if (section.getId().equals(Section.INVENTORY)) {
                 setPhase(StoryPhase.INVENTORY);
-            } else if(section.getId().equals(Section.HOME_SECTION)){
+            } else if (section.getId().equals(Section.HOME_SECTION)) {
                 setPhase(StoryPhase.HOME);
             }
             this.current = section;
@@ -173,6 +183,10 @@ public class Story {
                 setCurrent(getSection(nextSectionId));
             }
         }
+    }
+
+    public void proceedToSection(final String sectionId) {
+        setCurrent(getSection(sectionId));
     }
 
     public void proceed(final String input) {
