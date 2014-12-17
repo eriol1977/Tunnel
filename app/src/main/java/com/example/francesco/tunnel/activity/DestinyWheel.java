@@ -82,18 +82,6 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         wheelSound = MediaPlayer.create(this, R.raw.wheel);
         winSound = MediaPlayer.create(this, R.raw.win);
         loseSound = MediaPlayer.create(this, R.raw.lose);
-        winSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                speak(getResources().getString(R.string.l_dw_finish));
-            }
-        });
-        loseSound.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                speak(getResources().getString(R.string.l_dw_finish));
-            }
-        });
     }
 
     @Override
@@ -110,6 +98,7 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
             started = true;
             spinWheel();
         } else if (finished) {
+            tts.stop();
             sendBackResult();
         }
     }

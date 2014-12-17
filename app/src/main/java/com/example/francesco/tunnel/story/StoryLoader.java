@@ -375,7 +375,7 @@ public class StoryLoader {
         if (minigamePair != null & !minigamePair.isEmpty()) {
             final String[] miniGameParameters = minigamePair.values().iterator().next().split(SEPARATOR); // ex: m_wheel:39:40:1:10:4
             final String[] minigameClassInfo = msg(miniGameParameters[0]).split(SEPARATOR); // ex: com.example.francesco.tunnel.activity.DestinyWheel:min:max:threshold
-            final Minigame minigame = new Minigame(minigameClassInfo[0], miniGameParameters[0], miniGameParameters[1]); // i primi due params sono sempre la sezione di vittoria e sconfitta (39,40)
+            final Minigame minigame = new Minigame(minigameClassInfo[0], miniGameParameters[1], miniGameParameters[2]); // i primi due params sono sempre la sezione di vittoria e sconfitta (39,40)
             for(int i = 1; i < minigameClassInfo.length; i++)
                 minigame.addParameter(minigameClassInfo[i], miniGameParameters[i + 2]);
             return minigame;

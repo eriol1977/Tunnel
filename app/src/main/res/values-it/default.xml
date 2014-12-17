@@ -4,7 +4,6 @@
     <string name="l_prompt">Comando?</string>
     <string name="l_dw_welcome">Tocca lo schermo per girare la Ruota del Destino</string>
     <string name="l_dw_greater_then">Devi ottenere un numero maggiore di </string>
-    <string name="l_dw_finish">Tocca lo schermo per tornare al gioco</string>
 
     <!-- messages -->
     <string name="m_unavailable">Azione invalida</string>
