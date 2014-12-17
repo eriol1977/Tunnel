@@ -86,8 +86,8 @@ public class DestinyWheel extends Activity implements View.OnClickListener, TTSB
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         ttsUtil.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void initSounds() {
@@ -185,6 +185,12 @@ public class DestinyWheel extends Activity implements View.OnClickListener, TTSB
             // add 1 to make it inclusive
             return random.nextInt((max - min) + 1) + min;
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        ttsUtil.onRestart();
     }
 
     @Override

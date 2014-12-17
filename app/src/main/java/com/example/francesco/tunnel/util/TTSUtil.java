@@ -14,13 +14,14 @@ import java.util.Locale;
 
 /**
  * Utilitario per tutte le Activity che facciano uso di TextToSpeech.
- * Fornisce i metodi speak() e stop() per parlare e interrompere, oltre a occuparsi di tutta la
+ * Fornisce i metodi speak(), playSilence(), playEarcon() e stop() per parlare e interrompere, oltre a occuparsi di tutta la
  * parte di inizializzazione e gestione del servizio.
  *
  * Nell'Activity, ricordarsi di:
  * - implementare {@link com.example.francesco.tunnel.util.TTSBacked}
  * - invocare ttsUtil.onActivityResult(requestCode, resultCode, data) all'interno del metodo
  *   onActivityResult (creare il metodo se non esiste)
+ * - invocare ttsUtil.onRestart() all'interno del metodo onRestart
  * - invocare ttsUtil.onStop() all'interno del metodo onStop
  *
  * Created by Francesco on 17/12/2014.
@@ -62,6 +63,18 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
             tts.speak(text, TextToSpeech.QUEUE_ADD, null);
     }
 
+    public void playSilence(final long durationInMs, final int queueMode, final HashMap<String, String> params) {
+        tts.playSilence(durationInMs, queueMode, params);
+    }
+
+    public void addEarcon(final String earcon, final String packagename, final int resourceId) {
+        tts.addEarcon(earcon, packagename, resourceId);
+    }
+
+    public void playEarcon(final String earcon, final int queueMode, final HashMap<String, String> params) {
+        tts.playEarcon(earcon, queueMode, params);
+    }
+
     public void stop() {
         tts.stop();
     }
@@ -84,6 +97,10 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
                 activity.startActivity(installIntent);
             }
         }
+    }
+
+    public void onRestart() {
+        checkTts();
     }
 
     public void onStop() {
@@ -112,4 +129,6 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
             activity.finish(); // FIXME messaggio errore scritto?
         }
     }
+
+
 }

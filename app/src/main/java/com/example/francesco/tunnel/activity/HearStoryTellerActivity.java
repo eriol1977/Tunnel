@@ -15,27 +15,23 @@ import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.story.Command;
 import com.example.francesco.tunnel.story.Commands;
 import com.example.francesco.tunnel.story.StoryPhase;
+import com.example.francesco.tunnel.util.TTSBacked;
+import com.example.francesco.tunnel.util.TTSUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * TODOs
- * - implementare notes_get, in modo che una nota marcata come "rimossa" dal notes_drop non
- * venga mai più aggiunta al rientrare nella sezione che descrive un oggetto
+ *
  */
-public class HearStoryTellerActivity extends StoryTellerActivity {
+public class HearStoryTellerActivity extends StoryTellerActivity implements TTSBacked {
 
-    private TextToSpeech tts;
+    private TTSUtil ttsUtil;
 
     private TextView textView;
 
     private TextView commandsView;
-
-    private HashMap<String, String> webConnectedVoice;
-
-    private static final int CHECK_TTS = 2222;
 
     private static final String STOP_EARCON = "[stop]";
 
@@ -52,22 +48,13 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
         commandsView.setTextSize(24);
         commandsView.setOnTouchListener(new MyOnTouchListener());
 
-        webConnectedVoice = new HashMap<String, String>();
-        webConnectedVoice.put(TextToSpeech.Engine.KEY_FEATURE_NETWORK_SYNTHESIS, "true");
-
-        checkTts();
+        ttsUtil = new TTSUtil(this, this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        checkTts();
-    }
-
-    private void checkTts() {
-        Intent checkIntent = new Intent();
-        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkIntent, CHECK_TTS);
+        ttsUtil.onRestart();
     }
 
     /**
@@ -111,82 +98,35 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
             }
         }
 
-        tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
+        ttsUtil.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
         for (String paragraph : text) {
             if (paragraph != null) { // non dovrebbe mai succedere, ma...
-                speak(paragraph);
-                tts.playSilence(750, TextToSpeech.QUEUE_ADD, null);
+                ttsUtil.speak(paragraph);
+                ttsUtil.playSilence(750, TextToSpeech.QUEUE_ADD, null);
             }
         }
 
     }
 
-    private void speak(final String text) {
-        if (webConnectionActive())
-            tts.speak(text, TextToSpeech.QUEUE_ADD, webConnectedVoice);
-        else
-            tts.speak(text, TextToSpeech.QUEUE_ADD, null);
-    }
-
     private void playStopSound() {
-        tts.playEarcon(STOP_EARCON, TextToSpeech.QUEUE_FLUSH, null);
+        ttsUtil.playEarcon(STOP_EARCON, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     @Override
     public void onClick(View v) {
-        tts.stop(); // interrompe la voce
+        ttsUtil.stop(); // interrompe la voce
         super.onClick(v);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CHECK_TTS) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                // success, create the TTS instance
-                tts = new TextToSpeech(this.getApplicationContext(), new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS) {
-//                            final Locale defaultLocale = Locale.getDefault();
-//                            if (defaultLocale.equals(Locale.ITALY) || defaultLocale.toString().equals("pt_BR")) {
-//                                final int languageAvailable = tts.isLanguageAvailable(defaultLocale);
-//                                if (languageAvailable == TextToSpeech.LANG_AVAILABLE
-//                                        || languageAvailable == TextToSpeech.LANG_COUNTRY_AVAILABLE
-//                                        || languageAvailable == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE) {
-                            tts.setLanguage(Locale.ITALIAN);
-                            tts.addEarcon(STOP_EARCON, "com.example.francesco.tunnel", R.raw.beep);
-                            displayText(story.getCurrentText()); // testo home
-//                                } else {
-//                                    finish(); // FIXME messaggio errore scritto?
-//                                }
-//                            } else {
-//                                finish(); // FIXME messaggio errore scritto?
-//                            }
-                        } else {
-                            finish(); // FIXME messaggio errore scritto?
-                        }
-                    }
-                });
-            } else {
-                // missing data, install it
-                Intent installIntent = new Intent();
-                installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installIntent);
-            }
-        }
+        ttsUtil.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private boolean webConnectionActive() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
     }
 
     @Override
     protected void onStop() {
-        tts.stop();
-        tts.shutdown();
+        ttsUtil.onStop();
         super.onStop();
     }
 
@@ -264,13 +204,15 @@ public class HearStoryTellerActivity extends StoryTellerActivity {
     void displayCommand() {
         if (selectedCommandInput != null) {
             commandsView.setText(selectedCommandInput);
-            tts.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
-            speak(selectedCommandInput);
+            ttsUtil.playSilence(10, TextToSpeech.QUEUE_FLUSH, null);
+            ttsUtil.speak(selectedCommandInput);
         }
     }
 
-    void clearCommand() {
-        commandsView.setText("");
+    @Override
+    public void afterTTSInit() {
+        ttsUtil.addEarcon(STOP_EARCON, "com.example.francesco.tunnel", R.raw.beep);
+        displayText(story.getCurrentText()); // testo home
     }
 
     class MyOnTouchListener implements View.OnTouchListener {
