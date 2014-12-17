@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.minigame.Minigame;
+import com.example.francesco.tunnel.util.TTSBacked;
+import com.example.francesco.tunnel.util.TTSUtil;
 
 import java.util.Random;
 
-public class DestinyWheel extends TTSBasedActivity implements View.OnClickListener {
+public class DestinyWheel extends Activity implements View.OnClickListener, TTSBacked {
 
     public final static String MIN = "min";
 
@@ -60,6 +62,8 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
 
     private String loseNextSection;
 
+    private TTSUtil ttsUtil;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,13 +73,21 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         textView.setText("!");
         textView.setOnClickListener(this);
 
-        initSounds();
-
         this.min = getIntent().getIntExtra(MIN, DEFAULT_MIN);
         this.max = getIntent().getIntExtra(MAX, DEFAULT_MAX);
         this.threshold = getIntent().getIntExtra(THRESHOLD, DEFAULT_THRESHOLD);
         this.winNextSection = getIntent().getStringExtra(Minigame.PARAM_WIN_NEXT_SECTION);
         this.loseNextSection = getIntent().getStringExtra(Minigame.PARAM_LOSE_NEXT_SECTION);
+
+        initSounds();
+
+        ttsUtil = new TTSUtil(this, this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ttsUtil.onActivityResult(requestCode, resultCode, data);
     }
 
     private void initSounds() {
@@ -85,20 +97,13 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
     }
 
     @Override
-    public void onInit(int status) {
-        super.onInit(status);
-        speak(getResources().getString(R.string.l_dw_greater_then) + threshold);
-        speak(getResources().getString(R.string.l_dw_welcome));
-    }
-
-    @Override
     public void onClick(View v) {
         if (!started) {
-            tts.stop();
+            ttsUtil.stop();
             started = true;
             spinWheel();
         } else if (finished) {
-            tts.stop();
+            ttsUtil.stop();
             sendBackResult();
         }
     }
@@ -109,7 +114,7 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
 
     private void setOutcome(final int result) {
         this.finished = true;
-        speak(String.valueOf(result));
+        ttsUtil.speak(String.valueOf(result));
         if (result > threshold) {
             this.result = winNextSection;
             textView.setTextColor(Color.GREEN);
@@ -126,6 +131,12 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         resultIntent.putExtra(Minigame.RESULT_NEXT_SECTION, this.result);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
+    }
+
+    @Override
+    public void afterTTSInit() {
+        ttsUtil.speak(getResources().getString(R.string.l_dw_greater_then) + threshold);
+        ttsUtil.speak(getResources().getString(R.string.l_dw_welcome));
     }
 
     private class WheelSpinnerTask extends AsyncTask<Integer, Integer, Integer> {
@@ -178,6 +189,7 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
 
     @Override
     protected void onStop() {
+        ttsUtil.onStop();
         wheelSound.release();
         winSound.release();
         loseSound.release();
@@ -185,5 +197,10 @@ public class DestinyWheel extends TTSBasedActivity implements View.OnClickListen
         winSound = null;
         loseSound = null;
         super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do nothing
     }
 }
