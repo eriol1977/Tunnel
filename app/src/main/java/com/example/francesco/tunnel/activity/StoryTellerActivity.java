@@ -94,8 +94,17 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             Class<?> activityClass = Class.forName(minigame.getActivityClass());
             final Map<String, String> parameters = minigame.getParameters();
             Intent minigameIntent = new Intent(this, activityClass);
-            for (final String key : parameters.keySet())
-                minigameIntent.putExtra(key, parameters.get(key));
+            String value;
+            int intValue;
+            for (final String key : parameters.keySet()) {
+                value = parameters.get(key);
+                try {
+                    intValue = Integer.parseInt(value);
+                    minigameIntent.putExtra(key, intValue);
+                } catch (NumberFormatException e) {
+                    minigameIntent.putExtra(key, value);
+                }
+            }
             startActivityForResult(minigameIntent, MINIGAME);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

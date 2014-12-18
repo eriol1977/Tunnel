@@ -47,8 +47,8 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
     }
 
     private void initParams() {
-        this.winNextSection = getIntent().getStringExtra(Minigame.PARAM_WIN_NEXT_SECTION);
-        this.loseNextSection = getIntent().getStringExtra(Minigame.PARAM_LOSE_NEXT_SECTION);
+        this.winNextSection = String.valueOf(getIntent().getIntExtra(Minigame.PARAM_WIN_NEXT_SECTION, 0));
+        this.loseNextSection = String.valueOf(getIntent().getIntExtra(Minigame.PARAM_LOSE_NEXT_SECTION, 0));
         initGameParams();
     }
 
