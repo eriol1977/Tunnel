@@ -34,7 +34,7 @@
     <!-- sections -->
     <string name="sections">41</string>
     <string name="starting">1</string>
-    <string name="ending">15,19,20,37,41</string>
+    <string name="ending">15,19,20,41</string>
 
     <string name="s_1_1">Ti sei appena destato da un sonno pesantissimo, e provi una gran fitta di dolore al capo.</string>
     <string name="s_1_2">Esploràndoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</string>
@@ -84,7 +84,7 @@
     <string name="s_5_switch_1">link:4:1</string>
     <string name="s_5_link_1">4</string>
 
-    <string name="s_6_1">La finestra è troppo in alto, e troppo stretta, per poter essere di alcuna utilità</string>
+    <string name="s_6_1">La finestra è troppo in alto, e troppo stretta, per poter essere di alcuna utilità .</string>
     <string name="s_6_2">Se non altro costituisce una scarsa fonte di luce, in aggiunta a quella che proviene dalla porta a sbarre.</string>
     <string name="s_6_switch_1">link:4:2</string>
     <string name="s_6_link_1">4</string>
@@ -170,7 +170,7 @@
     <string name="s_19_3">Un istante dopo, una creatura ripugnante si presenta davanti alla porta e armeggia con le chiavi per entrare.</string>
     <string name="s_19_4">Si tratta di un ributtante incrocio tra uomo e porco, bardato di una corta armatura di cuoio che non lascia alcuno spazio all\'immaginazione.</string>
     <string name="s_19_5">Hai ancora la bocca distorta in un\'espressione di supremo disgusto, quando l\'Uomo Maiale ti aggredisce e ti massacra a colpi di clava.</string>
-    <string name="s_19_6">Così magari impari a tenere la bocca chiusa quando te lo chiedono.</string>
+    <string name="s_19_6">Così magari impari il valore del silenzio.</string>
 
     <string name="s_20_1">Cocciuto come un mulo, continui ad attendere anche quando perdi la sensibilità nelle gambe.</string>
     <string name="s_20_2">Come per miracolo, quando ormai stai per svenire dal tedio, la visita tanto attesa giunge alla tua porta.</string>
@@ -280,7 +280,7 @@
     <string name="s_31_3">Esamini il piccolo oggetto come una scimmia alle prese con un bastoncino, e indirettamente gli fornisci la risposta che cercava.</string>
     <string name="s_31_4">- Come immaginavo. Lascia che ti illumini meglio che posso sull\'arte della violazione delle serrature...</string>
     <string name="s_31_5">Quella che segue è la mezzora più noiosa e scomoda della tua vita, nella quale tuttavia impari i rudimenti della teoria dello scasso.</string>
-    <string name="s_31_6">Oltretutto Pulcioso ti dice di non preoccuparti troppo, perché le serrature delle celle sono di infima qualità</string>
+    <string name="s_31_6">Oltretutto Pulcioso ti dice di non preoccuparti troppo, perché le serrature delle celle sono di infima qualità .</string>
     <string name="s_31_7">- Neppure un novellino come te avrà problemi a scassinarne una</string>
     <string name="s_31_link_1">32</string>
 
@@ -315,18 +315,23 @@
 
     <string name="s_38_1">Non me lo immaginavo, che delusione...</string>
     <string name="s_38_2">Comunque, la Ruota del Destino funziona così:</string>
-    <string name="s_38_3">a seconda della difficoltà del compito che hai deciso di schivare, dovrai ottenere dalla Ruota un numero maggiore o uguale a quello che ti indicherò</string>
+    <string name="s_38_3">a seconda della difficoltà del compito che hai deciso di schivare, dovrai ottenere dalla Ruota un numero maggiore o uguale a quello che ti indicherò .</string>
     <string name="s_38_4">Insomma, giri la ruota, incroci le dita, preghi sottovoce, e attendi il risultato.</string>
     <string name="s_38_5">Se la sorte ti sorride, avrai superato la prova senza alzare un dito, da vero scansafatiche.</string>
     <string name="s_38_6">In caso contrario, avrai fallito e ne pagherai le conseguenze.</string>
     <string name="s_38_7">Bando alle ciance, è tempo di girare la ruota!</string>
     <string name="s_38_minigame">m_wheel:39:40:1:10:3</string>
 
-    <string name="s_39_1">Sei riuscito a forzare la serratura.</string>
+    <string name="s_39_1">Senza sapere bene come, riesci nell\'impresa di scassinare la serratura, che cede con uno schiocco sonoro.</string>
+    <string name="s_39_2">Tendi l\'orecchio nel timore che una guardia ti abbia udito, ma sembra tutto tranquillo come prima.</string>
+    <string name="s_39_3">Riponi in tasca il prezioso grimaldello, poi apri la porta cigolante e scivoli fuori dalla cella in punta di piedi.</string>
+    <string name="s_39_4">Ti congratuli con te stesso: bravissimo!</string>
+    <string name="s_39_5">Hai appena compiuto il primo, inebriante passo verso la libertà , ma chissà quanti altri pericoli ti attendono al varco...</string>
     <string name="s_39_link_1">41</string>
 
-    <string name="s_40_1">Non sei riuscito a forzare la serratura.</string>
-    <string name="s_40_link_1">41</string>
+    <string name="s_40_1">Maldestro come sei, finisci per scassare la serratura, piuttosto che scassinarla.</string>
+    <string name="s_40_2">Senti subito le imprecazioni di una guardia, imbestialita dal gran baccano che hai fatto.</string>
+    <string name="s_40_link_1">19</string>
 
     <string name="s_41_1">Per adesso la storia s\'interrompe qui. Abbi pazienza.</string>
     <string name="s_41_2">Complimenti e grazie per aver giocato!</string>
