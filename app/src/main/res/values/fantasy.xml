@@ -284,7 +284,7 @@
     <string name="s_31_7">- Neppure un novellino come te avrà problemi a scassinarne una</string>
     <string name="s_31_link_1">32</string>
 
-    <string name="s_32_1">- Allora datti da fare. In bocca al lupo.</string>
+    <string name="s_32_1">- Allora datti da fare. Conto su di te.</string>
     <string name="s_32_2">si congeda Pulcioso, allontanando la sua brutta faccia dal buco</string>
     <string name="s_32_3">- E non scordàrti del sottoscritto, una volta libero!</string>
     <string name="s_32_4">Farfùgli un ringraziamento e ti rialzi in piedi, soffrendo le pene dell\'inferno per via delle giunture anchilosate.</string>
@@ -306,17 +306,21 @@
     <string name="s_35_link_1">37:c_pick_lock</string>
     <string name="s_35_link_2">38:c_wheel_of_destiny</string>
 
-    <string name="s_37_1">Per adesso la storia s\'interrompe qui. Abbi pazienza.</string>
-    <string name="s_37_2">Complimenti e grazie per aver giocato!</string>
+    <string name="s_37_1">Bravo, ammiro la tua forza di volontà !</string>
+    <string name="s_37_2">Come ti ha detto Pulcioso, questa serratura è piuttosto facile da aprire, non dovrebbe causarti problemi.</string>
+    <string name="s_37_3">Comunque evita di agitare il grimaldello a casaccio: avrai soltanto alcuni tentativi a disposizione prima di rompere la serratura.</string>
+    <string name="s_37_4">Usa le vibrazioni per guidare l\'attrezzo fino al punto di scasso. Quanto più la vibrazione è rapida e costante, più sei vicino al successo.</string>
+    <string name="s_37_5">In bocca al lupo per la tua nuova carriera di scassinatore!</string>
+    <string name="s_37_minigame">m_lockpick:39:40:6:4</string>
 
-    <string name="s_38_1">Me lo immaginavo, che delusione...</string>
+    <string name="s_38_1">Non me lo immaginavo, che delusione...</string>
     <string name="s_38_2">Comunque, la Ruota del Destino funziona così:</string>
     <string name="s_38_3">a seconda della difficoltà del compito che hai deciso di schivare, dovrai ottenere dalla Ruota un numero maggiore o uguale a quello che ti indicherò</string>
     <string name="s_38_4">Insomma, giri la ruota, incroci le dita, preghi sottovoce, e attendi il risultato.</string>
     <string name="s_38_5">Se la sorte ti sorride, avrai superato la prova senza alzare un dito, da vero scansafatiche.</string>
     <string name="s_38_6">In caso contrario, avrai fallito e ne pagherai le conseguenze.</string>
     <string name="s_38_7">Bando alle ciance, è tempo di girare la ruota!</string>
-    <string name="s_38_minigame">m_wheel:39:40:1:10:4</string>
+    <string name="s_38_minigame">m_wheel:39:40:1:10:3</string>
 
     <string name="s_39_1">Sei riuscito a forzare la serratura.</string>
     <string name="s_39_link_1">41</string>
