@@ -17,6 +17,8 @@
     <string name="c_disagree">discordo:Discordo</string>
     <string name="c_pick_lock">scassino:Scassino la serratura</string>
     <string name="c_wheel_of_destiny">ruota:Mi affido alla Ruota del Destino</string>
+    <string name="c_straight_on">dritto:Tiro dritto</string>
+    <string name="c_help_pulcioso">pulcioso:Libero Pulcioso</string>
 
     <!-- items -->
     <string name="i_cell_door">porta:la porta</string>
@@ -27,14 +29,16 @@
     <string name="i_cell_wc">vaso:il vaso</string>
     <string name="i_splice">giunto:il giunto:17</string>
     <string name="i_lockpick">grimaldello:il grimaldello:33</string>
+    <string name="i_stick">bastone:il bastone:45</string>
 
     <string name="s_17_1">Il giunto è un vecchio pezzo di ferro piegato ad angolo retto.</string>
-    <string name="s_33_1">Di certo dovrai imparare a usare questi affari, se speri di potertela cavare nella vita.</string>
+    <string name="s_33_1">Dovrai imparare a usare bene questo affare, se speri di potertela cavare nella vita.</string>
+    <string name="s_45_1">Pesante e solido, il bastone sembra in grado di sfondare crani senza troppe difficoltà .</string>
 
     <!-- sections -->
-    <string name="sections">41</string>
+    <string name="sections">49</string>
     <string name="starting">1</string>
-    <string name="ending">15,19,20,41</string>
+    <string name="ending">15,19,20,48,49</string>
 
     <string name="s_1_1">Ti sei appena destato da un sonno pesantissimo, e provi una gran fitta di dolore al capo.</string>
     <string name="s_1_2">Esploràndoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</string>
@@ -333,7 +337,47 @@
     <string name="s_40_2">Senti subito le imprecazioni di una guardia, imbestialita dal gran baccano che hai fatto.</string>
     <string name="s_40_link_1">19</string>
 
-    <string name="s_41_1">Per adesso la storia s\'interrompe qui. Abbi pazienza.</string>
-    <string name="s_41_2">Complimenti e grazie per aver giocato!</string>
+    <string name="s_41_1">Appena fuori dalla cella, neanche fosse un segno del destino, trovi un bel bastone robusto appoggiato alla parete.</string>
+    <string name="s_41_2">Forse è il manico di una scopa, forse un poco raffinato strumento di tortura, forse uno stupido bastone e basta...</string>
+    <string name="s_41_3">Quale che sia la verità , ne soppesi tra le mani la rassicurante solidità .</string>
+    <string name="s_41_4">Con questo, avrai una pur misera possibilità di difènderti da guardie iraconde, mostri affamati e consimili.</string>
+    <string name="s_41_5">Infili il bastone nell\'Inventario e alzi il tuo sguardo smargiasso sui dintorni.</string>
+    <string name="s_41_get">i_stick</string>
+    <string name="s_41_link_1">42</string>
+
+    <string name="s_42_1">Sei finito in un buio corridoio tra le celle, rischiarato a sprazzi dalle torce appese al muro.</string>
+    <string name="s_42_2">La tua cella era l\'ultima in fondo al passaggio, per cui non ti resta che una direzione da prendere.</string>
+    <string name="s_42_3">Non fai che un passo, che il facciòne speranzoso di Pulcioso si strizza tra le sbarre della propria cella, osservandoti con un sguardo da cane bastonato.</string>
+    <string name="s_42_4">- Adesso mi farai uscire, vero?</string>
+    <string name="s_42_5">domanda con una nota di timore nella voce.</string>
+    <string name="s_42_6">Dai retta alla tua coscienza e provi a mettere in libertà il grosso furfante tremebondo?</string>
+    <string name="s_42_7">Oppure ritieni di avere più speranze di passare inosservato se scappi da solo, piuttosto che insieme a quell\'ingombrante relitto di essere umano?</string>
+    <string name="s_42_link_1">43:c_straight_on</string>
+    <string name="s_42_link_2">44:c_help_pulcioso</string>
+
+    <string name="s_43_1">È un brutto colpo per il povero Pulcioso, quando tiri dritto davanti alla sua cella fingendo di non averlo neanche visto.</string>
+    <string name="s_43_2">Sulle prime piagnucola un po\', poi passa agli insulti, quindi afferra le sbarre e le scuote a tutta forza, urlando a pieni polmoni:</string>
+    <string name="s_43_3">- Guardie! Guardie! Il prigioniero sta scappando!</string>
+    <string name="s_43_4">Ben ti sta.</string>
+    <string name="s_43_5">Nel giro di istanti, un ributtante Uomo Maiale, che stava dormendo della grossa durante il suo turno di guardia, scatta in piedi e ti corre incontro.</string>
+    <string name="s_43_6">La creatura è un obbrobrioso incrocio tra uomo e porco, bardato di una corta armatura di cuoio che non lascia alcuno spazio all\'immaginazione.</string>
+    <string name="s_43_7">Ti aggredisce con una clava nodosa e a te non resta che difènderti con le unghie e con i denti.</string>
+    <string name="s_43_link_1"></string>
+
+    <string name="s_44_1">Il tuo buon cuore ti impedisce di abbandonare il poveraccio al suo destino.</string>
+    <string name="s_44_2">Schermàndoti meglio che puoi dalle sue sputacchianti dimostrazioni di gratitudine, estrai il grimaldello e ti inginocchi davanti alla serratura della cella.</string>
+    <string name="s_44_3">Se ce l\'hai fatta una volta, perché non dovresti farcela di nuovo?</string>
+    <string name="s_44_link_1">46:c_pick_lock</string>
+    <string name="s_44_link_2">47:c_wheel_of_destiny</string>
+
+    <string name="s_46_1">Per riuscire, ti affidi alla tua abilità di scassinatore.</string>
+    <string name="s_46_minigame">m_lockpick:48:49:6:4</string>
+
+    <string name="s_47_1">Per riuscire, ti affidi alla tua buona stella.</string>
+    <string name="s_47_minigame">m_wheel:48:49:1:10:3</string>
+
+    <string name="s_48_1">Vittoria!</string>
+
+    <string name="s_49_1">Sconfitta!</string>
 
 </resources>
