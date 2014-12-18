@@ -22,11 +22,9 @@ public class Lockpick extends Activity implements TTSBacked {
 
     public final static String COLUMNS = "columns";
 
-    public final static String RADIUS = "radius";
+    private final static int DEFAULT_ATTEMPTS = 6;
 
-    private final static int DEFAULT_ATTEMPTS = 5;
-
-    private final static int DEFAULT_COLUMNS = 6;
+    private final static int DEFAULT_COLUMNS = 4;
 
     private final static int DEFAULT_RADIUS = 5;
 
@@ -44,8 +42,6 @@ public class Lockpick extends Activity implements TTSBacked {
 
     private int columns;
 
-    private int radius;
-
     private String winNextSection;
 
     private String loseNextSection;
@@ -55,6 +51,12 @@ public class Lockpick extends Activity implements TTSBacked {
     private MediaPlayer winSound;
 
     private MediaPlayer loseSound;
+
+    private MediaPlayer lockpickSound;
+
+    private MediaPlayer unlockSound;
+
+    private MediaPlayer lockbreakSound;
 
     private boolean started = false;
 
@@ -74,7 +76,7 @@ public class Lockpick extends Activity implements TTSBacked {
         initSounds();
         ttsUtil = new TTSUtil(this, this);
 
-        grid = new LockpickGrid(this, screenWidth, screenHeight, columns, radius);
+        grid = new LockpickGrid(this, screenWidth, screenHeight, columns, DEFAULT_RADIUS);
         grid.setCellToHit(random(), random());
         setContentView(grid);
 
@@ -84,7 +86,6 @@ public class Lockpick extends Activity implements TTSBacked {
     private void initParams() {
         this.maxAttempts = getIntent().getIntExtra(ATTEMPTS, DEFAULT_ATTEMPTS);
         this.columns = getIntent().getIntExtra(COLUMNS, DEFAULT_COLUMNS);
-        this.radius = getIntent().getIntExtra(RADIUS, DEFAULT_RADIUS);
         this.winNextSection = getIntent().getStringExtra(Minigame.PARAM_WIN_NEXT_SECTION);
         this.loseNextSection = getIntent().getStringExtra(Minigame.PARAM_LOSE_NEXT_SECTION);
     }
@@ -92,6 +93,9 @@ public class Lockpick extends Activity implements TTSBacked {
     private void initSounds() {
         winSound = MediaPlayer.create(this, R.raw.win);
         loseSound = MediaPlayer.create(this, R.raw.lose);
+        lockpickSound = MediaPlayer.create(this, R.raw.lockpick);
+        unlockSound = MediaPlayer.create(this, R.raw.unlock);
+        lockbreakSound = MediaPlayer.create(this, R.raw.lockbreak);
     }
 
     @Override
@@ -104,6 +108,7 @@ public class Lockpick extends Activity implements TTSBacked {
         this.finished = true;
         this.result = this.winNextSection;
         vibratorStop();
+        unlockSound.start();
         winSound.start();
     }
 
@@ -111,6 +116,7 @@ public class Lockpick extends Activity implements TTSBacked {
         this.finished = true;
         this.result = this.loseNextSection;
         vibratorStop();
+        lockbreakSound.start();
         loseSound.start();
     }
 
@@ -136,14 +142,28 @@ public class Lockpick extends Activity implements TTSBacked {
                     started = true;
                 }
 
-                attempts++;
                 final LockPickCell cell = (LockPickCell) grid.hit(event.getX(), event.getY());
-                vibrator.vibrate(getVibrationPattern(cell.getType().getVibrationSpeed()), 0);
-                grid.invalidate();
-                if (cell.isWinning())
-                    win();
-                else if (attempts == maxAttempts)
-                    lose();
+                // se il quadrante non era ancora stato toccato
+                if (!cell.isHit()) {
+                    cell.setHit(true);
+                    lockpickSound.start();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    vibrator.vibrate(getVibrationPattern(cell.getType().getVibrationSpeed()), 0);
+                    attempts++;
+                    grid.invalidate();
+                    if (cell.isWinning())
+                        win();
+                    else if (attempts == maxAttempts)
+                        lose();
+                // se il quadrante era già stato toccato, ripete semplicemente la vibrazione ad
+                // esso corrispondente, come indizio verso la soluzione
+                } else {
+                    vibrator.vibrate(getVibrationPattern(cell.getType().getVibrationSpeed()), 0);
+                }
                 break;
         }
         return true;
@@ -185,15 +205,22 @@ public class Lockpick extends Activity implements TTSBacked {
         ttsUtil.onStop();
         winSound.release();
         loseSound.release();
+        lockpickSound.release();
+        unlockSound.release();
+        lockbreakSound.release();
         winSound = null;
         loseSound = null;
+        lockpickSound = null;
+        unlockSound = null;
+        lockbreakSound = null;
         super.onStop();
     }
 
     @Override
     public void afterTTSInit() {
         ttsUtil.speak(getResources().getString(R.string.l_lp_attempts) + maxAttempts);
-        ttsUtil.speak(getResources().getString(R.string.l_lp_welcome));
+        ttsUtil.speak(getResources().getString(R.string.l_lp_help));
+        ttsUtil.speak(getResources().getString(R.string.l_lp_start));
     }
 
     @Override

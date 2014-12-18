@@ -140,7 +140,7 @@ public class DestinyWheel extends Activity implements View.OnClickListener, TTSB
     @Override
     public void afterTTSInit() {
         ttsUtil.speak(getResources().getString(R.string.l_dw_greater_then) + threshold);
-        ttsUtil.speak(getResources().getString(R.string.l_dw_welcome));
+        ttsUtil.speak(getResources().getString(R.string.l_dw_start));
     }
 
     private class WheelSpinnerTask extends AsyncTask<Integer, Integer, Integer> {

@@ -52,10 +52,7 @@ public class Cell {
      * @return True se il punto informato fa parte della presente cellula
      */
     public boolean hit(final float x, final float y) {
-        final boolean result = (x >= topLeft.x && x <= bottomRight.x && y >= topLeft.y && y <= bottomRight.y);
-        if(result)
-            setHit(true);
-        return result;
+        return x >= topLeft.x && x <= bottomRight.x && y >= topLeft.y && y <= bottomRight.y;
     }
 
     public void draw(final Canvas canvas) {

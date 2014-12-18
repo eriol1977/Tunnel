@@ -2,10 +2,12 @@
 <resources>
     <!-- labels -->
     <string name="l_prompt">Comando?</string>
-    <string name="l_dw_welcome">Tocca lo schermo per girare la Ruota del Destino</string>
+
     <string name="l_dw_greater_then">Devi ottenere un numero maggiore di </string>
-    <string name="l_lp_welcome">Tocca lo schermo per scassinare la serratura</string>
+    <string name="l_dw_start">Quando sei pronto, tocca lo schermo per girare la Ruota del Destino</string>
     <string name="l_lp_attempts">I tentativi a tua disposizione sono </string>
+    <string name="l_lp_help">L\'obiettivo del gioco è trovare il punto di scasso della serratura. Se tocchi un punto prossimo a quello giusto, una vibrazione più o meno forte ti indicherà quanto sei vicino all\'obiettivo. Toccare un punto già esplorato in precedenza non comporta penalità.</string>
+    <string name="l_lp_start">Quando sei pronto, tocca lo schermo per iniziare a scassinare la serratura.</string>
 
     <!-- messages -->
     <string name="m_unavailable">azione invalida</string>
