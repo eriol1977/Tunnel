@@ -1,4 +1,4 @@
-package com.example.francesco.tunnel.minigame.lockpick;
+package com.example.francesco.tunnel.util;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,6 +8,8 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.view.View;
 
+import com.example.francesco.tunnel.util.Cell;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,22 +18,22 @@ import java.util.List;
  */
 public class Grid extends View {
 
-    private final int w;
-    private final int h;
+    protected final int w;
+    protected final int h;
 
-    private final Paint linePaint;
+    protected final Paint linePaint;
 
-    private final Paint circlePaint;
+    protected final Paint circlePaint;
 
-    private final int circleRadius;
+    protected final int circleRadius;
 
-    private final int columns;
+    protected final int columns;
 
-    private List<Point> points;
+    protected List<Point> points;
 
-    private List<Cell> cells;
+    protected List<Cell> cells;
 
-    private Cell cellToPick;
+    protected Cell cellToHit;
 
     /**
      * @param context
@@ -41,7 +43,7 @@ public class Grid extends View {
      * @param circleRadius raggio dei cerchi disegnati all'intersezione tra le linee della grid
      *                     (o 0 per non disegnare i cerchi)
      */
-    Grid(final Context context, int w, int h, int columns, int circleRadius) {
+    public Grid(final Context context, int w, int h, int columns, int circleRadius) {
         super(context);
         this.w = w;
         this.h = h;
@@ -61,12 +63,18 @@ public class Grid extends View {
     }
 
     protected void onDraw(Canvas canvas) {
+        // disegna i punti (eventualmente come cerchietti)
         if (circleRadius > 0)
             for (final Point point : points)
                 canvas.drawCircle(point.x, point.y, circleRadius, circlePaint);
 
+        // disegna la griglia
         Path path = buildPath();
         canvas.drawPath(path, linePaint);
+
+        // riempie i quadranti
+        for (final Cell cell : this.cells)
+            cell.draw(canvas);
     }
 
     private Path buildPath() {
@@ -124,7 +132,7 @@ public class Grid extends View {
      * - in basso a sinistra
      * - in basso a destra
      */
-    private Point[] getCrossingPoints(final int line, final int column) {
+    protected Point[] getCrossingPoints(final int line, final int column) {
         final Point[] crossing = new Point[4];
         int indexTopLeft = ((column - 1) * (this.columns + 1)) + (line - 1);
         int indexTopRight = (column * (this.columns + 1)) + (line - 1);
@@ -141,34 +149,29 @@ public class Grid extends View {
         this.cells = new ArrayList<Cell>(this.columns * this.columns);
         for (int line = 1; line <= this.columns; line++) {
             for (int col = 1; col <= this.columns; col++) {
-                this.cells.add(new Cell(line, col, getCrossingPoints(line, col)));
+                this.cells.add(buildCell(line, col));
             }
         }
     }
 
-    Cell getCellToPick() {
-        return cellToPick;
+    protected Cell buildCell(final int line, final int col) {
+        return new Cell(line, col, getCrossingPoints(line, col));
     }
 
-    void setCellToPick(final int line, final int col) {
-        this.cellToPick = getCell(line, col);
+    public void setCellToHit(final int line, final int col) {
+        this.cellToHit = getCell(line, col);
     }
 
-    Cell getCell(final int line, final int col) {
+    public Cell hit(final float x, final float y) {
         for (final Cell cell : this.cells)
-            if (cell.getLine() == line && cell.getColumn() == col)
+            if (cell.hit(x, y))
                 return cell;
         return null;
     }
 
-    /**
-     * @param x x di un punto sullo schermo
-     * @param y y di un punto sullo schermo
-     * @return cella della grid corrispondente alle coordinate informate
-     */
-    Cell getCell(final float x, final float y) {
+    private Cell getCell(final int line, final int col) {
         for (final Cell cell : this.cells)
-            if (cell.hit(x, y))
+            if (cell.getLine() == line && cell.getColumn() == col)
                 return cell;
         return null;
     }
