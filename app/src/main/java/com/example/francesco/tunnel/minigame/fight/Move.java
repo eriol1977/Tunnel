@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Francesco on 19/12/2014.
  */
-public enum Move implements FightAction {
+public enum Move {
     MIDDLE(1, R.string.l_fi_attack_middle, R.string.l_fi_defense_middle),
     UP(2, R.string.l_fi_attack_up, R.string.l_fi_defense_up),
     DOWN(3, R.string.l_fi_attack_down, R.string.l_fi_defense_down),
@@ -31,14 +31,8 @@ public enum Move implements FightAction {
         return value;
     }
 
-    public List<Move> getMoves() {
-        final List<Move> moves = new ArrayList<>(1);
-        moves.add(this);
-        return moves;
-    }
-
-    public int[] getResourceId(final boolean attack) {
-        return attack ? new int[]{this.attackResourceId} : new int[]{this.defenseResourceId};
+    public int getResourceId(final boolean attack) {
+        return attack ? this.attackResourceId : this.defenseResourceId;
     }
 
     static Move get(final int input) {
