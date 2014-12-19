@@ -105,6 +105,11 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
         ttsUtil.speak(msg(resourceId));
     }
 
+    protected void speak(int... resources) {
+        for (int resourceId : resources)
+            ttsUtil.speak(msg(resourceId));
+    }
+
     protected String msg(final int resourceId) {
         return getResources().getString(resourceId);
     }

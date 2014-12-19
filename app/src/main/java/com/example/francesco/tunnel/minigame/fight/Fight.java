@@ -11,6 +11,10 @@ import android.widget.TextView;
 import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.minigame.MinigameActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Created by Francesco on 19/12/2014.
  */
@@ -53,6 +57,8 @@ public class Fight extends MinigameActivity {
     private int round = 0;
 
     private boolean attack = true;
+
+    private List<Move> input = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +108,55 @@ public class Fight extends MinigameActivity {
         public boolean onTouch(View v, MotionEvent event) {
             return detector.onTouchEvent(event);
         }
+    }
+
+    // TODO
+    private void startRound() {
+        final List<FightAction> moves = generateMoves();
+        int errors = 0;
+        boolean check;
+        for (final FightAction move : moves) {
+            input.clear();
+            speak(move.getResourceId(attack));
+            check = checkInput(move);
+            if (check) {
+
+            } else {
+                errors++;
+            }
+        }
+    }
+
+    private boolean checkInput(final FightAction move) {
+        final List<Move> requiredMoves = move.getMoves();
+        boolean result = true;
+        if (requiredMoves.size() == input.size()) {
+            for (int i = 0; i < input.size(); i++) {
+                if (!input.get(i).equals(requiredMoves.get(i))) {
+                    result = false;
+                    break;
+                }
+            }
+        } else
+            result = false;
+        return result;
+    }
+
+    private List<FightAction> generateMoves() {
+        final List<FightAction> moves = new ArrayList<>(roundLength);
+        int value;
+        int max = Move.values().length;
+        for (int i = 0; i < roundLength; i++) {
+            value = randomInt(1, max);
+            moves.add(Move.get(value)); // TODO combos
+        }
+        return moves;
+    }
+
+    private int randomInt(int min, int max) {
+        final Random random = new Random();
+        // add 1 to make it inclusive
+        return random.nextInt((max - min) + 1) + min;
     }
 
     /**
