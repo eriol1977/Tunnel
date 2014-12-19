@@ -91,8 +91,8 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
 
     @Override
     public void afterTTSInit() {
-        ttsUtil.speak(getResources().getString(R.string.l_dw_greater_then) + threshold);
-        ttsUtil.speak(getResources().getString(R.string.l_dw_start));
+        speak(R.string.l_dw_greater_then,String.valueOf(threshold));
+        speak(R.string.l_dw_start);
     }
 
     private void spinWheel() {

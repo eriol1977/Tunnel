@@ -2,11 +2,40 @@
 <resources>
     <!-- labels -->
     <string name="l_prompt">Comando?</string>
+
+    <!-- minigames -->
     <string name="l_dw_greater_then">Devi ottenere un numero maggiore di </string>
     <string name="l_dw_start">Quando sei pronto, tocca lo schermo per girare la Ruota del Destino</string>
     <string name="l_lp_attempts">I tentativi a tua disposizione sono </string>
     <string name="l_lp_help">L\'obiettivo del gioco è trovare il punto di scasso della serratura. Se tocchi un punto prossimo a quello giusto, una vibrazione più o meno forte ti indicherà quanto sei vicino all\'obiettivo. Toccare un punto già esplorato in precedenza non comporta penalità.</string>
     <string name="l_lp_start">Quando sei pronto, tocca lo schermo per iniziare a scassinare la serratura.</string>
+    <string name="l_fi_hits_required"> colpi andati a segno, per vincere lo scontro.</string>
+    <string name="l_fi_penalties"> colpi subiti, per essere sconfitto.</string>
+    <string name="l_fi_help_1">Le mosse consentite sono cinque, tanto in attacco come in difesa. Devi eseguirle nel più breve tempo possibile, non appena la mia voce le richiede.</string>
+    <string name="l_fi_help_2">Scorri in su: montante, oppure salta.</string>
+    <string name="l_fi_help_3">Scorri in giù: fendente, oppure giù.</string>
+    <string name="l_fi_help_4">Scorri a destra: rovescio, oppure schiva.</string>
+    <string name="l_fi_help_5">Scorri a sinistra: dritto, oppure schiva.</string>
+    <string name="l_fi_help_6">Doppio tap: affondo, oppure para.</string>
+    <string name="l_fi_help_7">A volte ti chiederò di ripetere non una sola mossa, bensì una sequenza di mosse. In questo caso, la sequenza sarà preceduta dalla parola: combo.</string>
+    <string name="l_fi_help_8">Tanto in difesa come in attacco, hai due modi di sbagliare una mossa: non eseguendola abbastanza rapidamente, oppure eseguendo il movimento errato.</string>
+    <string name="l_fi_help_9">Un turno, di attacco o di difesa, ha successo se commetti un massimo di tre errori.</string>
+    <string name="l_fi_help_10">Un turno di attacco è sempre seguìto da un turno di difesa, e viceversa, a meno che si verifichino condizioni speciali.</string>
+    <string name="l_fi_help_11">Un turno di attacco condotto alla perfezione, senza commettere alcun errore, consente di continuare ad attaccare anche nel turno successivo.</string>
+    <string name="l_fi_help_12">Un turno di difesa condotto alla perfezione, senza commettere alcun errore, consente di cancellare dal totale un colpo già subito.</string>
+    <string name="l_fi_help_13">Un turno di difesa rovinoso, nel quale commetti almeno cinque errori, ti costringe a difènderti anche nel turno successivo.</string>
+    <string name="l_fi_help_14">Oggetti o abilità speciali che tu possieda possono farti godere di bonus tanto al numero di attacchi necessari alla vittoria, come al numero di colpi che puoi subire.</string>
+    <string name="l_fi_start">Quando sei pronto, tocca lo schermo per iniziare a combattere.</string>
+    <string name="l_fi_attack_middle">Affondo</string>
+    <string name="l_fi_attack_left">Dritto</string>
+    <string name="l_fi_attack_right">Rovescio</string>
+    <string name="l_fi_attack_up">Montante</string>
+    <string name="l_fi_attack_down">Fendente</string>
+    <string name="l_fi_defense_middle">Para</string>
+    <string name="l_fi_defense_left">Schiva</string>
+    <string name="l_fi_defense_right">Schiva</string>
+    <string name="l_fi_defense_up">Salta</string>
+    <string name="l_fi_defense_down">Giù</string>
 
     <!-- messages -->
     <string name="m_unavailable">Azione invalida</string>

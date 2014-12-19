@@ -62,8 +62,7 @@ public class Lockpick extends MinigameActivity {
         vibratorInit();
     }
 
-    private void initScreenDimensions()
-    {
+    private void initScreenDimensions() {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
@@ -170,8 +169,8 @@ public class Lockpick extends MinigameActivity {
 
     @Override
     public void afterTTSInit() {
-        ttsUtil.speak(getResources().getString(R.string.l_lp_attempts) + maxAttempts);
-        ttsUtil.speak(getResources().getString(R.string.l_lp_help));
-        ttsUtil.speak(getResources().getString(R.string.l_lp_start));
+        speak(R.string.l_lp_attempts, String.valueOf(maxAttempts));
+        speak(R.string.l_lp_help);
+        speak(R.string.l_lp_start);
     }
 }

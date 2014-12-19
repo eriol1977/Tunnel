@@ -8,5 +8,6 @@
     <string name="title_activity_destiny_wheel">DestinyWheel</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_lockpick">Lockpick</string>
+    <string name="title_activity_fight">Combatti</string>
 
 </resources>
