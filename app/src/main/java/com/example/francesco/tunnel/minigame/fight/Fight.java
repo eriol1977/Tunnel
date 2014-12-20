@@ -29,6 +29,8 @@ public class Fight extends MinigameActivity {
 
     private int comboLimit;
 
+    private long moveDuration;
+
     public final static String HITS_REQUIRED = "hitsRequired";
 
     public final static String PENALTIES_LIMIT = "penaltiesLimit";
@@ -41,17 +43,21 @@ public class Fight extends MinigameActivity {
 
     public final static String ATTACK_FIRST = "attackFirst";
 
-    private final static int DEFAULT_HITS_REQUIRED = 3;
+    public final static String MOVE_DURATION = "moveDuration";
 
-    private final static int DEFAULT_PENALTIES_LIMIT = 3;
+    private final static int DEFAULT_HITS_REQUIRED = 2;
+
+    private final static int DEFAULT_PENALTIES_LIMIT = 2;
 
     private final static int DEFAULT_ROUNDS_LIMIT = 0;
 
-    private final static int DEFAULT_ROUND_LENGTH = 4;
+    private final static int DEFAULT_ROUND_LENGTH = 6;
 
     private final static int DEFAULT_COMBO_LIMIT = 3;
 
-    private final static boolean DEFAULT_ATTACK_FIRST = true;
+    private final static boolean DEFAULT_ATTACK_FIRST = false;
+
+    private final static long DEFAULT_MOVE_DURATION = 1000;
 
     private boolean attack;
 
@@ -75,6 +81,10 @@ public class Fight extends MinigameActivity {
 
     private final static int AWFUL_ROUND = 444;
 
+    private FightTimer timer;
+
+    private boolean timerFinished = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +102,7 @@ public class Fight extends MinigameActivity {
         this.roundLength = getIntent().getIntExtra(ROUND_LENGTH, DEFAULT_ROUND_LENGTH);
         this.comboLimit = getIntent().getIntExtra(COMBO_LIMIT, DEFAULT_COMBO_LIMIT);
         this.attack = getIntent().getBooleanExtra(ATTACK_FIRST, DEFAULT_ATTACK_FIRST);
+        this.moveDuration = getIntent().getLongExtra(MOVE_DURATION, DEFAULT_MOVE_DURATION);
     }
 
     @Override
@@ -126,7 +137,7 @@ public class Fight extends MinigameActivity {
         else {
             errors = 0;
             generateMoves();
-            speak(moves.get(0).getResourceId(attack));
+            speakMove();
         }
     }
 
@@ -172,7 +183,8 @@ public class Fight extends MinigameActivity {
             penalties++;
             speak(R.string.l_fi_round_defense_awful);
         } else if (roundResult == PERFECT_ROUND) {
-            penalties--;
+            if (penalties > 0)
+                penalties--;
             speak(R.string.l_fi_round_defense_perfect);
         } else {
             speak(R.string.l_fi_round_defense_won);
@@ -207,51 +219,59 @@ public class Fight extends MinigameActivity {
         else if (!attack && errors > 5)
             // più di 5 errori in difesa: round perso malamente
             manageDefenseResult(AWFUL_ROUND);
-        else if (!attack && errors > 3)
-            // più di 3 errori in difesa (ma meno di 5, già verificato sopra): round perso
-            manageDefenseResult(LOST_ROUND);
-
-        if (moveIndex < moves.size() - 1) {
-            // ci sono ancora delle mosse per decidere l'esito del round
-            moveIndex++;
-            speak(moves.get(moveIndex).getResourceId(attack));
-        } else {
-            // tutte le mosse del round sono state eseguite
-
-            // nessun errore: round perfetto
-            if (errors == 0)
-                if (attack)
-                    manageAttackResult(PERFECT_ROUND);
+        else {
+            if (moveIndex < moves.size() - 1) {
+                // ci sono ancora delle mosse per decidere l'esito del round
+                moveIndex++;
+                speakMove();
+            } else {
+                // tutte le mosse del round sono state eseguite
+                if (!attack && errors > 3)
+                    // più di 3 errori in difesa (ma meno di 5, già verificato sopra): round perso
+                    manageDefenseResult(LOST_ROUND);
+                    // nessun errore: round perfetto
+                else if (errors == 0)
+                    if (attack)
+                        manageAttackResult(PERFECT_ROUND);
+                    else
+                        manageDefenseResult(PERFECT_ROUND);
                 else
-                    manageDefenseResult(PERFECT_ROUND);
-            else
-                // meno di 3 errori: round vinto
-                if (attack)
-                    manageAttackResult(WON_ROUND);
-                else
-                    manageDefenseResult(WON_ROUND);
+                    // meno di 3 errori: round vinto
+                    if (attack)
+                        manageAttackResult(WON_ROUND);
+                    else
+                        manageDefenseResult(WON_ROUND);
+            }
         }
     }
 
     /**
      * Verifica se la mossa attuale è stata eseguita correttamente e passa il risultato alla verifica
      * del round.
+     * FIXME usare suoni
      *
      * @param input
      */
     private void checkMove(final Move input) {
-        final Move requiredMove = moves.get(moveIndex);
-        final boolean inputOk = input.equals(requiredMove);
-        // FIXME usare suoni
-        if (inputOk)
-            ttsUtil.speak("OK");
-        else
-            ttsUtil.speak("NO");
-        checkRound(inputOk);
+        // la mossa è stata eseguita nel tempo limite?
+        if (timerFinished) {
+            timerFinished = false;
+            ttsUtil.speak("Lento");
+            checkRound(false);
+        } else {
+            // è stato eseguito il movimento esatto?
+            final Move requiredMove = moves.get(moveIndex);
+            final boolean inputOk = input.equals(requiredMove);
+            if (inputOk)
+                ttsUtil.speak("OK");
+            else
+                ttsUtil.speak("NO");
+            checkRound(inputOk);
+        }
     }
 
     /**
-     * Crea una lista casuale di mosse da eseguire nel round attuale
+     * Crea una lista casuale di mosse da eseguire nel round attuale.
      */
     private void generateMoves() {
         int value;
@@ -268,6 +288,14 @@ public class Fight extends MinigameActivity {
         final Random random = new Random();
         // add 1 to make it inclusive
         return random.nextInt((max - min) + 1) + min;
+    }
+
+    private void speakMove() {
+        speak(moves.get(moveIndex).getResourceId(attack));
+        while (ttsUtil.isSpeaking()) {
+        }
+        timer = new FightTimer(this, moveDuration);
+        timer.start();
     }
 
     /**
@@ -290,7 +318,6 @@ public class Fight extends MinigameActivity {
     /**
      * Listener usato dal detector per gestire movimenti standard.
      * <p/>
-     * TODO contatore del tempo di reazione
      */
     class FightGestureListener extends GestureDetector.SimpleOnGestureListener {
 
@@ -309,6 +336,7 @@ public class Fight extends MinigameActivity {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (canPerformMove()) {
+                timer.cancel();
                 checkMove(Move.MIDDLE);
             }
             return true;
@@ -318,12 +346,16 @@ public class Fight extends MinigameActivity {
         public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY) {
             if (canPerformMove()) {
                 if (detectLeftFling(velocityX, velocityY)) {
+                    timer.cancel();
                     checkMove(Move.LEFT);
                 } else if (detectRightFling(velocityX, velocityY)) {
+                    timer.cancel();
                     checkMove(Move.RIGHT);
                 } else if (detectUpFling(velocityX, velocityY)) {
+                    timer.cancel();
                     checkMove(Move.UP);
                 } else if (detectDownFling(velocityX, velocityY)) {
+                    timer.cancel();
                     checkMove(Move.DOWN);
                 }
             }
@@ -370,6 +402,10 @@ public class Fight extends MinigameActivity {
         speak(R.string.l_fi_help_13);
         speak(R.string.l_fi_help_14);
         speak(R.string.l_fi_start);
+    }
+
+    void setTimerFinished(final boolean b) {
+        this.timerFinished = b;
     }
 
     @Override

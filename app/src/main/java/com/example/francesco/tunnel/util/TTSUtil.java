@@ -63,6 +63,10 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
             tts.speak(text, TextToSpeech.QUEUE_ADD, null);
     }
 
+    public boolean isSpeaking() {
+        return tts.isSpeaking();
+    }
+
     public void playSilence(final long durationInMs, final int queueMode, final HashMap<String, String> params) {
         tts.playSilence(durationInMs, queueMode, params);
     }
