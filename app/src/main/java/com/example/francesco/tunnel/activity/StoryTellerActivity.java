@@ -37,6 +37,8 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
 
     private static final String SAVE_DATA_INVENTORY = "inventory";
 
+    private static final String SAVE_DATA_PAST_EVENTS = "pastEvents";
+
     private static final String SAVE_DATA_PARAGRAPH_SWITCHES = "parSwitches";
 
     private static final String SAVE_DATA_LINK_SWITCHES = "linkSwitches";
@@ -44,6 +46,8 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     private static final String TEMP_SAVE_DATA_SECTION = "temp_sectionId";
 
     private static final String TEMP_SAVE_DATA_INVENTORY = "temp_inventory";
+
+    private static final String TEMP_SAVE_DATA_PAST_EVENTS = "temp_pastEvents";
 
     private static final String TEMP_SAVE_DATA_PARAGRAPH_SWITCHES = "temp_parSwitches";
 
@@ -188,6 +192,7 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         final String sectionId = story.getSavingSectionId(temporary);
         if (sectionId != null) {
             final String inventoryItemIds = loader.stringifyInventory();
+            final String pastEventsIds = loader.stringifyPastEvents();
             final String paragraphSwitches = loader.stringifyParagraphSwitchesSoFar();
             final String linkSwitches = loader.stringifyLinkSwitchesSoFar();
             final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
@@ -195,11 +200,13 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
             if (temporary) {
                 editor.putString(TEMP_SAVE_DATA_SECTION, sectionId);
                 editor.putString(TEMP_SAVE_DATA_INVENTORY, inventoryItemIds);
+                editor.putString(TEMP_SAVE_DATA_PAST_EVENTS, pastEventsIds);
                 editor.putString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
                 editor.putString(TEMP_SAVE_DATA_LINK_SWITCHES, linkSwitches);
             } else {
                 editor.putString(SAVE_DATA_SECTION, sectionId);
                 editor.putString(SAVE_DATA_INVENTORY, inventoryItemIds);
+                editor.putString(SAVE_DATA_PAST_EVENTS, pastEventsIds);
                 editor.putString(SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
                 editor.putString(SAVE_DATA_LINK_SWITCHES, linkSwitches);
             }
@@ -219,21 +226,24 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         final String emptyDefaultValue = "";
         String sectionId;
-        String inventoryItemIds;
+        String inventoryItemsIds;
+        String pastEventsIds;
         String paragraphSwitches;
         String linkSwitches;
         if (temporary) {
             sectionId = preferences.getString(TEMP_SAVE_DATA_SECTION, emptyDefaultValue);
-            inventoryItemIds = preferences.getString(TEMP_SAVE_DATA_INVENTORY, emptyDefaultValue);
+            inventoryItemsIds = preferences.getString(TEMP_SAVE_DATA_INVENTORY, emptyDefaultValue);
+            pastEventsIds = preferences.getString(TEMP_SAVE_DATA_PAST_EVENTS, emptyDefaultValue);
             paragraphSwitches = preferences.getString(TEMP_SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(TEMP_SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
         } else {
             sectionId = preferences.getString(SAVE_DATA_SECTION, emptyDefaultValue);
-            inventoryItemIds = preferences.getString(SAVE_DATA_INVENTORY, emptyDefaultValue);
+            inventoryItemsIds = preferences.getString(SAVE_DATA_INVENTORY, emptyDefaultValue);
+            pastEventsIds = preferences.getString(SAVE_DATA_PAST_EVENTS, emptyDefaultValue);
             paragraphSwitches = preferences.getString(SAVE_DATA_PARAGRAPH_SWITCHES, emptyDefaultValue);
             linkSwitches = preferences.getString(SAVE_DATA_LINK_SWITCHES, emptyDefaultValue);
         }
-        loader.load(sectionId, inventoryItemIds, paragraphSwitches, linkSwitches);
+        loader.load(sectionId, inventoryItemsIds, pastEventsIds, paragraphSwitches, linkSwitches);
     }
 
     protected boolean thereAreSavedGames() {

@@ -37,6 +37,16 @@ public class Link {
      */
     private String[] noItemIds;
 
+    /**
+     * Ids di uno o più eventi vissuti necessari per percorrere il link (opzionale)
+     */
+    private String[] eventIds;
+
+    /**
+     * Ids di uno o più eventi vissuti la cui assenza è una condizione per percorrere il link (opzionale)
+     */
+    private String[] noEventIds;
+
     Link(final String id, final Section section, final String nextSection) {
         this.id = id;
         this.section = section;
@@ -88,20 +98,21 @@ public class Link {
 //        else if (this.commandIds.length == 1 && this.commandIds[0].equals(Commands.USE)) {
 //            final Inventory inventory = sl.getCharacter().getInventory();
 //            Item item = sl.item(this.itemIds[0]);
-//            itemFound = (inventory.checkItem(item) || section.checkUsableItem(item)) && item.check(words);
+//            itemFound = (inventory.checkEvent(item) || section.checkUsableItem(item)) && item.check(words);
 //        }
         /**
-         * se il comando è un altro, si suppone che il giocatore debba possedere gli oggetti
+         * Se il comando è un altro, si suppone che il giocatore debba possedere gli oggetti
          * elencati nel proprio inventario, o al contrario, che non li debba possedere.
          */
         else {
-            final Inventory inventory = sl.getCharacter().getInventory();
+            final Character character = sl.getCharacter();
+
             Item item;
             // verifica che l'inventario contenga tutti gli oggetti da possedere
             boolean toHave = true;
             for (final String itemId : this.itemIds) {
                 item = sl.item(itemId);
-                toHave = inventory.checkItem(item);
+                toHave = character.hasItem(item);
                 if (!toHave)
                     break;
             }
@@ -109,22 +120,45 @@ public class Link {
             boolean notToHave = true;
             for (final String itemId : this.noItemIds) {
                 item = sl.item(itemId);
-                notToHave = !inventory.checkItem(item);
+                notToHave = !character.hasItem(item);
                 if (!notToHave)
                     break;
             }
             itemFound = toHave && notToHave;
         }
 
-        return commandFound && itemFound;
+        boolean eventFound = false;
+        if ((this.eventIds == null || this.eventIds.length == 0) && (this.noEventIds == null || this.noEventIds.length == 0)) {
+            eventFound = true;
+        } else {
+            // Gli eventi vissuti dal personaggio possono portare a una biforcazione nella storia.
+            final Character character = sl.getCharacter();
+
+            Event event;
+            // verifica che il personaggio abbia vissuto tutti gli eventi da vivere
+            boolean toHave = true;
+            for (final String eventId : this.eventIds) {
+                event = sl.event(eventId);
+                toHave = character.hasPastEvent(event);
+                if (!toHave)
+                    break;
+            }
+            // verifica che il personaggio non abbia vissuto nessuno degli eventi da non vivere
+            boolean notToHave = true;
+            for (final String eventId : this.noEventIds) {
+                event = sl.event(eventId);
+                notToHave = !character.hasPastEvent(event);
+                if (!notToHave)
+                    break;
+            }
+            eventFound = toHave && notToHave;
+        }
+
+        return commandFound && itemFound && eventFound;
     }
 
     String getNextSection() {
         return nextSection;
-    }
-
-    void setNextSection(String nextSection) {
-        this.nextSection = nextSection;
     }
 
     void setCommandIds(String... commandIds) {
@@ -133,7 +167,7 @@ public class Link {
 
     String[] getCommandIds() {
         // per evitare ripetizioni di comandi, siccome c'è un link "gemello"
-        if(this.noItemIds != null && this.noItemIds.length > 0)
+        if ((this.noItemIds != null && this.noItemIds.length > 0) || (this.noEventIds != null && this.noEventIds.length > 0))
             return new String[]{};
         return commandIds;
     }
@@ -144,7 +178,7 @@ public class Link {
 
     void setItemIds(List<String> itemIds) {
         this.itemIds = new String[itemIds.size()];
-        for(int i = 0; i < itemIds.size(); i++) {
+        for (int i = 0; i < itemIds.size(); i++) {
             this.itemIds[i] = itemIds.get(i);
         }
     }
@@ -155,8 +189,22 @@ public class Link {
 
     void setNoItemIds(List<String> noItemIds) {
         this.noItemIds = new String[noItemIds.size()];
-        for(int i = 0; i < noItemIds.size(); i++) {
+        for (int i = 0; i < noItemIds.size(); i++) {
             this.noItemIds[i] = noItemIds.get(i);
+        }
+    }
+
+    void setEventIds(List<String> eventIds) {
+        this.eventIds = new String[eventIds.size()];
+        for (int i = 0; i < eventIds.size(); i++) {
+            this.eventIds[i] = eventIds.get(i);
+        }
+    }
+
+    void setNoEventIds(List<String> noEventIds) {
+        this.noEventIds = new String[noEventIds.size()];
+        for (int i = 0; i < noEventIds.size(); i++) {
+            this.noEventIds[i] = noEventIds.get(i);
         }
     }
 

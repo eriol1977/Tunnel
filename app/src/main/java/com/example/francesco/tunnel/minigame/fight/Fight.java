@@ -85,13 +85,21 @@ public class Fight extends MinigameActivity {
 
     private boolean timerFinished = false;
 
+    private FightTouchListener fightTouchListener;
+
+    private StartingTouchListener startingTouchListener;
+
+    private TextView view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fight);
 
-        TextView view = (TextView) findViewById(R.id.fight);
-        view.setOnTouchListener(new FightTouchListener());
+        view = (TextView) findViewById(R.id.fight);
+        fightTouchListener = new FightTouchListener();
+        startingTouchListener = new StartingTouchListener();
+        view.setOnTouchListener(startingTouchListener);
     }
 
     @Override
@@ -112,11 +120,13 @@ public class Fight extends MinigameActivity {
 
     @Override
     protected void showWinning() {
+        view.setOnTouchListener(startingTouchListener);
         speak(R.string.l_fi_won);
     }
 
     @Override
     protected void showLosing() {
+        view.setOnTouchListener(startingTouchListener);
         speak(R.string.l_fi_lost);
     }
 
@@ -125,6 +135,7 @@ public class Fight extends MinigameActivity {
             speak(R.string.l_fi_start_attack);
         else
             speak(R.string.l_fi_start_defense);
+        view.setOnTouchListener(fightTouchListener);
 
         fightNextRound();
     }
@@ -253,8 +264,13 @@ public class Fight extends MinigameActivity {
      * @param input
      */
     private void checkMove(final Move input) {
+        // è stato eseguito un gesto non contemplato?
+        if (input == null) {
+            ttsUtil.speak("NO");
+            checkRound(false);
+        }
         // la mossa è stata eseguita nel tempo limite?
-        if (timerFinished) {
+        else if (timerFinished) {
             timerFinished = false;
             ttsUtil.speak("Lento");
             checkRound(false);
@@ -295,7 +311,37 @@ public class Fight extends MinigameActivity {
         while (ttsUtil.isSpeaking()) {
         }
         timer = new FightTimer(this, moveDuration);
+
         timer.start();
+    }
+
+    class StartingTouchListener implements View.OnTouchListener {
+
+        private final GestureDetectorCompat detector;
+
+        StartingTouchListener() {
+            detector = new GestureDetectorCompat(Fight.this, new StartingGestureListener());
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return detector.onTouchEvent(event);
+        }
+    }
+
+    class StartingGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            if (!started) {
+                started = true;
+                ttsUtil.stop();
+                fight();
+            } else if (finished) {
+                sendBackResult();
+            }
+            return true;
+        }
     }
 
     /**
@@ -323,13 +369,6 @@ public class Fight extends MinigameActivity {
 
         @Override
         public boolean onDown(MotionEvent event) {
-            if (!started) {
-                started = true;
-                ttsUtil.stop();
-                fight();
-            } else if (finished) {
-                sendBackResult();
-            }
             return true;
         }
 
@@ -357,6 +396,9 @@ public class Fight extends MinigameActivity {
                 } else if (detectDownFling(velocityX, velocityY)) {
                     timer.cancel();
                     checkMove(Move.DOWN);
+                } else {
+                    timer.cancel();
+                    checkMove(null);
                 }
             }
             return true;
@@ -381,6 +423,7 @@ public class Fight extends MinigameActivity {
         private boolean detectDownFling(final float velocityX, final float velocityY) {
             return (Math.abs(velocityX) < Math.abs(velocityY)) && velocityY > 0;
         }
+
     }
 
     @Override

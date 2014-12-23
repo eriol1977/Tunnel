@@ -32,6 +32,8 @@ public class Section {
 
     private List<ItemDrop> itemDrops;
 
+    private List<EventGet> eventGets;
+
     private Minigame minigame;
 
     /**
@@ -87,6 +89,14 @@ public class Section {
                 sl.getCharacter().getInventory().removeItem(sl.item(itemDrop.getItemId()));
             }
             this.itemDrops.clear();
+        }
+
+        // entrando nella sezione, il personaggio aggiunge eventi al suo bagaglio personale
+        if (this.eventGets != null) {
+            for (final EventGet eventGet : this.eventGets) {
+                sl.getCharacter().getPastEvents().addEvent(sl.event(eventGet.getEventId()));
+            }
+            this.eventGets.clear();
         }
 
         // entrando nella sezione, alcuni paragrafi di altre sezioni vengono cambiati o rimossi
@@ -185,6 +195,15 @@ public class Section {
         this.itemDrops = new ArrayList<ItemDrop>(items.size());
         for (final Item item : items) {
             this.itemDrops.add(new ItemDrop(item.getId()));
+        }
+    }
+
+    //////// EVENTS
+
+    void setEventGets(List<Event> events) {
+        this.eventGets = new ArrayList<EventGet>(events.size());
+        for (final Event event : events) {
+            this.eventGets.add(new EventGet(event.getId()));
         }
     }
 

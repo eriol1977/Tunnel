@@ -5,7 +5,6 @@ import com.example.francesco.tunnel.minigame.Minigame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +27,8 @@ public class StoryLoader {
 
     private final Items items;
 
+    private final Events events;
+
     private final Joins joins;
 
     private final List<ParagraphSwitch> paragraphSwitchesSoFar = new ArrayList<ParagraphSwitch>();
@@ -37,6 +38,8 @@ public class StoryLoader {
     private final static String COMMAND_PREFIX = "c_";
 
     private final static String ITEM_PREFIX = "i_";
+
+    private final static String EVENT_PREFIX = "e_";
 
     private final static String JOIN_PREFIX = "j_";
 
@@ -48,7 +51,7 @@ public class StoryLoader {
 
     private final static String SECTION_PREFIX = "s_";
 
-    private final static String SECTION_ITEMGET_SUFFIX = "_get";
+    private final static String SECTION_GET_SUFFIX = "_get";
 
     private final static String SECTION_ITEMDROP_SUFFIX = "_drop";
 
@@ -86,6 +89,7 @@ public class StoryLoader {
         this.story = new Story(this.character);
         commands = loadCommands();
         items = loadItems();
+        events = loadEvents();
         joins = loadJoins();
     }
 
@@ -138,6 +142,15 @@ public class StoryLoader {
             items.put(key, new Item(key, itemInfo[0], itemInfo[1], itemInfo.length > 2 ? itemInfo[2] : ""));
         }
         return new Items(items);
+    }
+
+    private Events loadEvents() {
+        final Map<String, String> pairs = activity.getKeyValuePairsStartingWithPrefix(EVENT_PREFIX);
+        final Map<String, Event> events = new HashMap<String, Event>(pairs.size());
+        for (String key : pairs.keySet()) {
+            events.put(key, new Event(key, pairs.get(key)));
+        }
+        return new Events(events);
     }
 
     private Joins loadJoins() {
@@ -239,6 +252,7 @@ public class StoryLoader {
             section.setLinks(loadSectionLinks(section));
             section.setItemsGets(loadSectionItemGets(id));
             section.setItemDrops(loadSectionItemDrops(id));
+            section.setEventGets(loadSectionEventGets(id));
             section.setParagraphSwitches(loadSectionParagraphSwitches(id));
             section.setLinkSwitches(loadSectionLinkSwitches(id));
             section.setMinigame(loadSectionMinigame(id));
@@ -265,10 +279,10 @@ public class StoryLoader {
     }
 
     private List<Item> loadSectionItemGets(String id) {
-        final String itemGroup = msg(SECTION_PREFIX + id + SECTION_ITEMGET_SUFFIX); // es: s_4_get
+        final String itemGroup = msg(SECTION_PREFIX + id + SECTION_GET_SUFFIX); // es: s_4_get
         if (itemGroup != null) {
             String[] ids = itemGroup.split(LIST_SEPARATOR);
-            return items(ids);
+            return items(ids); // filtra altre cose, tipo eventi
         }
         return new ArrayList<Item>();
     }
@@ -280,6 +294,15 @@ public class StoryLoader {
             return items(ids);
         }
         return new ArrayList<Item>();
+    }
+
+    private List<Event> loadSectionEventGets(String id) {
+        final String gets = msg(SECTION_PREFIX + id + SECTION_GET_SUFFIX); // es: s_4_get
+        if (gets != null) {
+            String[] ids = gets.split(LIST_SEPARATOR);
+            return events(ids); // filtra altre cose, tipo oggetti
+        }
+        return new ArrayList<Event>();
     }
 
     private List<Link> loadSectionLinks(final Section section) {
@@ -305,20 +328,32 @@ public class StoryLoader {
                     link.setCommandIds(linkInfo[1].split(LIST_SEPARATOR)); // c_across,c_corridor
                 }
 
-                // items
+                // items or events
                 if (linkInfo.length > 2) {
-                    String[] its = linkInfo[2].split(LIST_SEPARATOR);
+                    String[] ids = linkInfo[2].split(LIST_SEPARATOR);
                     List<String> itemIds = new ArrayList<String>();
                     List<String> noItemIds = new ArrayList<String>();
-                    for (String itemId : its) {
-                        if (itemId.startsWith(NO_PREFIX)) {
-                            noItemIds.add(itemId.substring(NO_PREFIX.length(), itemId.length())); // no_i_torch
+                    List<String> eventIds = new ArrayList<String>();
+                    List<String> noEventIds = new ArrayList<String>();
+                    String prefix;
+                    for (String id : ids) {
+                        if (id.startsWith(NO_PREFIX)) {
+                            prefix = id.substring(NO_PREFIX.length(), NO_PREFIX.length() + 2);
+                            if (prefix.equals(ITEM_PREFIX))
+                                noItemIds.add(id.substring(NO_PREFIX.length(), id.length())); // no_i_torch
+                            else if (prefix.equals(EVENT_PREFIX))
+                                noEventIds.add(id.substring(NO_PREFIX.length(), id.length())); // no_e_freed_prisoner
                         } else {
-                            itemIds.add(itemId); // i_torch
+                            if (id.startsWith(ITEM_PREFIX))
+                                itemIds.add(id); // i_torch
+                            else if (id.startsWith(EVENT_PREFIX))
+                                eventIds.add(id); //e_freed_prisoner
                         }
                     }
                     link.setItemIds(itemIds);
                     link.setNoItemIds(noItemIds);
+                    link.setEventIds(eventIds);
+                    link.setNoEventIds(noEventIds);
                 }
 
                 links.add(link);
@@ -376,7 +411,7 @@ public class StoryLoader {
             final String[] miniGameParameters = minigamePair.values().iterator().next().split(SEPARATOR); // ex: m_wheel:39:40:1:10:4
             final String[] minigameClassInfo = msg(miniGameParameters[0]).split(SEPARATOR); // ex: com.example.francesco.tunnel.minigame.wheel.DestinyWheel:min:max:threshold
             final Minigame minigame = new Minigame(minigameClassInfo[0], miniGameParameters[1], miniGameParameters[2]); // i primi due params sono sempre la sezione di vittoria e sconfitta (39,40)
-            for(int i = 1; i < minigameClassInfo.length; i++)
+            for (int i = 1; i < minigameClassInfo.length; i++)
                 minigame.addParameter(minigameClassInfo[i], miniGameParameters[i + 2]);
             return minigame;
         }
@@ -484,10 +519,11 @@ public class StoryLoader {
         this.story.home();
     }
 
-    public void load(final String sectionId, final String inventoryItemIds, final String paragraphSwitches, final String linkSwitches) {
+    public void load(final String sectionId, final String inventoryItemIds, final String pastEventsIds, final String paragraphSwitches, final String linkSwitches) {
         resetStory();
         story.setCurrent(story.getSection(sectionId));
         loadInventory(inventoryItemIds);
+        loadPastEvents(pastEventsIds);
         parseAndLoadSwitches(paragraphSwitches, linkSwitches);
         story.setPhase(StoryPhase.STARTED);
     }
@@ -499,6 +535,15 @@ public class StoryLoader {
      */
     void loadInventory(final String inventoryItemIds) {
         this.character.getInventory().setItems(items(inventoryItemIds.split(StoryLoader.LIST_SEPARATOR)));
+    }
+
+    /**
+     * Carica gli eventi informati nella lista di eventi vissuti dal personaggio.
+     *
+     * @param pastEventsIds ex: "e_freed_prisoner,e_killed_thomas,e_stole_ring"
+     */
+    void loadPastEvents(final String pastEventsIds) {
+        this.character.getPastEvents().setEvents(events(pastEventsIds.split(StoryLoader.LIST_SEPARATOR)));
     }
 
     /**
@@ -616,6 +661,24 @@ public class StoryLoader {
     }
 
     /**
+     * Trasforma l'insieme degli eventi vissuti dal personaggio nel formato String
+     * esemplificato qui sotto.
+     *
+     * @return ex: "e_freed_prisoner,e_killed_thomas,e_stole_ring"
+     */
+    public String stringifyPastEvents() {
+        final StringBuilder sb = new StringBuilder();
+        final List<Event> eventList = this.character.getPastEvents().getEvents();
+        if (!eventList.isEmpty()) {
+            for (final Event event : eventList) {
+                sb.append(event.getId()).append(StoryLoader.LIST_SEPARATOR);
+            }
+            sb.delete(sb.length() - StoryLoader.LIST_SEPARATOR.length(), sb.length());
+        }
+        return sb.toString();
+    }
+
+    /**
      * Trasforma i ParagraphSwitch immagazzinati nel corso della storia nel formato String
      * esemplificato qui sotto.
      *
@@ -707,6 +770,14 @@ public class StoryLoader {
 
     public List<Item> items(final String... ids) {
         return this.items.get(ids);
+    }
+
+    public Event event(final String id) {
+        return this.events.get(id);
+    }
+
+    public List<Event> events(final String... ids) {
+        return this.events.get(ids);
     }
 
     public Story getStory() {

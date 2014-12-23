@@ -35,6 +35,9 @@
     <string name="s_33_1">Dovrai imparare a usare bene questo affare, se speri di potertela cavare nella vita.</string>
     <string name="s_45_1">Pesante e solido, il bastone sembra in grado di sfondare crani senza troppe difficoltà .</string>
 
+    <!-- events -->
+    <string name="e_freed_pulcioso">Freed the prisoner Pulcioso.</string>
+
     <!-- sections -->
     <string name="sections">49</string>
     <string name="starting">1</string>
@@ -377,6 +380,7 @@
     <string name="s_47_minigame">m_wheel:48:49:1:10:3</string>
 
     <string name="s_48_1">Vittoria!</string>
+    <string name="s_48_get">e_freed_pulcioso</string>
 
     <string name="s_49_1">Sconfitta!</string>
 

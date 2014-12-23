@@ -96,7 +96,7 @@ public class Story {
         for (final Link link : links) {
             commandIds = link.getCommandIds();
             itemIds = link.getItemIds();
-            if (commandIds != null && commandIds.length > 0) { // è 0 con noItems, per non ripetere due volte lo stesso comando
+            if (commandIds != null && commandIds.length > 0) { // è 0 con noItems o noEvents, per non ripetere due volte lo stesso comando nell'interfaccia, benché continui a esistere nel motore del gioco
                 if (itemIds != null && itemIds.length > 0) {
                     if (commandIds[0].equals(Commands.JOIN)) {
                         commandText = command(commandIds[0]).getFullName() + " " + itemIds[0]; // in questo caso nel link c'è una parola (ex: "medaglioni") invece di un id
