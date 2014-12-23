@@ -31,18 +31,44 @@ public class Fight extends MinigameActivity {
 
     private long moveDuration;
 
+    /**
+     * Colpi andati a segno necessari per vincere lo scontro
+     */
     public final static String HITS_REQUIRED = "hitsRequired";
 
+    /**
+     * Colpi subiti necessari per perdere lo scontro
+     */
     public final static String PENALTIES_LIMIT = "penaltiesLimit";
 
+    /**
+     * Durata massima dello scontro in termini di round, prima che lo scontro risulti in una
+     * sconfitta automatica (0 indica che non esiste limite)
+     */
     public final static String ROUNDS_LIMIT = "roundsLimit";
 
+    /**
+     * Numero di mosse e/o combo che compongono ogni round
+     */
     public final static String ROUND_LENGTH = "roundLength";
 
+    /**
+     * Numero massimo di mosse richieste per eseguire una combo (0 indica che non verrà richiesta
+     * l'esecuzione di combo)
+     */
     public final static String COMBO_LIMIT = "comboLimit";
 
+    /**
+     * Definisce se il giocatore attacca per primo a inizio scontro, o se si difende
+     */
     public final static String ATTACK_FIRST = "attackFirst";
 
+    /**
+     * Tempo a disposizione del giocatore per eseguire una mossa, affinché sia considerata valida
+     * (in millisecondi).
+     * Il tempo per una combo viene calcolato moltiplicando questo valore per il numero di mosse
+     * presenti nella combo.
+     */
     public final static String MOVE_DURATION = "moveDuration";
 
     private final static int DEFAULT_HITS_REQUIRED = 2;
