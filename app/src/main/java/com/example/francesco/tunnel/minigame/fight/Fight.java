@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.minigame.MinigameActivity;
+import com.example.francesco.tunnel.util.LimitedList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,11 +78,11 @@ public class Fight extends MinigameActivity {
 
     private final static int DEFAULT_ROUNDS_LIMIT = 0;
 
-    private final static int DEFAULT_ROUND_LENGTH = 6;
+    private final static int DEFAULT_ROUND_LENGTH = 4;
 
     private final static int DEFAULT_COMBO_LIMIT = 3;
 
-    private final static boolean DEFAULT_ATTACK_FIRST = false;
+    private final static boolean DEFAULT_ATTACK_FIRST = true;
 
     private final static long DEFAULT_MOVE_DURATION = 1000;
 
@@ -109,7 +110,11 @@ public class Fight extends MinigameActivity {
 
     private FightTimer timer;
 
-    private boolean timerFinished = false;
+    private final LimitedList<Move> input = new LimitedList(1);
+
+    private int comboMovesTotal = 1;
+
+    private int comboMovesCount = 0;
 
     private FightTouchListener fightTouchListener;
 
@@ -157,12 +162,7 @@ public class Fight extends MinigameActivity {
     }
 
     private void fight() {
-        if (attack)
-            speak(R.string.l_fi_start_attack);
-        else
-            speak(R.string.l_fi_start_defense);
         view.setOnTouchListener(fightTouchListener);
-
         fightNextRound();
     }
 
@@ -174,7 +174,7 @@ public class Fight extends MinigameActivity {
         else {
             errors = 0;
             generateMoves();
-            speakMove();
+            fightMove();
         }
     }
 
@@ -187,9 +187,11 @@ public class Fight extends MinigameActivity {
         if (roundResult == WON_ROUND) {
             hits++;
             speak(R.string.l_fi_round_attack_won);
+            speakMissingHits();
         } else if (roundResult == PERFECT_ROUND) {
             hits++;
             speak(R.string.l_fi_round_attack_perfect);
+            speakMissingHits();
         } else {
             speak(R.string.l_fi_round_attack_lost);
         }
@@ -197,7 +199,6 @@ public class Fight extends MinigameActivity {
         if (hits == hitsRequired)
             win();
         else {
-            speak(R.string.l_fi_missing, String.valueOf(hitsRequired - hits), R.string.l_fi_missing_hits);
             attack = (roundResult == PERFECT_ROUND);
             if (attack)
                 speak(R.string.l_fi_now_attack);
@@ -205,6 +206,12 @@ public class Fight extends MinigameActivity {
                 speak(R.string.l_fi_now_defend);
             fightNextRound();
         }
+    }
+
+    private void speakMissingHits() {
+        int missingHits = hitsRequired - hits;
+        if (missingHits > 0)
+            speak(String.valueOf(missingHits), R.string.l_fi_missing_hits);
     }
 
     /**
@@ -216,9 +223,11 @@ public class Fight extends MinigameActivity {
         if (roundResult == LOST_ROUND) {
             penalties++;
             speak(R.string.l_fi_round_defense_lost);
+            speakMissingPenalties();
         } else if (roundResult == AWFUL_ROUND) {
             penalties++;
             speak(R.string.l_fi_round_defense_awful);
+            speakMissingPenalties();
         } else if (roundResult == PERFECT_ROUND) {
             if (penalties > 0)
                 penalties--;
@@ -230,7 +239,6 @@ public class Fight extends MinigameActivity {
         if (penalties == penaltiesLimit)
             lose();
         else {
-            speak(R.string.l_fi_missing, String.valueOf(penaltiesLimit - penalties), R.string.l_fi_missing_penalties);
             attack = !(roundResult == AWFUL_ROUND);
             if (attack)
                 speak(R.string.l_fi_now_attack);
@@ -238,6 +246,12 @@ public class Fight extends MinigameActivity {
                 speak(R.string.l_fi_now_defend);
             fightNextRound();
         }
+    }
+
+    private void speakMissingPenalties() {
+        int missingPenalties = penaltiesLimit - penalties;
+        if (missingPenalties > 0)
+            speak(String.valueOf(missingPenalties), R.string.l_fi_missing_penalties);
     }
 
     /**
@@ -260,7 +274,7 @@ public class Fight extends MinigameActivity {
             if (moveIndex < moves.size() - 1) {
                 // ci sono ancora delle mosse per decidere l'esito del round
                 moveIndex++;
-                speakMove();
+                fightMove();
             } else {
                 // tutte le mosse del round sono state eseguite
                 if (!attack && errors > 3)
@@ -285,31 +299,28 @@ public class Fight extends MinigameActivity {
     /**
      * Verifica se la mossa attuale è stata eseguita correttamente e passa il risultato alla verifica
      * del round.
+     * TODO verificare combos
      * FIXME usare suoni
-     *
-     * @param input
      */
-    private void checkMove(final Move input) {
-        // è stato eseguito un gesto non contemplato?
-        if (input == null) {
-            ttsUtil.speak("NO");
-            checkRound(false);
-        }
-        // la mossa è stata eseguita nel tempo limite?
-        else if (timerFinished) {
-            timerFinished = false;
+    void checkInput() {
+        lockInput();
+
+        // nessun movimento entro il tempo limite
+        if (input.isEmpty()) {
             ttsUtil.speak("Lento");
             checkRound(false);
-        } else {
-            // è stato eseguito il movimento esatto?
-            final Move requiredMove = moves.get(moveIndex);
-            final boolean inputOk = input.equals(requiredMove);
-            if (inputOk)
-                ttsUtil.speak("OK");
-            else
-                ttsUtil.speak("NO");
-            checkRound(inputOk);
+            return;
         }
+
+        // è stato eseguito il movimento esatto?
+        final Move requiredMove = moves.get(moveIndex);
+        final Move inputMove = input.get(0);
+        final boolean inputOk = inputMove.equals(requiredMove);
+        if (inputOk)
+            ttsUtil.speak("OK");
+        else
+            ttsUtil.speak("NO");
+        checkRound(inputOk);
     }
 
     /**
@@ -332,12 +343,12 @@ public class Fight extends MinigameActivity {
         return random.nextInt((max - min) + 1) + min;
     }
 
-    private void speakMove() {
+    private void fightMove() {
         speak(moves.get(moveIndex).getResourceId(attack));
         while (ttsUtil.isSpeaking()) {
         }
         timer = new FightTimer(this, moveDuration);
-
+        unlockInput();
         timer.start();
     }
 
@@ -401,8 +412,7 @@ public class Fight extends MinigameActivity {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (canPerformMove()) {
-                timer.cancel();
-                checkMove(Move.MIDDLE);
+                input.add(Move.MIDDLE);
             }
             return true;
         }
@@ -411,20 +421,13 @@ public class Fight extends MinigameActivity {
         public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY) {
             if (canPerformMove()) {
                 if (detectLeftFling(velocityX, velocityY)) {
-                    timer.cancel();
-                    checkMove(Move.LEFT);
+                    input.add(Move.LEFT);
                 } else if (detectRightFling(velocityX, velocityY)) {
-                    timer.cancel();
-                    checkMove(Move.RIGHT);
+                    input.add(Move.RIGHT);
                 } else if (detectUpFling(velocityX, velocityY)) {
-                    timer.cancel();
-                    checkMove(Move.UP);
+                    input.add(Move.UP);
                 } else if (detectDownFling(velocityX, velocityY)) {
-                    timer.cancel();
-                    checkMove(Move.DOWN);
-                } else {
-                    timer.cancel();
-                    checkMove(null);
+                    input.add(Move.DOWN);
                 }
             }
             return true;
@@ -454,6 +457,10 @@ public class Fight extends MinigameActivity {
 
     @Override
     public void afterTTSInit() {
+        if (attack)
+            speak(R.string.l_fi_start_attack);
+        else
+            speak(R.string.l_fi_start_defense);
         speak(String.valueOf(hitsRequired), R.string.l_fi_hits_required);
         speak(String.valueOf(penaltiesLimit), R.string.l_fi_penalties);
         speak(R.string.l_fi_help_1);
@@ -473,8 +480,16 @@ public class Fight extends MinigameActivity {
         speak(R.string.l_fi_start);
     }
 
-    void setTimerFinished(final boolean b) {
-        this.timerFinished = b;
+    void lockInput() {
+        input.lock();
+    }
+
+    void unlockInput() {
+        input.unlock();
+    }
+
+    public LimitedList<Move> getInput() {
+        return input;
     }
 
     @Override

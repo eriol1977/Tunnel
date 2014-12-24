@@ -17,7 +17,6 @@ public class FightTimer extends CountDownTimer {
     public FightTimer(final Fight fight, final long millisInFuture) {
         super(millisInFuture, millisInFuture);
         this.fight = fight;
-        this.fight.setTimerFinished(false);
     }
 
     @Override
@@ -27,6 +26,6 @@ public class FightTimer extends CountDownTimer {
 
     @Override
     public void onFinish() {
-        fight.setTimerFinished(true);
+        fight.checkInput();
     }
 }
