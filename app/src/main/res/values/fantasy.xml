@@ -39,9 +39,9 @@
     <string name="e_freed_pulcioso">Freed the prisoner Pulcioso.</string>
 
     <!-- sections -->
-    <string name="sections">49</string>
+    <string name="sections">53</string>
     <string name="starting">1</string>
-    <string name="ending">15,19,20,48,49</string>
+    <string name="ending">15,19,20,53</string>
 
     <string name="s_1_1">Ti sei appena destato da un sonno pesantissimo, e provi una gran fitta di dolore al capo.</string>
     <string name="s_1_2">Esploràndoti il cuoio capelluto con le dita, scovi la sagoma di un grosso bernoccolo.</string>
@@ -379,18 +379,18 @@
     <string name="s_47_1">Per riuscire, ti affidi alla tua buona stella.</string>
     <string name="s_47_minigame">m_wheel:48:49:1:10:3</string>
 
-    <string name="s_48_1">La serratura cede dinanzi alla tua abilità, e il prigioniero balza fuori per stritolarti in un affettuoso abbraccio da orso.</string>
+    <string name="s_48_1">La serratura cede dinanzi alla tua abilità , e il prigioniero balza fuori per stritolarti in un affettuoso abbraccio da orso.</string>
     <string name="s_48_2">- Grazie! Grazie amico mio, ti devo la vita!</string>
     <string name="s_48_3">Ti schermisci da tanta gratitudine e lo allontani con un\'energica spinta, prima che le sue pulci decidano di trasferirsi su di te in villeggiatura.</string>
-    <string name="s_48_4">Pulcioso afferma che un giorno, se potrà, ti ripagherà con gli interessi.</string>
-    <string name="s_48_5">- Adesso, però, le nostre strade si separano.</string>
+    <string name="s_48_4">Pulcioso afferma che un giorno, se potrà , ti ripagherà con gli interessi.</string>
+    <string name="s_48_5">- Adesso, però , le nostre strade si separano.</string>
     <string name="s_48_6">dichiara, con una nota di tristezza nella voce.</string>
     <string name="s_48_7">- Credo proprio che tu andrai in cerca di un\'uscita da questa maledetta cloaca.</string>
     <string name="s_48_8">- Io, invece, ho ancora una cosa da fare qui, prima di andarmene.</string>
     <string name="s_48_9">Alzi un sopracciglio, incuriosito, ma Pulcioso non sembra disposto a rivelarti altro.</string>
     <string name="s_48_10">Ti stringe in un ultimo, sgraditissimo abbraccio, e si incammina con passo ciondolante verso il fondo del corridoio.</string>
     <string name="s_48_11">- Ah, un\'ultima cosa...</string>
-    <string name="s_48_12">si gira ad avvisarti poco prima di scomparire nel buio</string>
+    <string name="s_48_12">si gira ad avvisarti poco prima di scomparire nel buio.</string>
     <string name="s_48_13">- Non fidarti mai di chi sorride a sproposito.</string>
     <string name="s_48_14">Perplesso, resti a riflettere per un po\' su questa perla di saggezza, prima di accantonarla nella tua memoria con una scrollata di spalle.</string>
     <string name="s_48_15">Meglio che ti concentri sulla fuga, siamo appena all\'inizio.</string>
@@ -401,7 +401,7 @@
     <string name="s_49_1">Purtroppo, per quanto ti sforzi, la serratura si rifiuta di cedere.</string>
     <string name="s_49_2">Pulcioso ha fatto il tifo per te con entusiasmo fino alla fine, ma quando legge la sconfitta nei tuoi occhi si lascia cadere a terra come uno sconsolato sacco di patate.</string>
     <string name="s_49_3">- Era destino, lo sapevo!</string>
-    <string name="s_49_4">piagnucola</string>
+    <string name="s_49_4">piagnucola.</string>
     <string name="s_49_5">- Su, corri verso la libertà , tu che puoi. Vedrai che me la caverò in un altro modo.</string>
     <string name="s_49_6">Per il momento, non c\'è nulla che tu possa fare per lui. Abbassi gli occhi, pieno di vergogna, e te ne vai per la tua strada.</string>
     <string name="s_49_link_1">52</string>
@@ -415,7 +415,7 @@
 
     <string name="s_51_1">Maledizione, hai perso!</string>
     <string name="s_51_2">Normalmente ti direi che sei stato ammazzato brutalmente, che la partita è terminata, eccetera eccetera.</string>
-    <string name="s_51_3">Questa volta, però, intendo fare un\'eccezione.</string>
+    <string name="s_51_3">Questa volta, però , intendo fare un\'eccezione.</string>
     <string name="s_51_4">Dopotutto, si tratta del tuo primo combattimento. Devi fare pratica, nessuno nasce con un\'arma tra le mani.</string>
     <string name="s_51_5">O magari non hai ascoltato le istruzioni, dì la verità !</string>
     <string name="s_51_6">Dammi un secondo per riavvolgere la bobina del tempo e rispedirti all\'inizio dello scontro...</string>
@@ -424,10 +424,12 @@
     <string name="s_51_minigame">m_fight:50:51:false:3:3:0:4:1000:0</string>
 
     <!-- TODO: qui si potrebbe introdurre il giochino stealth, sia per fuggire, sia per rubare le chiavi e liberare Pulcioso... -->
-    <string name="s_52_1">Quatto quatto, avanzi verso il fondo del corridoio tra le celle, finché un grugnito inatteso ti spinge ad appiattirti contro la parete.</string>
+    <string name="s_52_1">Avanzi verso il fondo del corridoio tra le celle, finché un grugnito inatteso ti spinge ad appiattirti contro la parete.</string>
     <string name="s_52_2">Sporgi la testa dietro l\'angolo e vedi un raccapricciante incrocio tra uomo e porco che se la dorme della grossa con il testone appoggiato sul tavolo, accanto a una bottiglia vuota.</string>
     <string name="s_52_3">Dev\'essere una guardia della prigione, ma per tua fortuna non sembra troppo ligia al proprio dovere.</string>
     <string name="s_52_4">Quatto quatto, la oltrepassi in punta di piedi e ti allontani</string>
     <string name="s_52_link_1">53</string>
+
+    <string name="s_53_1">Fine, per adesso...</string>
     
 </resources>

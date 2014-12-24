@@ -9,6 +9,10 @@
     <string name="l_lp_attempts">I tentativi a tua disposizione sono </string>
     <string name="l_lp_help">L\'obiettivo del gioco è trovare il punto di scasso della serratura. Se tocchi un punto prossimo a quello giusto, una vibrazione più o meno forte ti indicherà quanto sei vicino all\'obiettivo. Toccare un punto già esplorato in precedenza non comporta penalità.</string>
     <string name="l_lp_start">Quando sei pronto, tocca lo schermo per iniziare a scassinare la serratura.</string>
+    <string name="l_lp_far">Acqua</string>
+    <string name="l_lp_near">Fuochino</string>
+    <string name="l_lp_nearest">Fuoco</string>
+    <string name="l_lp_empty"> </string>
     <string name="l_fi_hits_required"> colpi andati a segno, per vincere lo scontro.</string>
     <string name="l_fi_penalties"> colpi subiti, per essere sconfitto.</string>
     <string name="l_fi_help_1">Le mosse consentite sono cinque, tanto in attacco come in difesa. Devi eseguirle nel più breve tempo possibile, non appena la mia voce le richiede.</string>

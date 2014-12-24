@@ -9,6 +9,7 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
@@ -29,6 +30,8 @@ public class HearStoryTellerActivity extends StoryTellerActivity implements TTSB
 
     private TTSUtil ttsUtil;
 
+    private ScrollView scrollView;
+
     private TextView textView;
 
     private TextView commandsView;
@@ -39,6 +42,8 @@ public class HearStoryTellerActivity extends StoryTellerActivity implements TTSB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hear_story_teller);
+
+        scrollView = (ScrollView) findViewById(R.id.content_scroll);
 
         textView = (TextView) findViewById(R.id.textView);
         textView.setTextSize(24);
@@ -90,6 +95,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity implements TTSB
         commandsView.setVisibility(View.INVISIBLE);
         textView.setText("");
         textView.setVisibility(View.VISIBLE);
+        scrollView.setScrollY(0);
         for (final String paragraph : text) {
             if (paragraph != null) { // non dovrebbe mai succedere, ma...
                 textView.append(cleanItalianText(paragraph));

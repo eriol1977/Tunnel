@@ -29,8 +29,6 @@ public class Lockpick extends MinigameActivity {
 
     private final static int DEFAULT_RADIUS = 5;
 
-    private Vibrator vibrator;
-
     private int screenWidth;
 
     private int screenHeight;
@@ -58,8 +56,6 @@ public class Lockpick extends MinigameActivity {
         grid = new LockpickGrid(this, screenWidth, screenHeight, columns, DEFAULT_RADIUS);
         grid.setCellToHit(random(), random());
         setContentView(grid);
-
-        vibratorInit();
     }
 
     private void initScreenDimensions() {
@@ -80,12 +76,10 @@ public class Lockpick extends MinigameActivity {
     }
 
     protected void showWinning() {
-        vibratorStop();
         unlockSound.start();
     }
 
     protected void showLosing() {
-        vibratorStop();
         lockbreakSound.start();
     }
 
@@ -105,28 +99,30 @@ public class Lockpick extends MinigameActivity {
                 }
 
                 final LockPickCell cell = (LockPickCell) grid.hit(event.getX(), event.getY());
-                // se il quadrante non era ancora stato toccato
-                if (!cell.isHit()) {
-                    cell.setHit(true);
-                    lockpickSound.start();
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                if(cell != null) { // non dovrebbe mai essere null, meglio comunque mettere le mani avanti...
+                    // se il quadrante non era ancora stato toccato
+                    if (!cell.isHit()) {
+                        cell.setHit(true);
+                        lockpickSound.start();
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        speak(cell.getType().getTextResourceId());
+                        attempts++;
+                        grid.invalidate();
+                        if (cell.isWinning())
+                            win();
+                        else if (attempts == maxAttempts)
+                            lose();
+                        // se il quadrante era già stato toccato, ripete semplicemente la vibrazione ad
+                        // esso corrispondente, come indizio verso la soluzione
+                    } else {
+                        speak(cell.getType().getTextResourceId());
                     }
-                    vibrator.vibrate(getVibrationPattern(cell.getType().getVibrationSpeed()), 0);
-                    attempts++;
-                    grid.invalidate();
-                    if (cell.isWinning())
-                        win();
-                    else if (attempts == maxAttempts)
-                        lose();
-                    // se il quadrante era già stato toccato, ripete semplicemente la vibrazione ad
-                    // esso corrispondente, come indizio verso la soluzione
-                } else {
-                    vibrator.vibrate(getVibrationPattern(cell.getType().getVibrationSpeed()), 0);
+                    break;
                 }
-                break;
         }
         return true;
     }
@@ -137,27 +133,8 @@ public class Lockpick extends MinigameActivity {
         return random.nextInt(this.columns) + 1;
     }
 
-    private long[] getVibrationPattern(final int speed) {
-        if (speed == 0)
-            vibratorStop();
-        return new long[]{speed, speed};
-    }
-
-    private void vibratorInit() {
-        this.vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        if (!vibrator.hasVibrator()) {
-            finish();
-        }
-    }
-
-    private void vibratorStop() {
-        if (vibrator != null)
-            vibrator.cancel();
-    }
-
     @Override
     protected void onStop() {
-        vibratorStop();
         lockpickSound.release();
         unlockSound.release();
         lockbreakSound.release();
