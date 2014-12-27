@@ -101,7 +101,7 @@ public class Fight extends MinigameActivity {
 
     private int moveIndex = 0;
 
-    private List<Move> moves = new ArrayList<>();
+    private List<FightAction> moves = new ArrayList<>();
 
     private final static int PERFECT_ROUND = 111;
 
@@ -113,11 +113,7 @@ public class Fight extends MinigameActivity {
 
     private FightTimer timer;
 
-    private final LimitedList<Move> input = new LimitedList(1);
-
-    private int comboMovesTotal = 1;
-
-    private int comboMovesCount = 0;
+    private LimitedList<Move> input = new LimitedList<>(1);
 
     private FightTouchListener fightTouchListener;
 
@@ -313,56 +309,86 @@ public class Fight extends MinigameActivity {
     }
 
     /**
-     * Verifica se la mossa attuale è stata eseguita correttamente e passa il risultato alla verifica
+     * Verifica se la mossa/combo attuale è stata eseguita correttamente e passa il risultato alla verifica
      * del round.
-     * TODO verificare combos
-     * FIXME usare suoni
      */
     void checkInput() {
         lockInput();
 
-        // nessun movimento entro il tempo limite
-        if (input.isEmpty()) {
+        final FightAction requiredMove = moves.get(moveIndex);
+
+        // numero insufficiente di mosse entro il tempo limite
+        if (input.size() < requiredMove.size()) {
             playSound(null);
             checkRound(false);
             return;
         }
 
-        // è stato eseguito il movimento esatto?
-        final Move requiredMove = moves.get(moveIndex);
-        final Move inputMove = input.get(0);
-        final boolean inputOk = inputMove.equals(requiredMove);
-        if (inputOk)
-            playSound(inputMove);
-        else
-            playSound(null);
+        // è stato eseguito il movimento/sequenza di movimenti esatta?
+        boolean inputOk = true;
+        if (requiredMove.getType().equals(FightActionType.SINGLE_MOVE)) {
+            inputOk = input.get(0).equals(requiredMove);
+            if (inputOk)
+                playSound(input.get(0));
+        } else {
+            for (int i = 0; i < requiredMove.size(); i++) {
+                if (!input.get(i).equals(((Combo) requiredMove).get(i))) {
+                    inputOk = false;
+                    break;
+                }
+                playSound(input.get(i));
+            }
+            if (!inputOk)
+                playSound(null);
+        }
+
         checkRound(inputOk);
     }
 
     private void playSound(final Move move) {
-        if (move != null) {
-            MediaPlayer sound = (attack ? attackSounds.get(move) : defenseSounds.get(move));
+        MediaPlayer sound = null;
+
+        if (move != null)
+            sound = (attack ? attackSounds.get(move) : defenseSounds.get(move));
+        else
+            sound = (attack ? wrongAttackSound : wrongDefenseSound);
+
+        if (sound != null)
             sound.start();
-        } else {
-            if (attack)
-                wrongAttackSound.start();
-            else
-                wrongDefenseSound.start();
-        }
     }
 
     /**
      * Crea una lista casuale di mosse da eseguire nel round attuale.
      */
     private void generateMoves() {
-        int value;
-        int max = Move.values().length;
         moves.clear();
         moveIndex = 0;
+        int buildCombo = 0;
         for (int i = 0; i < roundLength; i++) {
-            value = randomInt(1, max);
-            moves.add(Move.get(value)); // TODO combos
+            // crea combos nel 25% dei casi, quando consentito
+            // FIXME: usare parametro esterno?
+            if (comboLimit > 0)
+                buildCombo = randomInt(1, 2);
+
+            if (buildCombo == 1)
+                moves.add(buildCombo());
+            else {
+                moves.add(buildMove());
+            }
         }
+    }
+
+    private Combo buildCombo() {
+        Combo combo = new Combo(comboLimit);
+        for (int i = 0; i < comboLimit; i++)
+            combo.addMove(buildMove());
+        return combo;
+    }
+
+    private Move buildMove() {
+        int max = Move.values().length;
+        int value = randomInt(1, max);
+        return Move.get(value);
     }
 
     private int randomInt(int min, int max) {
@@ -372,11 +398,27 @@ public class Fight extends MinigameActivity {
     }
 
     private void fightMove() {
-        speak(moves.get(moveIndex).getResourceId(attack));
+        final FightAction action = moves.get(moveIndex);
+        long duration;
+        int numberOfMoves = action.size();
+        if (action.getType().equals(FightActionType.SINGLE_MOVE)) {
+            duration = moveDuration;
+            speak(((Move) action).getResourceId(attack));
+        } else {
+            final Combo combo = (Combo) action;
+            duration = moveDuration * numberOfMoves;
+            StringBuilder sb = new StringBuilder();
+            sb.append(getResources().getString(R.string.l_fi_combo)).append(" ");
+            for (int i = 0; i < numberOfMoves; i++) {
+                sb.append(getResources().getString(combo.get(i).getResourceId(attack))).append(" ");
+            }
+            ttsUtil.speak(sb.toString());
+        }
         while (ttsUtil.isSpeaking()) {
         }
-        timer = new FightTimer(this, moveDuration);
-        unlockInput();
+        input.setMaxElements(numberOfMoves);
+        input.unlock();
+        timer = new FightTimer(this, duration);
         timer.start();
     }
 

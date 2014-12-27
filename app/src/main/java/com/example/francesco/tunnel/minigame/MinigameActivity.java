@@ -72,7 +72,8 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
         this.finished = true;
         this.result = this.winNextSection;
         showWinning();
-        winSound.start();
+        if (winSound != null)
+            winSound.start();
     }
 
     protected abstract void showWinning();
@@ -81,7 +82,8 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
         this.finished = true;
         this.result = this.loseNextSection;
         showLosing();
-        loseSound.start();
+        if (loseSound != null)
+            loseSound.start();
     }
 
     protected abstract void showLosing();

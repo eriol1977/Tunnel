@@ -5,7 +5,7 @@ import com.example.francesco.tunnel.R;
 /**
  * Created by Francesco on 19/12/2014.
  */
-public enum Move {
+public enum Move implements FightAction {
     MIDDLE(1, R.string.l_fi_attack_middle, R.string.l_fi_defense_middle, R.raw.shield, R.raw.shield),
     UP(2, R.string.l_fi_attack_up, R.string.l_fi_defense_up, R.raw.sword1, R.raw.swish1),
     DOWN(3, R.string.l_fi_attack_down, R.string.l_fi_defense_down, R.raw.sword1, R.raw.swish1),
@@ -50,4 +50,13 @@ public enum Move {
         return attack ? this.attackSoundResourceId : this.defenseSoundResourceId;
     }
 
+    @Override
+    public FightActionType getType() {
+        return FightActionType.SINGLE_MOVE;
+    }
+
+    @Override
+    public int size() {
+        return 1;
+    }
 }

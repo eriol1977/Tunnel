@@ -55,6 +55,7 @@
     <string name="l_fi_start_defense">Cominci in difesa.</string>
     <string name="l_fi_won">Hai sconfitto il tuo avversario!</string>
     <string name="l_fi_lost">Sei stato sconfitto!</string>
+    <string name="l_fi_combo">Combo</string>
 
     <!-- messages -->
     <string name="m_unavailable">azione invalida</string>

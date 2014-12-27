@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class LimitedList<E> extends ArrayList<E> {
 
-    private final int maxElements;
+    private int maxElements;
 
     private int lock;
 
@@ -33,5 +33,9 @@ public class LimitedList<E> extends ArrayList<E> {
         if (size() >= lock)
             return false;
         return super.add(object);
+    }
+
+    public void setMaxElements(final int maxElements) {
+        this.maxElements = maxElements;
     }
 }
