@@ -1,5 +1,6 @@
 package com.example.francesco.tunnel.minigame.fight;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
@@ -12,7 +13,9 @@ import com.example.francesco.tunnel.minigame.MinigameActivity;
 import com.example.francesco.tunnel.util.LimitedList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -122,6 +125,14 @@ public class Fight extends MinigameActivity {
 
     private TextView view;
 
+    private Map<Move, MediaPlayer> attackSounds = new HashMap<>();
+
+    private Map<Move, MediaPlayer> defenseSounds = new HashMap<>();
+
+    private MediaPlayer wrongAttackSound;
+
+    private MediaPlayer wrongDefenseSound;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +157,12 @@ public class Fight extends MinigameActivity {
 
     @Override
     protected void initGameSounds() {
-
+        wrongAttackSound = MediaPlayer.create(this, R.raw.swish1);
+        wrongDefenseSound = MediaPlayer.create(this, R.raw.ouch);
+        for (final Move move : Move.values()) {
+            attackSounds.put(move, MediaPlayer.create(this, move.getSoundResourceId(true)));
+            defenseSounds.put(move, MediaPlayer.create(this, move.getSoundResourceId(false)));
+        }
     }
 
     @Override
@@ -307,7 +323,7 @@ public class Fight extends MinigameActivity {
 
         // nessun movimento entro il tempo limite
         if (input.isEmpty()) {
-            ttsUtil.speak("Lento");
+            playSound(null);
             checkRound(false);
             return;
         }
@@ -317,10 +333,22 @@ public class Fight extends MinigameActivity {
         final Move inputMove = input.get(0);
         final boolean inputOk = inputMove.equals(requiredMove);
         if (inputOk)
-            ttsUtil.speak("OK");
+            playSound(inputMove);
         else
-            ttsUtil.speak("NO");
+            playSound(null);
         checkRound(inputOk);
+    }
+
+    private void playSound(final Move move) {
+        if (move != null) {
+            MediaPlayer sound = (attack ? attackSounds.get(move) : defenseSounds.get(move));
+            sound.start();
+        } else {
+            if (attack)
+                wrongAttackSound.start();
+            else
+                wrongDefenseSound.start();
+        }
     }
 
     /**
@@ -495,5 +523,22 @@ public class Fight extends MinigameActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    protected void onStop() {
+        wrongAttackSound.stop();
+        wrongAttackSound = null;
+        wrongDefenseSound.stop();
+        wrongDefenseSound = null;
+        for (final MediaPlayer sound : attackSounds.values()) {
+            sound.stop();
+        }
+        attackSounds = null;
+        for (final MediaPlayer sound : defenseSounds.values()) {
+            sound.stop();
+        }
+        defenseSounds = null;
+        super.onStop();
     }
 }
