@@ -1,10 +1,13 @@
 package com.example.francesco.tunnel.util;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
  * ArrayList che accetta un numero definito di elementi, dopodiché non ne accetta altri.
  * Può essere bloccato e sbloccato per smettere del tutto di accettare elementi.
+ * Inizia bloccato.
  *
  * <p/>
  * Created by Francesco on 24/12/2014.
@@ -17,6 +20,7 @@ public class LimitedList<E> extends ArrayList<E> {
 
     public LimitedList(final int maxElements) {
         this.maxElements = maxElements;
+        this.lock = 0;
     }
 
     public void unlock() {

@@ -12,4 +12,11 @@ public interface TTSBacked {
      * Indica cosa deve fare TTSUtil immediatamente dopo l'inizializzazione del TextToSpeech
      */
     void afterTTSInit();
+
+    /**
+     * Chiamato quando TTS finisce di parlare
+     *
+     * @param utteranceId
+     */
+    void afterUtteranceCompleted(final String utteranceId);
 }

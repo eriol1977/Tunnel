@@ -1,6 +1,7 @@
 package com.example.francesco.tunnel.minigame.fight;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 /**
  * Created by Francesco on 20/12/2014.

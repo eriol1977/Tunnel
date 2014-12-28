@@ -221,6 +221,11 @@ public class HearStoryTellerActivity extends StoryTellerActivity implements TTSB
         displayText(story.getCurrentText()); // testo home
     }
 
+    @Override
+    public void afterUtteranceCompleted(String utteranceId) {
+        // do nothing
+    }
+
     class MyOnTouchListener implements View.OnTouchListener {
 
         private final GestureDetectorCompat mDetector;

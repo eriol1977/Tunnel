@@ -37,8 +37,6 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
 
     private final static int SLEEP_INCREMENT = 5;
 
-    private Random random = new Random();
-
     private TextView textView;
 
     private MediaPlayer wheelSound;
@@ -95,6 +93,11 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
         speak(R.string.l_dw_start);
     }
 
+    @Override
+    public void afterUtteranceCompleted(String utteranceId) {
+        // do nothing
+    }
+
     private void spinWheel() {
         new WheelSpinnerTask().execute(SPIN_CYCLES, FIRST_SLEEP, SLEEP_INCREMENT);
     }
@@ -143,11 +146,6 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
                 win();
             else
                 lose();
-        }
-
-        private int randomInt(int min, int max) {
-            // add 1 to make it inclusive
-            return random.nextInt((max - min) + 1) + min;
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.francesco.tunnel.minigame.fight;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -113,11 +114,9 @@ public class Fight extends MinigameActivity {
 
     private FightTimer timer;
 
-    private LimitedList<Move> input = new LimitedList<>(1);
+    private LimitedList<Move> input;
 
     private FightTouchListener fightTouchListener;
-
-    private StartingTouchListener startingTouchListener;
 
     private TextView view;
 
@@ -125,9 +124,11 @@ public class Fight extends MinigameActivity {
 
     private Map<Move, MediaPlayer> defenseSounds = new HashMap<>();
 
-    private MediaPlayer wrongAttackSound;
+    private MediaPlayer wrongSound;
 
-    private MediaPlayer wrongDefenseSound;
+    private final static String FIGHT_UTTERANCE_ID = "FIGHT";
+
+    private boolean go = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +137,9 @@ public class Fight extends MinigameActivity {
 
         view = (TextView) findViewById(R.id.fight);
         fightTouchListener = new FightTouchListener();
-        startingTouchListener = new StartingTouchListener();
-        view.setOnTouchListener(startingTouchListener);
+        view.setOnTouchListener(fightTouchListener);
+
+        input = new LimitedList<>(0);
     }
 
     @Override
@@ -153,8 +155,7 @@ public class Fight extends MinigameActivity {
 
     @Override
     protected void initGameSounds() {
-        wrongAttackSound = MediaPlayer.create(this, R.raw.swish1);
-        wrongDefenseSound = MediaPlayer.create(this, R.raw.ouch);
+        wrongSound = MediaPlayer.create(this, R.raw.beep);
         for (final Move move : Move.values()) {
             attackSounds.put(move, MediaPlayer.create(this, move.getSoundResourceId(true)));
             defenseSounds.put(move, MediaPlayer.create(this, move.getSoundResourceId(false)));
@@ -163,19 +164,12 @@ public class Fight extends MinigameActivity {
 
     @Override
     protected void showWinning() {
-        view.setOnTouchListener(startingTouchListener);
         speak(R.string.l_fi_won);
     }
 
     @Override
     protected void showLosing() {
-        view.setOnTouchListener(startingTouchListener);
         speak(R.string.l_fi_lost);
-    }
-
-    private void fight() {
-        view.setOnTouchListener(fightTouchListener);
-        fightNextRound();
     }
 
     private void fightNextRound() {
@@ -273,6 +267,7 @@ public class Fight extends MinigameActivity {
      * @param inputOk
      */
     private void checkRound(final boolean inputOk) {
+
         if (!inputOk)
             errors++;
 
@@ -313,6 +308,7 @@ public class Fight extends MinigameActivity {
      * del round.
      */
     void checkInput() {
+
         lockInput();
 
         final FightAction requiredMove = moves.get(moveIndex);
@@ -328,19 +324,17 @@ public class Fight extends MinigameActivity {
         boolean inputOk = true;
         if (requiredMove.getType().equals(FightActionType.SINGLE_MOVE)) {
             inputOk = input.get(0).equals(requiredMove);
-            if (inputOk)
-                playSound(input.get(0));
         } else {
             for (int i = 0; i < requiredMove.size(); i++) {
                 if (!input.get(i).equals(((Combo) requiredMove).get(i))) {
                     inputOk = false;
                     break;
                 }
-                playSound(input.get(i));
             }
-            if (!inputOk)
-                playSound(null);
         }
+
+        if (!inputOk)
+            playSound(null);
 
         checkRound(inputOk);
     }
@@ -351,7 +345,7 @@ public class Fight extends MinigameActivity {
         if (move != null)
             sound = (attack ? attackSounds.get(move) : defenseSounds.get(move));
         else
-            sound = (attack ? wrongAttackSound : wrongDefenseSound);
+            sound = wrongSound;
 
         if (sound != null)
             sound.start();
@@ -391,64 +385,42 @@ public class Fight extends MinigameActivity {
         return Move.get(value);
     }
 
-    private int randomInt(int min, int max) {
-        final Random random = new Random();
-        // add 1 to make it inclusive
-        return random.nextInt((max - min) + 1) + min;
-    }
-
     private void fightMove() {
+        view.setOnTouchListener(null);
         final FightAction action = moves.get(moveIndex);
-        long duration;
-        int numberOfMoves = action.size();
         if (action.getType().equals(FightActionType.SINGLE_MOVE)) {
-            duration = moveDuration;
-            speak(((Move) action).getResourceId(attack));
+            speakMove(msg(((Move) action).getResourceId(attack)));
         } else {
             final Combo combo = (Combo) action;
-            duration = moveDuration * numberOfMoves;
             StringBuilder sb = new StringBuilder();
             sb.append(getResources().getString(R.string.l_fi_combo)).append(" ");
-            for (int i = 0; i < numberOfMoves; i++) {
+            for (int i = 0; i < action.size(); i++) {
                 sb.append(getResources().getString(combo.get(i).getResourceId(attack))).append(" ");
             }
-            ttsUtil.speak(sb.toString());
+            speakMove(sb.toString());
         }
-        while (ttsUtil.isSpeaking()) {
+
+        while (!go) {
         }
-        input.setMaxElements(numberOfMoves);
-        input.unlock();
+
+        go = false;
+        long duration = moveDuration * action.size();
+        input.setMaxElements(action.size());
+        unlockInput();
+        view.setOnTouchListener(fightTouchListener);
         timer = new FightTimer(this, duration);
         timer.start();
     }
 
-    class StartingTouchListener implements View.OnTouchListener {
-
-        private final GestureDetectorCompat detector;
-
-        StartingTouchListener() {
-            detector = new GestureDetectorCompat(Fight.this, new StartingGestureListener());
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            return detector.onTouchEvent(event);
+    @Override
+    public void afterUtteranceCompleted(String utteranceId) {
+        if (utteranceId.equals(FIGHT_UTTERANCE_ID)) {
+            go = true;
         }
     }
 
-    class StartingGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            if (!started) {
-                started = true;
-                ttsUtil.stop();
-                fight();
-            } else if (finished) {
-                sendBackResult();
-            }
-            return true;
-        }
+    private void speakMove(final String moveText) {
+        ttsUtil.speak(moveText, FIGHT_UTTERANCE_ID);
     }
 
     /**
@@ -456,7 +428,7 @@ public class Fight extends MinigameActivity {
      */
     class FightTouchListener implements View.OnTouchListener {
 
-        private final GestureDetectorCompat detector;
+        private GestureDetectorCompat detector;
 
         FightTouchListener() {
             detector = new GestureDetectorCompat(Fight.this, new FightGestureListener());
@@ -466,6 +438,7 @@ public class Fight extends MinigameActivity {
         public boolean onTouch(View v, MotionEvent event) {
             return detector.onTouchEvent(event);
         }
+
     }
 
     /**
@@ -476,13 +449,20 @@ public class Fight extends MinigameActivity {
 
         @Override
         public boolean onDown(MotionEvent event) {
+            if (!started) {
+                started = true;
+                ttsUtil.stop();
+                fightNextRound();
+            } else if (finished) {
+                sendBackResult();
+            }
             return true;
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (canPerformMove()) {
-                input.add(Move.MIDDLE);
+                performMove(Move.MIDDLE);
             }
             return true;
         }
@@ -491,16 +471,21 @@ public class Fight extends MinigameActivity {
         public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY) {
             if (canPerformMove()) {
                 if (detectLeftFling(velocityX, velocityY)) {
-                    input.add(Move.LEFT);
+                    performMove(Move.LEFT);
                 } else if (detectRightFling(velocityX, velocityY)) {
-                    input.add(Move.RIGHT);
+                    performMove(Move.RIGHT);
                 } else if (detectUpFling(velocityX, velocityY)) {
-                    input.add(Move.UP);
+                    performMove(Move.UP);
                 } else if (detectDownFling(velocityX, velocityY)) {
-                    input.add(Move.DOWN);
+                    performMove(Move.DOWN);
                 }
             }
             return true;
+        }
+
+        private void performMove(final Move move) {
+            playSound(move);
+            input.add(move);
         }
 
         private boolean canPerformMove() {
@@ -550,6 +535,7 @@ public class Fight extends MinigameActivity {
         speak(R.string.l_fi_start);
     }
 
+
     void lockInput() {
         input.lock();
     }
@@ -563,24 +549,34 @@ public class Fight extends MinigameActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        finish();
+    protected void onStop() {
+
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+
+        input = null;
+
+        wrongSound.release();
+        wrongSound = null;
+
+        for (final MediaPlayer sound : attackSounds.values()) {
+            sound.release();
+        }
+        attackSounds = null;
+
+        for (final MediaPlayer sound : defenseSounds.values()) {
+            sound.release();
+        }
+        defenseSounds = null;
+
+        super.onStop();
     }
 
     @Override
-    protected void onStop() {
-        wrongAttackSound.stop();
-        wrongAttackSound = null;
-        wrongDefenseSound.stop();
-        wrongDefenseSound = null;
-        for (final MediaPlayer sound : attackSounds.values()) {
-            sound.stop();
-        }
-        attackSounds = null;
-        for (final MediaPlayer sound : defenseSounds.values()) {
-            sound.stop();
-        }
-        defenseSounds = null;
-        super.onStop();
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

@@ -10,6 +10,8 @@ import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.util.TTSBacked;
 import com.example.francesco.tunnel.util.TTSUtil;
 
+import java.util.Random;
+
 /**
  * Created by Francesco on 18/12/2014.
  */
@@ -34,6 +36,8 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
     protected int screenWidth;
 
     protected int screenHeight;
+
+    private Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,11 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
         return getResources().getString(resourceId);
     }
 
+    protected int randomInt(int min, int max) {
+        // add 1 to make it inclusive
+        return random.nextInt((max - min) + 1) + min;
+    }
+
     @Override
     protected void onRestart() {
         ttsUtil.onRestart();
@@ -140,8 +149,4 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
         super.onStop();
     }
 
-    @Override
-    public void onBackPressed() {
-        // do nothing
-    }
 }

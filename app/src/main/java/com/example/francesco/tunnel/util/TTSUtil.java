@@ -16,17 +16,17 @@ import java.util.Locale;
  * Utilitario per tutte le Activity che facciano uso di TextToSpeech.
  * Fornisce i metodi speak(), playSilence(), playEarcon() e stop() per parlare e interrompere, oltre a occuparsi di tutta la
  * parte di inizializzazione e gestione del servizio.
- *
+ * <p/>
  * Nell'Activity, ricordarsi di:
  * - implementare {@link com.example.francesco.tunnel.util.TTSBacked}
  * - invocare ttsUtil.onActivityResult(requestCode, resultCode, data) all'interno del metodo
- *   onActivityResult (creare il metodo se non esiste)
+ * onActivityResult (creare il metodo se non esiste)
  * - invocare ttsUtil.onRestart() all'interno del metodo onRestart
  * - invocare ttsUtil.onStop() all'interno del metodo onStop
- *
+ * <p/>
  * Created by Francesco on 17/12/2014.
  */
-public class TTSUtil implements TextToSpeech.OnInitListener {
+public class TTSUtil implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener {
 
     private final Activity activity;
 
@@ -61,6 +61,14 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
             tts.speak(text, TextToSpeech.QUEUE_ADD, webConnectedVoice);
         else
             tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+    }
+
+    public void speak(final String text, final String utteranceId) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId);
+        if (webConnectionActive())
+            params.put(TextToSpeech.Engine.KEY_FEATURE_NETWORK_SYNTHESIS, "true");
+        tts.speak(text, TextToSpeech.QUEUE_ADD, params);
     }
 
     public boolean isSpeaking() {
@@ -113,7 +121,7 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
     }
 
     @Override
-    public void onInit(int status) {
+    public void onInit(final int status) {
         if (status == TextToSpeech.SUCCESS) {
 //                            final Locale defaultLocale = Locale.getDefault();
 //                            if (defaultLocale.equals(Locale.ITALY) || defaultLocale.toString().equals("pt_BR")) {
@@ -121,6 +129,7 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
 //                                if (languageAvailable == TextToSpeech.LANG_AVAILABLE
 //                                        || languageAvailable == TextToSpeech.LANG_COUNTRY_AVAILABLE
 //                                        || languageAvailable == TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE) {
+            tts.setOnUtteranceCompletedListener(this);
             tts.setLanguage(Locale.ITALIAN);
             ttsBacked.afterTTSInit();
 //                                } else {
@@ -134,5 +143,10 @@ public class TTSUtil implements TextToSpeech.OnInitListener {
         }
     }
 
+
+    @Override
+    public void onUtteranceCompleted(final String utteranceId) {
+        ttsBacked.afterUtteranceCompleted(utteranceId);
+    }
 
 }

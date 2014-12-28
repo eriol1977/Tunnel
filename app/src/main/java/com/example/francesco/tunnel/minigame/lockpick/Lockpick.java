@@ -150,4 +150,9 @@ public class Lockpick extends MinigameActivity {
         speak(R.string.l_lp_help);
         speak(R.string.l_lp_start);
     }
+
+    @Override
+    public void afterUtteranceCompleted(String utteranceId) {
+        // do nothing
+    }
 }
