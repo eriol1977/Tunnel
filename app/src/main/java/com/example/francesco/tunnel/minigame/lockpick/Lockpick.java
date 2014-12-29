@@ -93,7 +93,7 @@ public class Lockpick extends MinigameActivity {
                 }
 
                 final LockPickCell cell = (LockPickCell) grid.hit(event.getX(), event.getY());
-                if(cell != null) { // non dovrebbe mai essere null, meglio comunque mettere le mani avanti...
+                if (cell != null) { // non dovrebbe mai essere null, meglio comunque mettere le mani avanti...
                     // se il quadrante non era ancora stato toccato
                     if (!cell.isHit()) {
                         cell.setHit(true);
@@ -129,13 +129,25 @@ public class Lockpick extends MinigameActivity {
 
     @Override
     protected void onStop() {
-        lockpickSound.release();
-        unlockSound.release();
-        lockbreakSound.release();
-        lockpickSound = null;
-        unlockSound = null;
-        lockbreakSound = null;
+        if (lockpickSound != null) {
+            lockpickSound.release();
+            lockpickSound = null;
+        }
+        if (unlockSound != null) {
+            unlockSound.release();
+            unlockSound = null;
+        }
+        if (lockbreakSound != null) {
+            lockbreakSound.release();
+            lockbreakSound = null;
+        }
         super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        onStop();
+        super.onBackPressed();
     }
 
     @Override

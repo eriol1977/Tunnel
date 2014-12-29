@@ -3,6 +3,7 @@ package com.example.francesco.tunnel.minigame.fight;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -355,8 +356,10 @@ public class Fight extends MinigameActivity {
         else
             sound = wrongSound;
 
-        if (sound != null)
+        if (sound != null) {
             sound.start();
+            sound.seekTo(0);
+        }
     }
 
     /**
@@ -426,6 +429,7 @@ public class Fight extends MinigameActivity {
     }
 
     private void speakMove(final String moveText) {
+        view.setText(moveText);
         ttsUtil.speak(moveText, FIGHT_UTTERANCE_ID);
     }
 
@@ -458,6 +462,7 @@ public class Fight extends MinigameActivity {
             if (!started) {
                 started = true;
                 ttsUtil.stop();
+                view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 50);
                 fightNextRound();
             } else if (finished) {
                 sendBackResult();
@@ -492,6 +497,7 @@ public class Fight extends MinigameActivity {
         private void performMove(final Move move) {
             playSound(move);
             input.add(move);
+            view.setText("");
         }
 
         private boolean canPerformMove() {
@@ -559,25 +565,31 @@ public class Fight extends MinigameActivity {
 
         input = null;
 
-        wrongSound.release();
-        wrongSound = null;
-
-        for (final MediaPlayer sound : attackSounds.values()) {
-            sound.release();
+        if (wrongSound != null) {
+            wrongSound.release();
+            wrongSound = null;
         }
-        attackSounds = null;
 
-        for (final MediaPlayer sound : defenseSounds.values()) {
-            sound.release();
+        if (attackSounds != null) {
+            for (final MediaPlayer sound : attackSounds.values()) {
+                sound.release();
+            }
+            attackSounds = null;
         }
-        defenseSounds = null;
+
+        if (defenseSounds != null) {
+            for (final MediaPlayer sound : defenseSounds.values()) {
+                sound.release();
+            }
+            defenseSounds = null;
+        }
 
         super.onStop();
     }
 
     @Override
     public void onBackPressed() {
+        onStop();
         super.onBackPressed();
-        finish();
     }
 }

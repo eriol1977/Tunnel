@@ -132,20 +132,34 @@ public abstract class MinigameActivity extends Activity implements TTSBacked {
         return random.nextInt((max - min) + 1) + min;
     }
 
+    /**
+     * Un'interruzione durante il minigioco provoca il ritorno alla sezione narrativa chiamante.
+     */
     @Override
     protected void onRestart() {
         ttsUtil.onRestart();
         super.onRestart();
+        onBackPressed();
     }
 
     @Override
     protected void onStop() {
-        ttsUtil.onStop();
-        winSound.release();
-        loseSound.release();
-        winSound = null;
-        loseSound = null;
+        if (ttsUtil != null)
+            ttsUtil.onStop();
+        if (winSound != null) {
+            winSound.release();
+            winSound = null;
+        }
+        if (loseSound != null) {
+            loseSound.release();
+            loseSound = null;
+        }
         super.onStop();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

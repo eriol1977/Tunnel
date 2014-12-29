@@ -40,13 +40,14 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
 
     private int threshold;
 
+    private WheelSpinnerTask spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_destiny_wheel);
 
         textView = (TextView) findViewById(R.id.random);
-        textView.setText("!");
         textView.setOnClickListener(this);
     }
 
@@ -82,7 +83,7 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
 
     @Override
     public void afterTTSInit() {
-        speak(R.string.l_dw_greater_then,String.valueOf(threshold));
+        speak(R.string.l_dw_greater_then, String.valueOf(threshold));
         speak(R.string.l_dw_start);
     }
 
@@ -92,7 +93,8 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
     }
 
     private void spinWheel() {
-        new WheelSpinnerTask().execute(SPIN_CYCLES, FIRST_SLEEP, SLEEP_INCREMENT);
+        spinner = new WheelSpinnerTask();
+        spinner.execute(SPIN_CYCLES, FIRST_SLEEP, SLEEP_INCREMENT);
     }
 
     private class WheelSpinnerTask extends AsyncTask<Integer, Integer, Integer> {
@@ -144,9 +146,18 @@ public class DestinyWheel extends MinigameActivity implements View.OnClickListen
 
     @Override
     protected void onStop() {
-        wheelSound.release();
-        wheelSound = null;
+        if (spinner != null)
+            spinner.cancel(true);
+        if (wheelSound != null) {
+            wheelSound.release();
+            wheelSound = null;
+        }
         super.onStop();
     }
 
+    @Override
+    public void onBackPressed() {
+        onStop();
+        super.onBackPressed();
+    }
 }

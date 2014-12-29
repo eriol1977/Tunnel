@@ -12,7 +12,7 @@
     <string name="c_pull_handle">tiro:Tiro la maniglia</string>
     <string name="c_leave_it_alone">lascio:Lascio stare</string>
     <string name="c_refuse_to_talk">rifiuto:Mi rifiuto di parlare</string>
-    <string name="c_tell_everything_I_know">rispondo:Rispondo tutto quel che so</string>
+    <string name="c_answer">rispondo:Rispondo</string>
     <string name="c_agree">concordo:Concordo</string>
     <string name="c_disagree">discordo:Discordo</string>
     <string name="c_pick_lock">scassino:Scassino la serratura</string>
@@ -98,7 +98,7 @@
 
     <string name="s_7_1">L\'armadio, un vero monumento all\'incapacità del suo costruttore, occupa buona parte della parete con la sua mole scura e sbilenca.</string>
     <string name="s_7_2">Provi a forzare la maniglia, ma l\'anta non cede.</string>
-    <string name="s_7_3">Ti chiedi se al di là di questo mostruoso aborto di falegnameria non si celi un\'uscita.</string>
+    <string name="s_7_3">Ti chiedi se al di là di questo mostruoso rifiuto di falegnameria non si celi un\'uscita.</string>
     <string name="s_7_switch_1">link:4:3</string>
     <string name="s_7_link_1">13:c_pull_handle</string>
     <string name="s_7_link_2">14:c_leave_it_alone</string>
@@ -224,7 +224,7 @@
     <string name="s_24_8">- Cos\'hai fatto per meritarti questo castigo?</string>
     <string name="s_24_9">ti interroga l\'uomo.</string>
     <string name="s_24_link_1">25:c_refuse_to_talk</string>
-    <string name="s_24_link_2">26:c_tell_everything_I_know</string>
+    <string name="s_24_link_2">26:c_answer</string>
 
     <string name="s_25_1">Perché diavolo dovresti entrare in confidenza con un tipo che si fa chiamare Pulcioso?</string>
     <string name="s_25_2">Ti chiudi in un mutismo ostinato, ma Pulcioso continua a fissarti coi suoi occhietti strabici.</string>
@@ -337,8 +337,11 @@
     <string name="s_39_link_1">41</string>
 
     <string name="s_40_1">Maldestro come sei, finisci per scassare la serratura, piuttosto che scassinarla.</string>
-    <string name="s_40_2">Senti subito le imprecazioni di una guardia, imbestialita dal gran baccano che hai fatto.</string>
-    <string name="s_40_link_1">19</string>
+    <string name="s_40_2">So che non è affatto giusto nei confronti degli altri prigionieri, ma ho deciso di darti una seconda possibilità , perché mi sei simpatico.</string>
+    <string name="s_40_3">Ti rispedisco indietro nel tempo, affinché tu possa riprovarci.</string>
+    <string name="s_40_4">Sei pronto?</string>
+    <string name="s_40_5">ZAP!</string>
+    <string name="s_40_link_1">35</string>
 
     <string name="s_41_1">Appena fuori dalla cella, neanche fosse un segno del destino, trovi un bel bastone robusto appoggiato alla parete.</string>
     <string name="s_41_2">Forse è il manico di una scopa, forse un poco raffinato strumento di tortura, forse uno stupido bastone e basta...</string>
@@ -398,7 +401,7 @@
     <string name="s_48_get">e_freed_pulcioso</string>
     <string name="s_48_link_1">53</string>
 
-    <string name="s_49_1">Purtroppo, per quanto ti sforzi, la serratura si rifiuta di cedere.</string>
+    <string name="s_49_1">Purtroppo, per quanto ti sforzi, la serratura si rifiuta di cedere. Per dirla tutta, si guasta irrimediabilmente: non riusciresti più ad aprirla neanche con le chiavi.</string>
     <string name="s_49_2">Pulcioso ha fatto il tifo per te con entusiasmo fino alla fine, ma quando legge la sconfitta nei tuoi occhi si lascia cadere a terra come uno sconsolato sacco di patate.</string>
     <string name="s_49_3">- Era destino, lo sapevo!</string>
     <string name="s_49_4">piagnucola.</string>
@@ -406,7 +409,6 @@
     <string name="s_49_6">Per il momento, non c\'è nulla che tu possa fare per lui. Abbassi gli occhi, pieno di vergogna, e te ne vai per la tua strada.</string>
     <string name="s_49_link_1">52</string>
 
-    <!-- TODO: prendere le chiavi per liberare Pulcioso? -->
     <string name="s_50_1">Complimenti: hai sconfitto il tuo primo avversario!</string>
     <string name="s_50_2">Osservi dall\'alto in basso il suo corpo riverso al suolo, provando dentro di te il brivido della vittoria.</string>
     <string name="s_50_3">Per qualche ragione, non ti sembra affatto una sensazione nuova, quanto piuttosto il gradito ritorno a una vecchia abitudine.</string>
@@ -423,7 +425,6 @@
     <string name="s_51_8">E questa volta mettici più impegno, pelandrone!</string>
     <string name="s_51_minigame">m_fight:50:51:false:3:3:0:4:1500:0:0</string>
 
-    <!-- TODO: qui si potrebbe introdurre il giochino stealth, sia per fuggire, sia per rubare le chiavi e liberare Pulcioso... -->
     <string name="s_52_1">Avanzi verso il fondo del corridoio tra le celle, finché un grugnito inatteso ti spinge ad appiattirti contro la parete.</string>
     <string name="s_52_2">Sporgi la testa dietro l\'angolo e vedi un raccapricciante incrocio tra uomo e porco che se la dorme della grossa con il testone appoggiato sul tavolo, accanto a una bottiglia vuota.</string>
     <string name="s_52_3">Dev\'essere una guardia della prigione, ma per tua fortuna non sembra troppo ligia al proprio dovere.</string>
