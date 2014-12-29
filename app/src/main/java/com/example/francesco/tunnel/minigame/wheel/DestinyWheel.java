@@ -1,7 +1,5 @@
 package com.example.francesco.tunnel.minigame.wheel;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -10,12 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
-import com.example.francesco.tunnel.minigame.Minigame;
 import com.example.francesco.tunnel.minigame.MinigameActivity;
-import com.example.francesco.tunnel.util.TTSBacked;
-import com.example.francesco.tunnel.util.TTSUtil;
-
-import java.util.Random;
 
 public class DestinyWheel extends MinigameActivity implements View.OnClickListener {
 

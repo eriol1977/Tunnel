@@ -3,9 +3,7 @@ package com.example.francesco.tunnel.story;
 import com.example.francesco.tunnel.minigame.Minigame;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Francesco on 18/11/2014.

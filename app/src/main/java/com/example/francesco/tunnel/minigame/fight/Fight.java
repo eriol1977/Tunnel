@@ -3,7 +3,6 @@ package com.example.francesco.tunnel.minigame.fight;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Created by Francesco on 19/12/2014.
@@ -31,6 +29,8 @@ public class Fight extends MinigameActivity {
     private int roundsLimit;
 
     private int roundLength;
+
+    private int comboFrequence;
 
     private int comboLimit;
 
@@ -58,8 +58,13 @@ public class Fight extends MinigameActivity {
     public final static String ROUND_LENGTH = "roundLength";
 
     /**
-     * Numero massimo di mosse richieste per eseguire una combo (0 indica che non verrà richiesta
-     * l'esecuzione di combo)
+     * Percentuale massima di combo al posto delle mosse singole, in un round.
+     * 0 indica che non verrà richiesta l'esecuzione di combo.
+     */
+    public final static String COMBO_FREQUENCE = "comboFrequence";
+
+    /**
+     * Numero massimo di mosse richieste per eseguire una combo.
      */
     public final static String COMBO_LIMIT = "comboLimit";
 
@@ -83,6 +88,8 @@ public class Fight extends MinigameActivity {
     private final static int DEFAULT_ROUNDS_LIMIT = 0;
 
     private final static int DEFAULT_ROUND_LENGTH = 4;
+
+    private final static int DEFAULT_COMBO_FREQUENCE = 25;
 
     private final static int DEFAULT_COMBO_LIMIT = 3;
 
@@ -148,6 +155,7 @@ public class Fight extends MinigameActivity {
         this.penaltiesLimit = getIntent().getIntExtra(PENALTIES_LIMIT, DEFAULT_PENALTIES_LIMIT);
         this.roundsLimit = getIntent().getIntExtra(ROUNDS_LIMIT, DEFAULT_ROUNDS_LIMIT);
         this.roundLength = getIntent().getIntExtra(ROUND_LENGTH, DEFAULT_ROUND_LENGTH);
+        this.comboFrequence = getIntent().getIntExtra(COMBO_FREQUENCE, DEFAULT_COMBO_FREQUENCE);
         this.comboLimit = getIntent().getIntExtra(COMBO_LIMIT, DEFAULT_COMBO_LIMIT);
         this.attack = getIntent().getBooleanExtra(ATTACK_FIRST, DEFAULT_ATTACK_FIRST);
         this.moveDuration = getIntent().getLongExtra(MOVE_DURATION, DEFAULT_MOVE_DURATION);
@@ -359,10 +367,8 @@ public class Fight extends MinigameActivity {
         moveIndex = 0;
         int buildCombo = 0;
         for (int i = 0; i < roundLength; i++) {
-            // crea combos nel 25% dei casi, quando consentito
-            // FIXME: usare parametro esterno?
-            if (comboLimit > 0)
-                buildCombo = randomInt(1, 2);
+            if (comboFrequence > 0)
+                buildCombo = randomInt(1, 100 / comboFrequence);
 
             if (buildCombo == 1)
                 moves.add(buildCombo());
@@ -535,17 +541,12 @@ public class Fight extends MinigameActivity {
         speak(R.string.l_fi_start);
     }
 
-
     void lockInput() {
         input.lock();
     }
 
     void unlockInput() {
         input.unlock();
-    }
-
-    public LimitedList<Move> getInput() {
-        return input;
     }
 
     @Override

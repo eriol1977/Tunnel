@@ -7,8 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.speech.tts.TextToSpeech;
 
-import com.example.francesco.tunnel.R;
-
 import java.util.HashMap;
 import java.util.Locale;
 

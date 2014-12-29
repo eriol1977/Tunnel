@@ -362,10 +362,10 @@
     <string name="s_43_2">Sulle prime piagnucola un po\', poi passa agli insulti, quindi afferra le sbarre e le scuote a tutta forza, urlando a pieni polmoni:</string>
     <string name="s_43_3">- Guardie! Guardie! Il prigioniero sta scappando!</string>
     <string name="s_43_4">Ben ti sta.</string>
-    <string name="s_43_5">Nel giro di istanti, un ributtante Uomo Maiale, che stava dormendo della grossa durante il suo turno di guardia, scatta in piedi e ti corre incontro.</string>
+    <string name="s_43_5">Nel giro di istanti, un ributtante Uomo Maiale, che stava dormendo della grossa durante il suo turno di guardia, ti viene incontro con l\'andatura barcollante di un ubriaco.</string>
     <string name="s_43_6">La creatura è un obbrobrioso incrocio tra uomo e porco, bardato di una corta armatura di cuoio che non lascia alcuno spazio all\'immaginazione.</string>
     <string name="s_43_7">Ti aggredisce con una clava nodosa e a te non resta che difènderti con le unghie e con i denti.</string>
-    <string name="s_43_minigame">m_fight:50:51:false:3:3:0:4:1000:0</string>
+    <string name="s_43_minigame">m_fight:50:51:false:3:3:0:4:1500:0:0</string>
 
     <string name="s_44_1">Il tuo buon cuore ti impedisce di abbandonare il poveraccio al suo destino.</string>
     <string name="s_44_2">Schermàndoti meglio che puoi dalle sue sputacchianti dimostrazioni di gratitudine, estrai il grimaldello e ti inginocchi davanti alla serratura della cella.</string>
@@ -421,7 +421,7 @@
     <string name="s_51_6">Dammi un secondo per riavvolgere la bobina del tempo e rispedirti all\'inizio dello scontro...</string>
     <string name="s_51_7">Quando sei pronto, fammelo sapere.</string>
     <string name="s_51_8">E questa volta mettici più impegno, pelandrone!</string>
-    <string name="s_51_minigame">m_fight:50:51:false:3:3:0:4:1000:0</string>
+    <string name="s_51_minigame">m_fight:50:51:false:3:3:0:4:1500:0:0</string>
 
     <!-- TODO: qui si potrebbe introdurre il giochino stealth, sia per fuggire, sia per rubare le chiavi e liberare Pulcioso... -->
     <string name="s_52_1">Avanzi verso il fondo del corridoio tra le celle, finché un grugnito inatteso ti spinge ad appiattirti contro la parete.</string>

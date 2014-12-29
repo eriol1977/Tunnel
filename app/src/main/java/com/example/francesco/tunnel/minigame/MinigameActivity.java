@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 
 import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.util.TTSBacked;

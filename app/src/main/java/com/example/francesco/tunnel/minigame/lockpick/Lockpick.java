@@ -1,18 +1,12 @@
 package com.example.francesco.tunnel.minigame.lockpick;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 
 import com.example.francesco.tunnel.R;
-import com.example.francesco.tunnel.minigame.Minigame;
 import com.example.francesco.tunnel.minigame.MinigameActivity;
-import com.example.francesco.tunnel.util.TTSBacked;
-import com.example.francesco.tunnel.util.TTSUtil;
 
 import java.util.Random;
 

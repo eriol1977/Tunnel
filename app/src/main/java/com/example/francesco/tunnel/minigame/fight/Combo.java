@@ -1,7 +1,5 @@
 package com.example.francesco.tunnel.minigame.fight;
 
-import com.example.francesco.tunnel.util.LimitedList;
-
 import java.util.ArrayList;
 import java.util.List;
 

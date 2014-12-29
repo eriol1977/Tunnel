@@ -2,5 +2,5 @@
 <resources>
     <string name="m_wheel">com.example.francesco.tunnel.minigame.wheel.DestinyWheel:min:max:threshold</string>
     <string name="m_lockpick">com.example.francesco.tunnel.minigame.lockpick.Lockpick:maxAttempts:columns</string>
-    <string name="m_fight">com.example.francesco.tunnel.minigame.fight.Fight:attackFirst:hitsRequired:penaltiesLimit:roundsLimit:roundLength:moveDuration:comboLimit</string>
+    <string name="m_fight">com.example.francesco.tunnel.minigame.fight.Fight:attackFirst:hitsRequired:penaltiesLimit:roundsLimit:roundLength:moveDuration:comboFrequence:comboLimit</string>
 </resources>

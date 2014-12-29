@@ -1,7 +1,5 @@
 package com.example.francesco.tunnel.util;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 /**

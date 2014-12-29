@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.example.francesco.tunnel.R;
 import com.example.francesco.tunnel.minigame.Minigame;
-import com.example.francesco.tunnel.story.Section;
 import com.example.francesco.tunnel.story.Story;
 import com.example.francesco.tunnel.story.StoryLoader;
 import com.example.francesco.tunnel.story.StoryPhase;
@@ -26,8 +25,6 @@ import java.util.Map;
  */
 
 public abstract class StoryTellerActivity extends Activity implements View.OnClickListener {
-
-    private String title;
 
     protected StoryLoader loader;
 
@@ -210,7 +207,7 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
                 editor.putString(SAVE_DATA_PARAGRAPH_SWITCHES, paragraphSwitches);
                 editor.putString(SAVE_DATA_LINK_SWITCHES, linkSwitches);
             }
-            editor.commit();
+            editor.apply();
             return true;
         }
         return false;
@@ -252,15 +249,12 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
         return !savedSectionId.isEmpty();
     }
 
+
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(final Bundle outState) {
         final boolean saveResult = saveGame(true);
         outState.putBoolean(TEMP_DATA_SAVED, saveResult);
         super.onSaveInstanceState(outState);
-    }
-
-    protected void setTitle(String title) {
-        this.title = title;
     }
 
     public String s(final String key) {
@@ -273,7 +267,7 @@ public abstract class StoryTellerActivity extends Activity implements View.OnCli
     }
 
     public Map<String, String> getKeyValuePairsStartingWithPrefix(final String prefix) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         for (Field field : R.string.class.getDeclaredFields()) {
             if (Modifier.isStatic(field.getModifiers()) && !Modifier.isPrivate(field.getModifiers()) && field.getType().equals(int.class)) {
                 try {

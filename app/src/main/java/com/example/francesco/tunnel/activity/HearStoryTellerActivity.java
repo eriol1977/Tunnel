@@ -1,8 +1,6 @@
 package com.example.francesco.tunnel.activity;
 
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.view.GestureDetectorCompat;
@@ -13,15 +11,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.francesco.tunnel.R;
-import com.example.francesco.tunnel.story.Command;
 import com.example.francesco.tunnel.story.Commands;
 import com.example.francesco.tunnel.story.StoryPhase;
 import com.example.francesco.tunnel.util.TTSBacked;
 import com.example.francesco.tunnel.util.TTSUtil;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  *
@@ -66,7 +61,7 @@ public class HearStoryTellerActivity extends StoryTellerActivity implements TTSB
      * "Pulisce" il testo in italiano dagli accenti collocati per aiutare il
      * TextToSpeech con la pronuncia.
      *
-     * @param text
+     * @param text Testo in italiano
      */
     private String cleanItalianText(final String text) {
         StringBuilder cleanText = new StringBuilder();

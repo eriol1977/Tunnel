@@ -8,8 +8,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.view.View;
 
-import com.example.francesco.tunnel.util.Cell;
-
 import java.util.ArrayList;
 import java.util.List;
 
